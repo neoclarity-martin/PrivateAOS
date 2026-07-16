@@ -932,6 +932,21 @@ A new domain, relationship, or trigger token, or a new agent entry, bumps `catal
 
 Reciprocal `handoff-to`/`handoff-from` edge pairs match by **trigger token** (V5, §7A.5), not by `relationship` — the two sides of a pair deliberately carry different relationships (the sending side `requests` or `informs`; the receiving side is `conforms-to`, adopting the §18.4 handoff format).
 
+## 7A.7 Relationship Vocabulary
+
+Normative semantics for `vocabulary.relationships` tokens (§7A.2/§7A.6). The DDD-equivalent column records the domain-driven-design context-mapping pattern each token corresponds to; the AOS-native token is the normative name.
+
+| Token | Meaning | DDD equivalent | Example |
+|---|---|---|---|
+| `informs` | Producer publishes; consumer reads, no change authority | Supplier / published language | Review Agent → Security Agent audit findings |
+| `requests` | Consumer may propose changes; owner decides | Customer/Supplier | Chief of Staff → Security Agent tool-matrix change recommendation (§22); Feedback Agent upstream channel |
+| `conforms-to` | Consumer adopts the owner's format/rules as-is | Conformist | Agents conforming to Memory Agent's memory-entry schema, §18.4 handoff template |
+| `gated-by` | Interaction passes through the owner's approval boundary; owner can block | (no direct DDD term; nearest: anti-corruption layer / gatekeeper) | Tool use gated by Security's tool access matrix; retirement gated by user `Proceed` |
+
+Semantic implications (candidates for later V-checks; **not** enforced in this cycle): a `requests` edge implies a feedback path; a `conforms-to` edge implies migration handling in the owner's §7B.3 Update section; `gated-by` edges must correspond to §3.2 approval-required actions.
+
+This table will migrate into the consolidated glossary file when that later improvement cycle lands.
+
 ---
 
 # 7B. Agent Profiles
