@@ -134,10 +134,10 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
   - [x] `catalog.schema.json` updated (relationship/trigger closed enums, required fields, `note` optional, `on` removed; vocabulary block requires all three lists) — catalog validated against it (15 agents, pass)
   - [x] `validate-catalog.py` requirement noted in §7A.5 (reciprocity-by-trigger + V14 incl. carve-out)
 - [x] **P5 — §7A.7 Relationship Vocabulary table added** (2026-07-15; incl. DDD-equivalent column, deferred-V-check note, glossary-migration note)
-- [ ] **P6 — Downstream touch points**
-  - [ ] §18.4 Trigger field references `vocabulary.triggers`
-  - [ ] §23/§24 cross-references added
-  - [ ] §7.4 confirmed no-op
+- [x] **P6 — Downstream touch points** (2026-07-15)
+  - [x] §18.4 Trigger field references `vocabulary.triggers`
+  - [x] §23/§24 cross-references added (prose after the approved-decisions blocks; decisions untouched; §24 names the 4 global-rule tokens per D6)
+  - [x] §7.4 confirmed no-op (renders governance identity/one-liners only, no edges)
 - [ ] **P7 — Versioning and history**
   - [ ] Spec frontmatter `spec_version` + `last_updated` bumped
   - [ ] Revision-history row added

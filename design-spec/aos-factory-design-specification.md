@@ -2610,6 +2610,8 @@ Body skeleton:
 ## Decisions Needed
 ```
 
+The `## Trigger` field uses tokens from the catalog's `vocabulary.triggers` (§7A.6), so the catalog, workflows, and handoff logs share one event language; a `note:`-style free-text qualifier may follow the token when nuance is needed.
+
 ## 18.5 Approval Request Template
 
 Create:
@@ -2889,6 +2891,8 @@ Approved decisions:
 - Cross-agent handoffs should use /templates/handoff-summary-template.md.
 ```
 
+Collaboration edges between agents are typed in the Agent Catalog: each `collaborates_with` edge carries a `relationship` (§7A.7 semantics) and a `trigger` token (§7A.3, §7A.6). The decisions above are unchanged; the catalog is where they are expressed per-edge.
+
 ---
 
 # 24. Escalation Model
@@ -2901,6 +2905,8 @@ Approved decisions:
 - Escalate to Chief of Staff Agent for priority conflicts, cross-agent routing issues, unclear ownership, or competing project demands.
 - Failed actions should be reported to the user when relevant and logged if they affect future behavior, files, permissions, or project status.
 ```
+
+The Security Agent and Chief of Staff escalation rules above are stated once as a global rule in the catalog header comments rather than materialized as per-entry edges (§7A.6). Their causes are named by trigger tokens in `vocabulary.triggers` — `permission-conflict`, `privacy-risk`, and `sensitive-memory-question` for Security Agent, `routing-conflict` for Chief of Staff — valid without a using edge (the V14 carve-out, §7A.5); agent-specific escalations beyond the global rule appear as explicit `escalates-to` edges typed per §7A.3.
 
 ---
 
