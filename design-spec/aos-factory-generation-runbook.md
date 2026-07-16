@@ -2,9 +2,9 @@
 title: AOS Factory Generation Runbook
 file_type: design_spec
 project: Script to Build Agentic OS Factory
-spec_version: 2.3.3
+spec_version: 2.4.1
 created_date: 2026-06-02
-last_updated: 2026-07-14
+last_updated: 2026-07-15
 status: design_ready_for_factory_generation
 important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
 ---
@@ -117,16 +117,30 @@ The AOS Factory build process consists of two separate, sequentially gated workf
 
 When the user requests a "Design Readiness Review", using this workflow.
 
+The review examines the entire design-spec document set: `aos-factory-design-specification.md`, this runbook, `aos-factory-revision-history.md`, `agent-catalog.yaml`, `catalog.schema.json`, `agent-specs/*` (profile.md + interviews.md per agent), and `aos-interviews.md`.
+
+The review runs in one of two modes:
+
+- **Full review** (default when the user asks for a "full Design Readiness Review", or when no prior completed review is recorded): every §34 checklist item is reset and independently re-verified, and the whole document set is reviewed for consistency.
+- **Incremental review** (default otherwise): using the `spec_version` of the last completed review's finalization entry in `aos-factory-revision-history.md`, diff the document set since that version (git). Re-verify only the §34 checklist items whose underlying sections changed, and focus the consistency review (step 5) on changed sections and their cross-references. Mechanical checks (step 2) always run in full. State the mode and the baseline version to the user before starting.
+
 ```text
-Read the source file `design-spec/aos-factory-design-specification.md`.
-1. Verify with the user that we are entering a Design Readiness Review. When the user types "Proceed", do the following:
+Read the design-spec document set listed above.
+1. Verify with the user that we are entering a Design Readiness Review and state the review mode (full or incremental, with baseline spec_version). When the user types "Proceed", do the following:
    1.1 Update all design specs with the status of "in_review".
-   1.2 In Section "34. Design Completion Checklist", mark every checklist item as Not Done. (Replace [x] with [ ]).
-2. Conduct a completeness check by verifying each item in the "34. Design Completion Checklist". When an item has been verified, mark it as Done (Replace [ ] with [x]). Report any missing items and recommended actions. Repeat this step until you have marked all items Done.
-3. Conduct a safety check by verifying the design complies with each safety-related governance rule in Section 33. Report any safety issues and recommended actions.
-4. Review the design in "aos-factory-design-specification.md" for logical consistency. Report any inconsistencies to the user. Include only inconsistencies that impact the functionality of the factory it generates. If no such inconsistencies exist then inform the user and add a revision-history entry noting the review found no inconsistencies, logged at the current `spec_version` (no increment — Section 14, revision history rule). Otherwise, work with the user to resolve each issue one at a time. For each issue, offer the user options and a recommendation.
-5. When all inconsistencies are resolved, present the consolidated resolutions and wait for the user to type exactly: Proceed — to finalize the consistency review. This gate authorizes only finalization of the review and update of the spec, not the generation of AOS Factory files. Finalizing increments `spec_version` and adds the consolidated revision-history entry.
-6. Repeat steps 1 and 2 until no more issues are surfaced.
+   1.2 Full review only: in Section "34. Design Completion Checklist", mark every checklist item as Not Done (replace [x] with [ ]). Incremental review: reset only the items whose underlying sections changed since the baseline.
+2. Run the mechanical checks (these implement the applicable Section 27 validation/QA rules; always run in full, in both modes):
+   2.1 Validate `agent-catalog.yaml` against `catalog.schema.json` (or run `scripts/validate-catalog.py` where available — Section 7A.5).
+   2.2 Verify every Section 7.3 roster agent has a catalog entry and an `agent-specs/[agent-name]-agent/` folder containing profile.md and interviews.md.
+   2.3 Verify catalog relationship and trigger tokens are members of the Section 7A.6 vocabularies and consistent with Section 7A.7.
+   2.4 Verify frontmatter `spec_version` and `status` agree across all design-spec files.
+   2.5 Verify section cross-references used by the document set resolve.
+   Record every failure as an issue on the issue list (step 5).
+3. Conduct a completeness check by verifying each checklist item in scope per step 1.2. When an item has been verified, mark it as Done (replace [ ] with [x]). Record any missing items as issues on the issue list.
+4. Conduct a safety check by verifying the design complies with each safety-related governance rule in Section 33. Record any safety issues on the issue list.
+5. Review the document set (scoped per the review mode) for logical consistency, including cross-artifact consistency (spec Sections 7A/7B/7C vs. catalog, schema, agent-specs, and interviews). Record on the issue list only inconsistencies that impact the functionality of the factory the design generates.
+6. If the issue list is empty, inform the user; the "no issues found" revision-history entry is written at finalization (step 7), logged at the current `spec_version` (no increment — Section 14, revision history rule). Otherwise, work with the user to resolve each issue one at a time — completeness, safety, and consistency issues alike. For each issue, offer the user options and a recommendation. After resolving issues, repeat steps 2 through 5 until a full pass surfaces no new issues.
+7. When the issue list is clear, present the consolidated resolutions (or the clean-review result) and wait for the user to type exactly: Proceed — to finalize the review. This gate authorizes only finalization of the review and update of the spec, not the generation of AOS Factory files. Finalizing: (a) if issues were resolved, increments `spec_version` and adds the consolidated revision-history entry; if the review was clean, adds the entry at the current `spec_version` with no increment; and (b) restores the `status` of all design-spec files to "design_ready_for_factory_generation".
 
 Do not add, modify or delete any files unless the user types exactly: Proceed.
 ```
@@ -136,7 +150,7 @@ When the user requests to "Build the factory" or "Rebuild the factory" or "Gener
 
 ```
 Read the source file `design-spec/aos-factory-design-specification.md`.
-1. Verify that all items in the "34. Design Completion Checklist" are marked Done ([x]). If any items are not Done, notify the user and stop this workflow.
+1. Verify that all items in the "34. Design Completion Checklist" are marked Done ([x]), and that the `status` of the design-spec files is "design_ready_for_factory_generation" (not "in_review"). If any items are not Done or the status check fails, notify the user and stop this workflow.
 2. Verify the design complies with the safety-related governance rules in Section 33. If any are not satisfied, notify the user and stop this workflow.
 3. Review the proposed Builder generation scope (Section 35) and plan with the user.
 4. Answer any additional user questions about the design or generation plan.

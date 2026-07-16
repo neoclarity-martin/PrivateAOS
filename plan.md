@@ -2,7 +2,7 @@
 title: DDD Improvement Cycle 1 — Implementation Plan
 file_type: plan
 created_date: 2026-07-15
-status: awaiting_proceed
+status: completed (2026-07-15)
 scope: Relationship + trigger vocabularies for the Agent Catalog (formerly proposals P2+P3)
 important_constraint: Do not implement unless the user explicitly types exactly Proceed.
 ---
@@ -141,11 +141,11 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
 - [x] **P7 — Versioning and history** (2026-07-15)
   - [x] Spec frontmatter `spec_version` 2.3.3 → 2.4.0 + `last_updated` 2026-07-15 (catalog header already at 2.4.0 per D8 — no catalog change needed)
   - [x] Revision-history row added (one consolidated 2.4.0 row for the whole cycle; revision-history frontmatter also bumped)
-- [ ] **P8 — Verification pass**
-  - [ ] Consistency re-read of all changed sections
-  - [ ] Catalog validates against updated JSON Schema (sandbox run)
-  - [ ] V5 reciprocity + V14 no-dead-tokens checked
-  - [ ] Grep confirms no remaining `"on":` fields
+- [x] **P8 — Verification pass** (2026-07-15)
+  - [x] Consistency re-read of all changed sections (§7A.2/7A.3/7A.5/7A.6/7A.7, §18.4, §23, §24, §27, frontmatter, revision history) — one prose fix: revision-history row said "28" trigger tokens, corrected to 29
+  - [x] Catalog validates against updated JSON Schema (sandbox jsonschema run: 15 agents, pass; `$defs` enums confirmed to mirror `vocabulary.relationships`/`vocabulary.triggers` exactly)
+  - [x] V5 reciprocity + V14 no-dead-tokens checked by script: 43 edges (15 handoff-to / 15 handoff-from / 13 escalates-to), 15 matched pairs by trigger token (P3 log's "16 pairs" was a miscount; 0 unmatched in either direction), D7 relationship sides all correct, all 4 relationships used, 0 dead edge-sourced tokens, 12 carve-out tokens present
+  - [x] Grep confirms no remaining `"on":` fields in spec or catalog (only hit is the historical description in the revision-history row itself)
 
 ## Open Item
 
