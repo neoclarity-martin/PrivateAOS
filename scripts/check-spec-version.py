@@ -7,7 +7,8 @@ that carries a status must carry the same status. This catches the cross-cycle
 stamp drift that a catalog-only validator cannot see (the drift resolved at
 spec_version 2.4.1).
 
-Scope: the 3 main documents, agent-catalog.yaml, aos-interviews.md, and every
+Scope: the 3 main documents, agent-catalog.yaml, vocabulary.yaml,
+aos-interviews.md, and every
 agent-specs/*/{profile,interviews}.md. catalog.schema.json carries no
 spec_version frontmatter (it is a JSON Schema) and is excluded.
 
@@ -47,6 +48,7 @@ def main() -> int:
         DS / "aos-factory-generation-runbook.md",
         DS / "aos-factory-revision-history.md",
         DS / "agent-catalog.yaml",
+        DS / "vocabulary.yaml",
         DS / "aos-interviews.md",
     ]
     files += sorted(DS.glob("agent-specs/*/profile.md"))

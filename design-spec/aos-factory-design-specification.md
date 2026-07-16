@@ -42,11 +42,12 @@ aos-factory-design-specification.md   - the canonical design (this file), Sectio
 aos-factory-generation-runbook.md     - build, generation scope, and handoff procedure (Sections 33-37)
 aos-factory-revision-history.md       - dated revision and consistency-resolution history
 agent-catalog.yaml                    - the Agent Catalog: structured agent identity/ownership data (Section 7A)
+vocabulary.yaml                       - controlled vocabularies (file_type/status, permissions/actions, tool-access), source of truth for Sections 3.2-3.4, 15.4-15.5, 22
 agent-specs/                          - one folder per agent: profile.md (behavioral narrative, Section 7B) + interviews.md (scripted interviews, Section 7C)
 aos-interviews.md                     - the AOS-level setup interview script, owned by build-aos (Sections 7C, 12.1)
 ```
 
-The canonical specification remains the single source of truth (Section 1.6.1); the companion files are extracted from it for readability and are governed by the same `Proceed` safety gate. `agent-catalog.yaml`, the `agent-specs/` files (one folder per agent holding `profile.md` and `interviews.md`), and `aos-interviews.md` are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `spec_version`); they are framework-owned and read-only inside instances (Section 14.8), and the factory ships rendered copies of them (Sections 7A.4, 7B.2, 7C).
+The canonical specification remains the single source of truth (Section 1.6.1); the companion files hold structured data extracted from it for machine enforcement and are governed by the same `Proceed` safety gate. `agent-catalog.yaml`, `vocabulary.yaml`, the `agent-specs/` files (one folder per agent holding `profile.md` and `interviews.md`), and `aos-interviews.md` are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `spec_version`); they are framework-owned and read-only inside instances (Section 14.8), and the factory ships rendered copies of them (Sections 7A.4, 7B.2, 7C). For the vocabularies these files own, the prose Sections above carry the normative meaning and rules; the data files carry the enumerated tokens, which the prose references rather than restates.
 
 ## Revision History
 
@@ -330,25 +331,7 @@ The agent may suggest safer alternatives, such as copying the file, creating a b
 
 ## 3.2 Actions Requiring Explicit Approval
 
-The following actions always require approval:
-
-```text
-- Delete files
-- Overwrite files
-- Rename files
-- Move files (except moving items into /inbox/processed under the approved inbox-to-task workflow, which is pre-authorized as part of that workflow — see Sections 17.5 and 31)
-- Archive files
-- Bulk-modify files
-- Send messages
-- Publish content
-- Spend money
-- Share private information
-- Change calendar events involving other people
-- Make irreversible or difficult-to-reverse changes
-- Pause or retire an agent
-- Refresh, replace, or overwrite existing builder files
-- Restore a retired agent to Active status
-```
+The actions that always require approval are the controlled list `approval_required_actions` in `design-spec/vocabulary.yaml` (source of truth). Each entry carries a stable `id` and its human-readable `label`; where an action has a scoped exception — for example, moving items into `/inbox/processed` under the approved inbox-to-task workflow is pre-authorized as part of that workflow (Sections 17.5 and 31) — the exception is carried on that entry's `note` field, not flattened away. These are the Level 2 actions of the §3.4 model.
 
 The user must type exactly:
 
@@ -358,36 +341,13 @@ Proceed
 
 ## 3.3 Safe Autonomous Actions
 
-Agents may autonomously perform low-risk actions such as:
-
-```text
-- Create new files
-- Create new folders
-- Append to logs
-- Draft content
-- Summarize information
-- Propose plans
-- Create non-destructive templates
-- Read files within their approved scope
-- Recommend next actions
-```
+Agents may autonomously perform low-risk actions — the controlled list is `safe_autonomous_actions` in `design-spec/vocabulary.yaml` (source of truth). These are the Level 1 actions of the §3.4 model.
 
 This is allowed only when the action does not overwrite, delete, move, rename, archive, publish, send, spend money, or expose private information.
 
 ## 3.4 Permission Levels
 
-The AOS uses a three-level permission model:
-
-```text
-Level 1: Safe autonomous actions
-The agent may do these without asking.
-
-Level 2: Approval-required actions
-The agent may recommend these, but must ask the user to type Proceed.
-
-Level 3: Prohibited actions
-The agent must not do these at all.
-```
+The AOS uses a three-level permission model — the levels, their stable names, and their one-line meanings are `permission_levels` in `design-spec/vocabulary.yaml` (source of truth): Level 1 `safe-autonomous`, Level 2 `approval-required`, Level 3 `prohibited`. Level 1 actions are `safe_autonomous_actions` (§3.3) and Level 2 actions are `approval_required_actions` (§3.2). Level 3 is defined by exclusion — any action that is neither Level 1 nor an approved Level 2 action, plus the `prohibited` value in the §22 tool-access matrix — and so is recorded as `prohibited_actions: {defined_by: exclusion}` rather than an enumerated token set.
 
 ## 3.5 Global Versus Agent-Specific Permissions
 
@@ -852,7 +812,7 @@ V14. No dead vocabulary tokens: every vocabulary.relationships token and
 
 (V9–V13 are profile/interview checks and live in §7B.5.)
 
-**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5 (slug resolution plus `relationship`/`trigger` vocabulary membership — the JSON Schema carries closed enums for both, generated from `vocabulary.relationships`/`vocabulary.triggers`), and `scripts/validate-catalog.py` additionally implements V5's reciprocity-by-trigger-token check and V14 (including its §7A.6 carve-out, which it reads from the catalog's `# edge-sourced` trigger marker). A companion `scripts/check-spec-version.py` enforces cross-file `spec_version`/`status` agreement across the design-spec document set (the mechanical surface of runbook §36.1 step 2.4). Both scripts live under `scripts/` and run in repo CI on design-spec pull requests. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas, and no other schema is expressed in JSON. (Optionally extending JSON Schema validation to §15 frontmatter is deferred.)
+**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5 (slug resolution plus `relationship`/`trigger` vocabulary membership — the JSON Schema carries closed enums for both, generated from `vocabulary.relationships`/`vocabulary.triggers`), and `scripts/validate-catalog.py` additionally implements V5's reciprocity-by-trigger-token check and V14 (including its §7A.6 carve-out, which it reads from the catalog's `# edge-sourced` trigger marker). A companion `scripts/check-spec-version.py` enforces cross-file `spec_version`/`status` agreement across the design-spec document set (the mechanical surface of runbook §36.1 step 2.4). Both scripts live under `scripts/` and run in repo CI on design-spec pull requests. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas. A second derived rendering, `design-spec/vocabulary.schema.json` with `scripts/validate-vocabulary.py`, does the same for the controlled vocabularies in `design-spec/vocabulary.yaml` (§3.2–§3.4, §15.4–§15.5, §22); like the catalog schema it is a rendering of the prose, never the source. These two `*.schema.json` files are the only schemas expressed in JSON — one per data file, co-located with it and marked `DERIVED ARTIFACT`; all document-level schemas remain markdown skeletons.
 
 ## 7A.6 Catalog File Shape and Versioning
 
@@ -1860,33 +1820,7 @@ last_updated: 2026-06-02
 
 ## 15.4 Controlled `file_type` Vocabulary
 
-Approved initial vocabulary:
-
-```text
-builder_entry
-aos_builder
-agent_builder
-aos_manifest
-aos_map
-config
-memory
-workflow
-template
-decision_log
-change_log
-feedback_log
-builder_changelog
-documentation
-project_doc
-handoff_summary
-build_summary
-agent_instruction
-project_instructions
-design_spec
-agent_catalog
-agent_profile
-interview_script
-```
+The controlled `file_type` tokens are `file_type` in `design-spec/vocabulary.yaml` (source of truth). The meaning of each type and its per-file assignments are normative here in the prose below.
 
 `design_spec` applies to this design specification itself (`aos-factory-design-specification.md`), the source document the AOS Factory is generated from. It is the one source/design artifact in the vocabulary; the other types all describe factory-generated files.
 
@@ -1944,27 +1878,7 @@ interview_script
 
 ## 15.5 Controlled Status Vocabulary
 
-Approved initial vocabulary, split by the field it applies to:
-
-Allowed `agent_status` values (agent lifecycle, per Section 10.1):
-
-```text
-available
-selected
-built
-active
-paused
-retired
-```
-
-Allowed `status` values (file, builder, template, workflow, or other artifact):
-
-```text
-draft
-active
-deprecated
-archived
-```
+The controlled tokens, split by the field they apply to, are `agent_status` (agent lifecycle, per Section 10.1) and `status` (file, builder, template, workflow, or other artifact) in `design-spec/vocabulary.yaml` (source of truth).
 
 `active` is the only value valid for both fields. All other values belong to exactly one field.
 
@@ -2831,8 +2745,8 @@ Approved rules:
 ```text
 - Every AOS includes a required global tool access matrix.
 - Tool access is tracked by agent in a table.
-- Access levels are: Allowed, Read-only, Approval-required, Prohibited, Not configured.
-- Not configured means the agent may not use the tool until access is explicitly granted.
+- Access levels are the controlled list `access_levels` in `design-spec/vocabulary.yaml` (source of truth): Allowed, Read-only, Approval-required, Prohibited, Not-configured.
+- Not-configured means the agent may not use the tool until access is explicitly granted.
 - Sending, publishing, spending money, sharing private information, or affecting other people requires explicit approval.
 - Security Agent owns the tool access matrix.
 - The global tool access matrix is the single source of truth for tool access and overrides any agent config on conflict.
@@ -2906,7 +2820,7 @@ Approved decisions:
 - Failed actions should be reported to the user when relevant and logged if they affect future behavior, files, permissions, or project status.
 ```
 
-The Security Agent and Chief of Staff escalation rules above are stated once as a global rule in the catalog header comments rather than materialized as per-entry edges (§7A.6). Their causes are named by trigger tokens in `vocabulary.triggers` — `permission-conflict`, `privacy-risk`, and `sensitive-memory-question` for Security Agent, `routing-conflict` for Chief of Staff — valid without a using edge (the V14 carve-out, §7A.5); agent-specific escalations beyond the global rule appear as explicit `escalates-to` edges typed per §7A.3.
+The Security Agent and Chief of Staff escalation rules above are stated once as a global rule in the catalog header comments rather than materialized as per-entry edges (§7A.6). Their causes are named by trigger tokens in `vocabulary.triggers` — `permission-conflict`, `privacy-risk`, and `sensitive-memory-question` for Security Agent, `routing-conflict` for Chief of Staff — valid without a using edge (the V14 carve-out, §7A.5); agent-specific escalations beyond the global rule appear as explicit `escalates-to` edges typed per §7A.3. These four causes are also named, for traceability, under `cross_references.escalation_causes` in `design-spec/vocabulary.yaml`, which points back to `vocabulary.triggers` in the catalog as their source.
 
 ---
 
