@@ -21,5 +21,9 @@ Thumbs.db
 *.bak
 *.zip
 
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+
 # Internal documents
 internal-only/
