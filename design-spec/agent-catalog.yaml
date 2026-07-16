@@ -7,8 +7,8 @@
 # operating agent (§14.8 drift invariant). The factory ships a rendered copy at
 # its root (/agent-catalog.yaml) that builders read (§7A.4).
 
-catalog_version: 1.2.0
-spec_version: 2.3.3
+catalog_version: 1.3.0
+spec_version: 2.4.0
 
 vocabulary:
   domains:
@@ -31,6 +31,48 @@ vocabulary:
     - task-tracking
     - writing
 
+  relationships:
+    - informs
+    - requests
+    - conforms-to
+    - gated-by
+
+  triggers:
+    # workflow-sourced (§17 global workflows; first-class tokens even without
+    # a using collaborates_with edge — see the V14 carve-out, §7A.5)
+    - daily-startup
+    - decision-captured
+    - end-of-day
+    - inbox-item-received
+    - memory-review
+    - monthly-review
+    - project-kickoff
+    - weekly-review
+    # §24 escalation causes (global rule; no per-entry edge required — V14
+    # carve-out, §7A.5/§7A.6)
+    - permission-conflict
+    - privacy-risk
+    - routing-conflict
+    - sensitive-memory-question
+    # edge-sourced (collaboration handoff and escalation events)
+    - content-filing
+    - enhancement-candidate
+    - inbox-item-to-event
+    - inbox-item-to-project
+    - inbox-item-to-task
+    - matrix-change-recommended
+    - outbound-submission
+    - ownership-unclear
+    - priority-conflict
+    - research-request
+    - research-to-draft
+    - research-to-learning
+    - stakeholder-tracking
+    - task-automation-request
+    - task-needs-time-block
+    - task-to-project
+    - tool-access-uncertainty
+
 agents:
   # --- governance (kind: governance, tier: required) ---
 
@@ -50,10 +92,11 @@ agents:
     inputs: []
     outputs: [security.permissions]
     collaborates_with:
-      - { agent: chief-of-staff-agent, direction: handoff-from, "on": "may recommend matrix changes (§22)" }
-      - { agent: review-agent,         direction: handoff-from, "on": "may recommend matrix changes (§22)" }
-      # All agents escalate-to security-agent on permission/access/privacy conflicts (§24);
-      # modeled from each other agent's own entry as escalates-to: security-agent.
+      - { agent: chief-of-staff-agent, direction: handoff-from, relationship: conforms-to, trigger: matrix-change-recommended }
+      - { agent: review-agent,         direction: handoff-from, relationship: conforms-to, trigger: matrix-change-recommended }
+      # Global rule (§24): all agents escalate-to security-agent on
+      # permission-conflict, privacy-risk, and sensitive-memory-question.
+      # Not materialized as per-entry edges (V14 carve-out, §7A.5/§7A.6).
     pre_authorized_actions:
       - "Audit permissions and tool access (read-only, §27)"
     approval_required_actions:
@@ -81,8 +124,9 @@ agents:
     inputs: []
     outputs: [memory.governance]
     collaborates_with:
-      - { agent: review-agent, direction: handoff-from, "on": "deeper monthly memory-hygiene review (§17.8)" }
-      # All agents escalate-to security-agent on permission/access/privacy conflicts (§24).
+      - { agent: review-agent, direction: handoff-from, relationship: conforms-to, trigger: memory-review }
+      # Global rule (§24): all agents escalate-to security-agent on
+      # permission-conflict, privacy-risk, and sensitive-memory-question (V14 carve-out).
     pre_authorized_actions: []
     approval_required_actions:
       - "Archive or delete a memory entry"
@@ -108,10 +152,11 @@ agents:
     inputs: []
     outputs: [orchestration.routing]
     collaborates_with:
-      - { agent: security-agent, direction: handoff-to, "on": "may recommend matrix changes (§22)" }
-      # All productive agents escalate-to chief-of-staff-agent for priority
-      # conflicts and cross-agent routing issues (§23/§24); modeled from each
-      # productive agent's own entry as escalates-to: chief-of-staff-agent.
+      - { agent: security-agent, direction: handoff-to, relationship: requests, trigger: matrix-change-recommended }
+      # Global rule (§23/§24): productive agents escalate-to chief-of-staff-agent
+      # on priority-conflict and ownership-unclear (explicit edges on each
+      # productive entry) and on routing-conflict (no per-entry edge required —
+      # V14 carve-out, §7A.5/§7A.6).
     pre_authorized_actions: []
     approval_required_actions:
       - "Retire, pause, or restore an agent (registry/map update)"
@@ -136,10 +181,11 @@ agents:
     inputs: []
     outputs: [review.retrospective]
     collaborates_with:
-      - { agent: security-agent, direction: handoff-to, "on": "may recommend matrix changes (§22)" }
-      - { agent: memory-agent,   direction: handoff-to, "on": "deeper monthly memory-hygiene review (§17.8)" }
-      - { agent: feedback-agent, direction: handoff-to, "on": "enhancement candidates discovered during monthly review (§17.4)" }
-      # All agents escalate-to security-agent on permission/access/privacy conflicts (§24).
+      - { agent: security-agent, direction: handoff-to, relationship: requests, trigger: matrix-change-recommended }
+      - { agent: memory-agent,   direction: handoff-to, relationship: requests, trigger: memory-review }
+      - { agent: feedback-agent, direction: handoff-to, relationship: requests, trigger: enhancement-candidate }
+      # Global rule (§24): all agents escalate-to security-agent on
+      # permission-conflict, privacy-risk, and sensitive-memory-question (V14 carve-out).
     pre_authorized_actions:
       - "Regenerate /docs/aos-user-guide.html during monthly review (§16.6, §17.4)"
     approval_required_actions: []
@@ -166,8 +212,8 @@ agents:
     inputs: [review.retrospective]
     outputs: [feedback.upstream]
     collaborates_with:
-      - { agent: review-agent,   direction: handoff-from, "on": "enhancement candidates discovered during monthly review (§17.4)" }
-      - { agent: security-agent, direction: escalates-to, "on": "scrub of every outbound submission before send (§3.2, §22)" }
+      - { agent: review-agent,   direction: handoff-from, relationship: conforms-to, trigger: enhancement-candidate }
+      - { agent: security-agent, direction: escalates-to, relationship: gated-by, trigger: outbound-submission, note: "scrub of every outbound submission before send (§3.2, §22)" }
       # The Proceed gate on every outbound send is the user's (§3.2); expressed
       # below rather than as a collaboration edge (edges resolve to agent slugs, V5).
     pre_authorized_actions:
@@ -195,8 +241,8 @@ agents:
     inputs: [research]
     outputs: [learning]
     collaborates_with:
-      - { agent: research-agent,       direction: handoff-from, "on": "research material restructured into a learning module" }
-      - { agent: chief-of-staff-agent, direction: escalates-to, "on": "priority conflict" }
+      - { agent: research-agent,       direction: handoff-from, relationship: conforms-to, trigger: research-to-learning }
+      - { agent: chief-of-staff-agent, direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions: []
     tool_notes: "Standard read/write within own domain (§22)."
@@ -222,10 +268,11 @@ agents:
       - communications.triage
       - communications.drafting
     collaborates_with:
-      - { agent: task-agent,            direction: handoff-to, "on": "item becomes a commitment" }
-      - { agent: calendar-agent,        direction: handoff-to, "on": "item implies an event/booking" }
-      - { agent: project-manager-agent, direction: handoff-to, "on": "item belongs to a project" }
-      - { agent: chief-of-staff-agent,  direction: escalates-to, "on": "ownership unclear / priority conflict" }
+      - { agent: task-agent,            direction: handoff-to, relationship: requests, trigger: inbox-item-to-task }
+      - { agent: calendar-agent,        direction: handoff-to, relationship: requests, trigger: inbox-item-to-event }
+      - { agent: project-manager-agent, direction: handoff-to, relationship: requests, trigger: inbox-item-to-project }
+      - { agent: chief-of-staff-agent,  direction: escalates-to, relationship: requests, trigger: ownership-unclear }
+      - { agent: chief-of-staff-agent,  direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions:
       - "Move processed items to /inbox/processed"
     approval_required_actions:
@@ -252,9 +299,9 @@ agents:
       - task-tracking
     outputs: [scheduling]
     collaborates_with:
-      - { agent: inbox-agent,          direction: handoff-from, "on": "item implies an event/booking" }
-      - { agent: task-agent,           direction: handoff-from, "on": "a commitment needs time blocked" }
-      - { agent: chief-of-staff-agent, direction: escalates-to, "on": "competing time demands" }
+      - { agent: inbox-agent,          direction: handoff-from, relationship: conforms-to, trigger: inbox-item-to-event }
+      - { agent: task-agent,           direction: handoff-from, relationship: conforms-to, trigger: task-needs-time-block }
+      - { agent: chief-of-staff-agent, direction: escalates-to, relationship: requests, trigger: priority-conflict, note: "competing time demands" }
     pre_authorized_actions: []
     approval_required_actions:
       - "Create, move, or delete a calendar event"
@@ -278,11 +325,11 @@ agents:
     inputs: [communications.triage]
     outputs: [task-tracking]
     collaborates_with:
-      - { agent: inbox-agent,            direction: handoff-from, "on": "item becomes a commitment" }
-      - { agent: calendar-agent,         direction: handoff-to,   "on": "a commitment needs time blocked" }
-      - { agent: project-manager-agent,  direction: handoff-to,   "on": "task belongs to a tracked project" }
-      - { agent: automation-agent,       direction: handoff-to,   "on": "a recurring task is being automated" }
-      - { agent: chief-of-staff-agent,   direction: escalates-to, "on": "priority conflict" }
+      - { agent: inbox-agent,            direction: handoff-from, relationship: conforms-to, trigger: inbox-item-to-task }
+      - { agent: calendar-agent,         direction: handoff-to,   relationship: requests, trigger: task-needs-time-block }
+      - { agent: project-manager-agent,  direction: handoff-to,   relationship: requests, trigger: task-to-project }
+      - { agent: automation-agent,       direction: handoff-to,   relationship: requests, trigger: task-automation-request }
+      - { agent: chief-of-staff-agent,   direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Close or cancel a task created by another agent"
@@ -308,11 +355,11 @@ agents:
       - task-tracking
     outputs: [project-coordination]
     collaborates_with:
-      - { agent: inbox-agent,         direction: handoff-from, "on": "item belongs to a project" }
-      - { agent: task-agent,          direction: handoff-from, "on": "task belongs to a tracked project" }
-      - { agent: research-agent,      direction: handoff-to,   "on": "project needs research support" }
-      - { agent: personal-crm-agent,  direction: handoff-to,   "on": "project has external stakeholders needing relationship tracking" }
-      - { agent: chief-of-staff-agent, direction: escalates-to, "on": "cross-project priority conflict" }
+      - { agent: inbox-agent,         direction: handoff-from, relationship: conforms-to, trigger: inbox-item-to-project }
+      - { agent: task-agent,          direction: handoff-from, relationship: conforms-to, trigger: task-to-project }
+      - { agent: research-agent,      direction: handoff-to,   relationship: requests, trigger: research-request }
+      - { agent: personal-crm-agent,  direction: handoff-to,   relationship: requests, trigger: stakeholder-tracking }
+      - { agent: chief-of-staff-agent, direction: escalates-to, relationship: requests, trigger: priority-conflict, note: "cross-project" }
     pre_authorized_actions: []
     approval_required_actions:
       - "Close out or cancel a project"
@@ -336,10 +383,10 @@ agents:
     inputs: [project-coordination]
     outputs: [research]
     collaborates_with:
-      - { agent: project-manager-agent, direction: handoff-from, "on": "project needs research support" }
-      - { agent: writing-agent,         direction: handoff-to,   "on": "research ready to be drafted into content" }
-      - { agent: tutor-agent,           direction: handoff-to,   "on": "research material restructured into a learning module" }
-      - { agent: chief-of-staff-agent,  direction: escalates-to, "on": "priority conflict" }
+      - { agent: project-manager-agent, direction: handoff-from, relationship: conforms-to, trigger: research-request }
+      - { agent: writing-agent,         direction: handoff-to,   relationship: informs, trigger: research-to-draft }
+      - { agent: tutor-agent,           direction: handoff-to,   relationship: informs, trigger: research-to-learning }
+      - { agent: chief-of-staff-agent,  direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Cite or rely on a source requiring access approval"
@@ -362,9 +409,9 @@ agents:
     inputs: [research]
     outputs: [writing]
     collaborates_with:
-      - { agent: research-agent,        direction: handoff-from, "on": "research ready to be drafted into content" }
-      - { agent: document-agent,        direction: handoff-to,   "on": "finished content needs to be filed and stored" }
-      - { agent: chief-of-staff-agent,  direction: escalates-to, "on": "priority conflict" }
+      - { agent: research-agent,        direction: handoff-from, relationship: conforms-to, trigger: research-to-draft }
+      - { agent: document-agent,        direction: handoff-to,   relationship: requests, trigger: content-filing }
+      - { agent: chief-of-staff-agent,  direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Publish or send finished content externally"
@@ -388,8 +435,8 @@ agents:
     inputs: [writing]
     outputs: [document-management]
     collaborates_with:
-      - { agent: writing-agent,        direction: handoff-from, "on": "finished content needs to be filed and stored" }
-      - { agent: chief-of-staff-agent, direction: escalates-to, "on": "priority conflict" }
+      - { agent: writing-agent,        direction: handoff-from, relationship: conforms-to, trigger: content-filing }
+      - { agent: chief-of-staff-agent, direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Archive, move, or delete a stored document"
@@ -411,8 +458,8 @@ agents:
     inputs: [project-coordination]
     outputs: [contacts]
     collaborates_with:
-      - { agent: project-manager-agent, direction: handoff-from, "on": "project has external stakeholders needing relationship tracking" }
-      - { agent: chief-of-staff-agent,  direction: escalates-to, "on": "priority conflict" }
+      - { agent: project-manager-agent, direction: handoff-from, relationship: conforms-to, trigger: stakeholder-tracking }
+      - { agent: chief-of-staff-agent,  direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Share private contact information externally"
@@ -434,9 +481,9 @@ agents:
     inputs: [task-tracking]
     outputs: [automation]
     collaborates_with:
-      - { agent: task-agent,           direction: handoff-from, "on": "a recurring task is being automated" }
-      - { agent: security-agent,       direction: escalates-to, "on": "automation requests elevated or unclear tool access" }
-      - { agent: chief-of-staff-agent, direction: escalates-to, "on": "priority conflict" }
+      - { agent: task-agent,           direction: handoff-from, relationship: conforms-to, trigger: task-automation-request }
+      - { agent: security-agent,       direction: escalates-to, relationship: gated-by, trigger: tool-access-uncertainty }
+      - { agent: chief-of-staff-agent, direction: escalates-to, relationship: requests, trigger: priority-conflict }
     pre_authorized_actions: []
     approval_required_actions:
       - "Run an automation that modifies files outside its own domain"

@@ -22,6 +22,10 @@ Deferred to later cycles: context map projection, consolidated glossary file, an
 | D3 | Relationship vocabulary | AOS-native tokens (`informs`, `requests`, `conforms-to`, `gated-by`) + DDD aliases documented in a glossary table |
 | D4 | Trigger token derivation | Derive from existing catalog `"on":` prose + §17 workflow triggers + §24 escalation causes; one token per distinct event, no speculative tokens (est. 12–20) |
 | D5 | Enforcement | Full closed-enum enforcement in `catalog.schema.json` and V-checks; new token = catalog edit + `catalog_version` bump |
+| D6 | Global escalation edges (P3, 2026-07-15) | Kept as a documented global rule (catalog header comments + §24); the 4 §24-cause tokens (`permission-conflict`, `privacy-risk`, `sensitive-memory-question`, `routing-conflict`) join the V14 carve-out alongside workflow tokens |
+| D7 | Reciprocal-edge relationships (2026-07-15) | Pairs match by trigger token; sending side carries `requests`/`informs`, receiving (`handoff-from`) side carries `conforms-to` (§18.4 handoff format) — so `conforms-to` has real uses and V14 covers relationships |
+| D8 | Catalog `spec_version` timing (2026-07-15) | Set to anticipated 2.4.0 during P3; P7 confirms |
+| D9 | Inbox combined escalation (2026-07-15) | Split into two edges (`ownership-unclear`, `priority-conflict`) — total edges now 43 |
 
 ## Relationship Token Semantics (normative once implemented)
 
@@ -118,12 +122,12 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
 - [x] **P2 — Edge schema changed (§7A.3)** (2026-07-15)
   - [x] New edge schema in place (`relationship`, `trigger`, `note`; `on` removed)
   - [x] §7A.2 rule extended to all three vocabularies
-- [ ] **P3 — Catalog entries updated (all 15)**
-  - [ ] Open item resolved: global vs explicit escalate-to-security edges
-  - [ ] 5 governance entries converted
-  - [ ] 10 productive entries converted
-  - [ ] Reciprocity by trigger token verified entry-by-entry
-  - [ ] `catalog_version` and `spec_version` headers bumped
+- [x] **P3 — Catalog entries updated (all 15)** (2026-07-15)
+  - [x] Open item resolved: global rule kept, not explicit edges (D6)
+  - [x] 5 governance entries converted
+  - [x] 10 productive entries converted (incl. D9 edge split; 43 edges total)
+  - [x] Reciprocity by trigger token verified entry-by-entry (scripted check: 16 pairs, 0 unmatched, 0 dead tokens, all 4 relationships used)
+  - [x] `catalog_version` (1.3.0) and `spec_version` (2.4.0, per D8) headers bumped
 - [ ] **P4 — Validation extended**
   - [ ] V5 extension text in §7A.5
   - [ ] V14 added
@@ -145,7 +149,7 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
 
 ## Open Item
 
-- P3 step 3: represent "all agents escalate-to security-agent" as a global rule or explicit per-entry edges — to be decided (with recommendation offered) during implementation.
+- ~~P3 step 3: represent "all agents escalate-to security-agent" as a global rule or explicit per-entry edges~~ — resolved 2026-07-15 as D6 (global rule + V14 carve-out).
 
 ## Approval
 

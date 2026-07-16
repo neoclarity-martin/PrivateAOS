@@ -889,7 +889,13 @@ vocabulary:
     - monthly-review
     - project-kickoff
     - weekly-review
-    # edge-sourced (collaboration handoff events and §24 escalation causes)
+    # §24 escalation causes covered by the global escalation rule; first-class
+    # tokens without a per-entry edge (V14 carve-out, §7A.5)
+    - permission-conflict
+    - privacy-risk
+    - routing-conflict
+    - sensitive-memory-question
+    # edge-sourced (collaboration handoff and escalation events)
     - content-filing
     - enhancement-candidate
     - inbox-item-to-event
@@ -898,14 +904,10 @@ vocabulary:
     - matrix-change-recommended
     - outbound-submission
     - ownership-unclear
-    - permission-conflict
     - priority-conflict
-    - privacy-risk
     - research-request
     - research-to-draft
     - research-to-learning
-    - routing-conflict
-    - sensitive-memory-question
     - stakeholder-tracking
     - task-automation-request
     - task-needs-time-block
@@ -916,7 +918,9 @@ agents:
   - <per-agent entry, schema in §7A.3>
 ```
 
-A new domain, relationship, or trigger token, or a new agent entry, bumps `catalog_version`; a spec-driven schema change bumps `spec_version` (mirrors the `aos_version` vs `spec_version` split in §14.3). Workflow-sourced trigger tokens (the §17 group above) are valid without a using `collaborates_with` edge — they exist for the §18.4 handoff `Trigger` field and workflow event language; edge-sourced tokens must be used by at least one edge (enforced by V14, §7A.5).
+A new domain, relationship, or trigger token, or a new agent entry, bumps `catalog_version`; a spec-driven schema change bumps `spec_version` (mirrors the `aos_version` vs `spec_version` split in §14.3). Workflow-sourced trigger tokens (the §17 group above) and §24 escalation-cause tokens covered by the global escalation rule (the second group) are valid without a using `collaborates_with` edge — the former exist for the §18.4 handoff `Trigger` field and workflow event language, the latter name the causes of the global "all agents escalate-to security-agent / productive agents escalate-to chief-of-staff-agent" rule (§24), which is stated once in the catalog header comments rather than materialized as per-entry edges. All other (edge-sourced) tokens must be used by at least one edge (enforced by V14, §7A.5).
+
+Reciprocal `handoff-to`/`handoff-from` edge pairs match by **trigger token** (V5, §7A.5), not by `relationship` — the two sides of a pair deliberately carry different relationships (the sending side `requests` or `informs`; the receiving side is `conforms-to`, adopting the §18.4 handoff format).
 
 ---
 
