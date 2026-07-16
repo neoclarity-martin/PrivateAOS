@@ -754,9 +754,12 @@ The catalog is distinct from the instance-level §10.3 Agent Registry and §10.4
   file, §7A.6).
 - domains_owned MUST be pairwise disjoint across all agents.
 - Governance domain tokens MUST appear only on entries with kind: governance.
+- collaborates_with.relationship MUST be drawn from vocabulary.relationships
+  (§7A.6; semantics in §7A.7).
+- collaborates_with.trigger MUST be drawn from vocabulary.triggers (§7A.6).
 ```
 
-A new domain is a catalog edit, not a spec revision (§7A.6); this disjointness rule is the normative spec-level constraint the catalog must satisfy.
+A new domain, relationship, or trigger token is a catalog edit, not a spec revision (§7A.6); the disjointness rule is the normative spec-level constraint the catalog must satisfy.
 
 ## 7A.3 Per-Agent Entry Schema
 
@@ -783,10 +786,14 @@ inputs:  [domain-token]       # domains it consumes (owned by others) — inform
 outputs: [domain-token]       # domains it produces into (should equal domains_owned)
 
 collaborates_with:
-  - agent: slug
+  - agent: slug                # must resolve to a real slug (V5)
     direction: handoff-to | handoff-from | escalates-to
-    "on": string               # what triggers the edge (quoted: bare `on` is a
-                               # YAML 1.1 boolean literal and must be quoted)
+    relationship: informs | requests | conforms-to | gated-by
+                               # REQUIRED; from vocabulary.relationships
+                               # (§7A.6; semantics in §7A.7)
+    trigger: <trigger-token>   # REQUIRED; from vocabulary.triggers (§7A.6)
+    note: string               # OPTIONAL; nuance only, never the sole
+                               # carrier of meaning
 
 pre_authorized_actions: [string]   # the ONLY autonomous exceptions to non-destructive
                                     # default (§3.2/§3.3); kept in the catalog (§7A

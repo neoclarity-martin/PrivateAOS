@@ -115,9 +115,9 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
   - [x] Final trigger token list minted — 29 tokens: 8 workflow-sourced (§17) + 21 edge/§24-sourced. Per user decision (2026-07-15), workflow tokens are first-class without a using edge (V14 carve-out in P4); priority-conflict variants normalized to one token with nuance in `note:`
   - [x] §7A.6 updated with `relationships` and `triggers` vocabularies
   - [x] Vocabulary versioning rule stated (incl. workflow-token carve-out)
-- [ ] **P2 — Edge schema changed (§7A.3)**
-  - [ ] New edge schema in place (`relationship`, `trigger`, `note`; `on` removed)
-  - [ ] §7A.2 rule extended to all three vocabularies
+- [x] **P2 — Edge schema changed (§7A.3)** (2026-07-15)
+  - [x] New edge schema in place (`relationship`, `trigger`, `note`; `on` removed)
+  - [x] §7A.2 rule extended to all three vocabularies
 - [ ] **P3 — Catalog entries updated (all 15)**
   - [ ] Open item resolved: global vs explicit escalate-to-security edges
   - [ ] 5 governance entries converted
