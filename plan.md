@@ -138,9 +138,9 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
   - [x] §18.4 Trigger field references `vocabulary.triggers`
   - [x] §23/§24 cross-references added (prose after the approved-decisions blocks; decisions untouched; §24 names the 4 global-rule tokens per D6)
   - [x] §7.4 confirmed no-op (renders governance identity/one-liners only, no edges)
-- [ ] **P7 — Versioning and history**
-  - [ ] Spec frontmatter `spec_version` + `last_updated` bumped
-  - [ ] Revision-history row added
+- [x] **P7 — Versioning and history** (2026-07-15)
+  - [x] Spec frontmatter `spec_version` 2.3.3 → 2.4.0 + `last_updated` 2026-07-15 (catalog header already at 2.4.0 per D8 — no catalog change needed)
+  - [x] Revision-history row added (one consolidated 2.4.0 row for the whole cycle; revision-history frontmatter also bumped)
 - [ ] **P8 — Verification pass**
   - [ ] Consistency re-read of all changed sections
   - [ ] Catalog validates against updated JSON Schema (sandbox run)
