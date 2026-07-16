@@ -865,11 +865,51 @@ vocabulary:
     - automation
     - learning
 
+  relationships:
+    - informs
+    - requests
+    - conforms-to
+    - gated-by
+
+  triggers:
+    # workflow-sourced (§17 global workflows; first-class tokens even without
+    # a using collaborates_with edge — see the V14 carve-out, §7A.5)
+    - daily-startup
+    - decision-captured
+    - end-of-day
+    - inbox-item-received
+    - memory-review
+    - monthly-review
+    - project-kickoff
+    - weekly-review
+    # edge-sourced (collaboration handoff events and §24 escalation causes)
+    - content-filing
+    - enhancement-candidate
+    - inbox-item-to-event
+    - inbox-item-to-project
+    - inbox-item-to-task
+    - matrix-change-recommended
+    - outbound-submission
+    - ownership-unclear
+    - permission-conflict
+    - priority-conflict
+    - privacy-risk
+    - research-request
+    - research-to-draft
+    - research-to-learning
+    - routing-conflict
+    - sensitive-memory-question
+    - stakeholder-tracking
+    - task-automation-request
+    - task-needs-time-block
+    - task-to-project
+    - tool-access-uncertainty
+
 agents:
   - <per-agent entry, schema in §7A.3>
 ```
 
-A new domain or new agent entry bumps `catalog_version`; a spec-driven schema change bumps `spec_version` (mirrors the `aos_version` vs `spec_version` split in §14.3).
+A new domain, relationship, or trigger token, or a new agent entry, bumps `catalog_version`; a spec-driven schema change bumps `spec_version` (mirrors the `aos_version` vs `spec_version` split in §14.3). Workflow-sourced trigger tokens (the §17 group above) are valid without a using `collaborates_with` edge — they exist for the §18.4 handoff `Trigger` field and workflow event language; edge-sourced tokens must be used by at least one edge (enforced by V14, §7A.5).
 
 ---
 

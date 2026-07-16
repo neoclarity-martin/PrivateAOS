@@ -110,11 +110,11 @@ Add a short subsection (proposed: **§7A.7 Relationship Vocabulary**) containing
 
 Mark items as work completes; the cycle is done only when P8 passes and the revision-history row is logged.
 
-- [ ] **P1 — Vocabularies defined**
-  - [ ] Trigger inventory completed (catalog `"on":` prose + §17 + §24)
-  - [ ] Final trigger token list minted (each token has ≥1 using edge)
-  - [ ] §7A.6 updated with `relationships` and `triggers` vocabularies
-  - [ ] Vocabulary versioning rule stated
+- [x] **P1 — Vocabularies defined** (2026-07-15)
+  - [x] Trigger inventory completed (catalog `"on":` prose + §17 + §24) — mapping table in scratchpad `p1-trigger-inventory.md`; all 42 `"on":` fields accounted for
+  - [x] Final trigger token list minted — 29 tokens: 8 workflow-sourced (§17) + 21 edge/§24-sourced. Per user decision (2026-07-15), workflow tokens are first-class without a using edge (V14 carve-out in P4); priority-conflict variants normalized to one token with nuance in `note:`
+  - [x] §7A.6 updated with `relationships` and `triggers` vocabularies
+  - [x] Vocabulary versioning rule stated (incl. workflow-token carve-out)
 - [ ] **P2 — Edge schema changed (§7A.3)**
   - [ ] New edge schema in place (`relationship`, `trigger`, `note`; `on` removed)
   - [ ] §7A.2 rule extended to all three vocabularies
