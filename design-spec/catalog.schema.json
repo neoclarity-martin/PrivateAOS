@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/neoClarity-AI/Open-AOS-Factory/design-spec/catalog.schema.json",
   "title": "AOS Factory Agent Catalog",
-  "description": "DERIVED ARTIFACT — a JSON Schema rendering of design spec §7A.3/§7A.6 for agent-catalog.yaml, used by repo CI (shape/type surface of validation checks V1–V4). The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Regenerate it from the spec when §7A changes. Cross-entry checks (domain/artifact disjointness, vocabulary membership, slug resolution) are enforced by scripts/validate-catalog.py.",
+  "description": "DERIVED ARTIFACT — a JSON Schema rendering of design spec §7A.3/§7A.6 for agent-catalog.yaml, used by repo CI (shape/type surface of validation checks V1–V4 and V5's relationship/trigger vocabulary membership via closed enums generated from vocabulary.relationships/vocabulary.triggers). The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Regenerate it from the spec when §7A changes. Cross-entry checks (domain/artifact disjointness, domain vocabulary membership, slug resolution, V5 reciprocity-by-trigger-token, V14 no-dead-tokens) are enforced by scripts/validate-catalog.py.",
   "type": "object",
   "required": ["catalog_version", "spec_version", "vocabulary", "agents"],
   "properties": {
@@ -10,11 +10,23 @@
     "spec_version": { "$ref": "#/$defs/semver" },
     "vocabulary": {
       "type": "object",
-      "required": ["domains"],
+      "required": ["domains", "relationships", "triggers"],
       "properties": {
         "domains": {
           "type": "array",
           "items": { "$ref": "#/$defs/domainToken" },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "relationships": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/relationshipToken" },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "triggers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/triggerToken" },
           "uniqueItems": true,
           "minItems": 1
         }
@@ -40,6 +52,42 @@
     "domainToken": {
       "type": "string",
       "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*$"
+    },
+    "relationshipToken": {
+      "enum": ["informs", "requests", "conforms-to", "gated-by"]
+    },
+    "triggerToken": {
+      "enum": [
+        "daily-startup",
+        "decision-captured",
+        "end-of-day",
+        "inbox-item-received",
+        "memory-review",
+        "monthly-review",
+        "project-kickoff",
+        "weekly-review",
+        "permission-conflict",
+        "privacy-risk",
+        "routing-conflict",
+        "sensitive-memory-question",
+        "content-filing",
+        "enhancement-candidate",
+        "inbox-item-to-event",
+        "inbox-item-to-project",
+        "inbox-item-to-task",
+        "matrix-change-recommended",
+        "outbound-submission",
+        "ownership-unclear",
+        "priority-conflict",
+        "research-request",
+        "research-to-draft",
+        "research-to-learning",
+        "stakeholder-tracking",
+        "task-automation-request",
+        "task-needs-time-block",
+        "task-to-project",
+        "tool-access-uncertainty"
+      ]
     },
     "agentEntry": {
       "type": "object",
@@ -91,11 +139,13 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["agent", "direction", "on"],
+            "required": ["agent", "direction", "relationship", "trigger"],
             "properties": {
               "agent": { "$ref": "#/$defs/slug" },
               "direction": { "enum": ["handoff-to", "handoff-from", "escalates-to"] },
-              "on": { "type": "string", "minLength": 1 }
+              "relationship": { "$ref": "#/$defs/relationshipToken" },
+              "trigger": { "$ref": "#/$defs/triggerToken" },
+              "note": { "type": "string", "minLength": 1 }
             },
             "additionalProperties": false
           }

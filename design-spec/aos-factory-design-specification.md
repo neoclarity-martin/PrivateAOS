@@ -832,17 +832,27 @@ V1. Every domain in domains_owned exists in vocabulary.domains.
 V2. Governance domain tokens appear only on entries with kind: governance.
 V3. domains_owned is pairwise disjoint across all entries.
 V4. artifacts_owned is pairwise disjoint across all entries.
-V5. Every collaborates_with.agent resolves to a real slug; reciprocal edges
-    are consistent (every handoff-to has a matching handoff-from).
+V5. Every collaborates_with.agent resolves to a real slug; every edge's
+    relationship is a member of vocabulary.relationships and its trigger a
+    member of vocabulary.triggers (§7A.6); reciprocal edges are consistent —
+    every handoff-to has a matching handoff-from on the counterpart entry,
+    matched by trigger token (the two sides deliberately carry different
+    relationships, §7A.6).
 V6. non_responsibilities is consistent with neighbors' domains_owned.
 V7. Every installed instance agent traces to a catalog entry OR an
     instance-registry entry (the two-scope check, §10.3.1).
 V8. kind: governance entries match the AGENTS.md governance set; the
     removal prohibition becomes a machine-checkable property, not a prose
     name list.
+V14. No dead vocabulary tokens: every vocabulary.relationships token and
+    every edge-sourced vocabulary.triggers token is used by at least one
+    collaborates_with edge. Carve-out (§7A.6): workflow-sourced (§17) and
+    §24 escalation-cause trigger tokens are valid without a using edge.
 ```
 
-**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5's slug-resolution half. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas, and no other schema is expressed in JSON. (Optionally extending JSON Schema validation to §15 frontmatter is deferred.)
+(V9–V13 are profile/interview checks and live in §7B.5.)
+
+**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5 (slug resolution plus `relationship`/`trigger` vocabulary membership — the JSON Schema carries closed enums for both, generated from `vocabulary.relationships`/`vocabulary.triggers`), and `scripts/validate-catalog.py` must additionally cover V5's reciprocity-by-trigger-token check and V14 (including its §7A.6 carve-out). The script lives in the GitHub repo, not the design workspace; this paragraph records the requirement. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas, and no other schema is expressed in JSON. (Optionally extending JSON Schema validation to §15 frontmatter is deferred.)
 
 ## 7A.6 Catalog File Shape and Versioning
 
@@ -2949,7 +2959,7 @@ Approved decisions:
 - Review Agent audits generated files for completeness and consistency.
 - Security Agent audits permissions and tool access.
 - Memory Agent audits memory routing and memory file boundaries.
-- Catalog, profile, and interview validation (§7A.5 V1-V8, §7B.5 V9-V13) must pass before an AOS or an agent build is considered complete.
+- Catalog, profile, and interview validation (§7A.5 V1-V8 and V14, §7B.5 V9-V13) must pass before an AOS or an agent build is considered complete.
 ```
 
 ---

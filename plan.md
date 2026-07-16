@@ -128,11 +128,11 @@ Mark items as work completes; the cycle is done only when P8 passes and the revi
   - [x] 10 productive entries converted (incl. D9 edge split; 43 edges total)
   - [x] Reciprocity by trigger token verified entry-by-entry (scripted check: 16 pairs, 0 unmatched, 0 dead tokens, all 4 relationships used)
   - [x] `catalog_version` (1.3.0) and `spec_version` (2.4.0, per D8) headers bumped
-- [ ] **P4 — Validation extended**
-  - [ ] V5 extension text in §7A.5
-  - [ ] V14 added
-  - [ ] `catalog.schema.json` updated (enums, required fields, `on` removed)
-  - [ ] `validate-catalog.py` requirement noted in §7A.5
+- [x] **P4 — Validation extended** (2026-07-15)
+  - [x] V5 extension text in §7A.5 (vocabulary membership + reciprocity by trigger token)
+  - [x] V14 added (with §7A.6 carve-out; §27 line updated to "V1-V8 and V14")
+  - [x] `catalog.schema.json` updated (relationship/trigger closed enums, required fields, `note` optional, `on` removed; vocabulary block requires all three lists) — catalog validated against it (15 agents, pass)
+  - [x] `validate-catalog.py` requirement noted in §7A.5 (reciprocity-by-trigger + V14 incl. carve-out)
 - [ ] **P5 — §7A.7 Relationship Vocabulary table added**
 - [ ] **P6 — Downstream touch points**
   - [ ] §18.4 Trigger field references `vocabulary.triggers`
