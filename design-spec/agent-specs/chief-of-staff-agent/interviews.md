@@ -2,7 +2,7 @@
 title: Chief of Staff Agent — Agent Interviews
 file_type: interview_script
 slug: chief-of-staff-agent
-spec_version: 2.3.3
+spec_version: 2.4.1
 ---
 # Chief of Staff Agent — Interviews
 
