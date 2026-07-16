@@ -2,7 +2,7 @@
 title: Inbox Agent — Agent Interviews
 file_type: interview_script
 slug: inbox-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Inbox Agent — Interviews
 

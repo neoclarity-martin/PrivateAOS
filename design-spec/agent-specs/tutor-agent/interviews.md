@@ -2,7 +2,7 @@
 title: Tutor Agent — Agent Interviews
 file_type: interview_script
 slug: tutor-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Tutor Agent — Interviews
 

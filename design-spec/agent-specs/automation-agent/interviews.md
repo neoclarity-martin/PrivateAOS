@@ -2,7 +2,7 @@
 title: Automation Agent — Agent Interviews
 file_type: interview_script
 slug: automation-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Automation Agent — Interviews
 

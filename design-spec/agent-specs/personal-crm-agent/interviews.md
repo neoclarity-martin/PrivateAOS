@@ -2,7 +2,7 @@
 title: Personal CRM Agent — Agent Interviews
 file_type: interview_script
 slug: personal-crm-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Personal CRM Agent — Interviews
 

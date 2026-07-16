@@ -2,7 +2,7 @@
 title: AOS Factory Generation Runbook
 file_type: design_spec
 project: Script to Build Agentic OS Factory
-spec_version: 2.4.1
+spec_version: 2.4.2
 created_date: 2026-06-02
 last_updated: 2026-07-15
 status: design_ready_for_factory_generation
@@ -133,7 +133,7 @@ Read the design-spec document set listed above.
    2.1 Validate `agent-catalog.yaml` against `catalog.schema.json` (or run `scripts/validate-catalog.py` where available — Section 7A.5).
    2.2 Verify every Section 7.3 roster agent has a catalog entry and an `agent-specs/[agent-name]-agent/` folder containing profile.md and interviews.md.
    2.3 Verify catalog relationship and trigger tokens are members of the Section 7A.6 vocabularies and consistent with Section 7A.7.
-   2.4 Verify frontmatter `spec_version` and `status` agree across all design-spec files.
+   2.4 Verify frontmatter `spec_version` and `status` agree across all design-spec files (mechanically enforced by `scripts/check-spec-version.py`).
    2.5 Verify section cross-references used by the document set resolve.
    Record every failure as an issue on the issue list (step 5).
 3. Conduct a completeness check by verifying each checklist item in scope per step 1.2. When an item has been verified, mark it as Done (replace [ ] with [x]). Record any missing items as issues on the issue list.

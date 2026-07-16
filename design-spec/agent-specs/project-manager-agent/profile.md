@@ -2,7 +2,7 @@
 title: Project Manager Agent — Agent Profile
 file_type: agent_profile
 slug: project-manager-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Project Manager Agent — Profile
 

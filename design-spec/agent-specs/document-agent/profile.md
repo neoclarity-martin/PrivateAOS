@@ -2,7 +2,7 @@
 title: Document Agent — Agent Profile
 file_type: agent_profile
 slug: document-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Document Agent — Profile
 

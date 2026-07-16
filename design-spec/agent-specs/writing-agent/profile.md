@@ -2,7 +2,7 @@
 title: Writing Agent — Agent Profile
 file_type: agent_profile
 slug: writing-agent
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # Writing Agent — Profile
 

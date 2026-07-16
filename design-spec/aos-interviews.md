@@ -2,7 +2,7 @@
 title: AOS Setup — Interviews
 file_type: interview_script
 slug: build-aos
-spec_version: 2.4.1
+spec_version: 2.4.2
 ---
 # AOS Setup — Interviews
 

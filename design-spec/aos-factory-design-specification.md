@@ -4,7 +4,7 @@ file_type: design_spec
 project: Script to Build Agentic OS Factory
 created_date: 2026-06-02
 last_updated: 2026-07-15
-spec_version: 2.4.1
+spec_version: 2.4.2
 status: design_ready_for_factory_generation
 important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
 ---
@@ -852,7 +852,7 @@ V14. No dead vocabulary tokens: every vocabulary.relationships token and
 
 (V9–V13 are profile/interview checks and live in §7B.5.)
 
-**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5 (slug resolution plus `relationship`/`trigger` vocabulary membership — the JSON Schema carries closed enums for both, generated from `vocabulary.relationships`/`vocabulary.triggers`), and `scripts/validate-catalog.py` must additionally cover V5's reciprocity-by-trigger-token check and V14 (including its §7A.6 carve-out). The script lives in the GitHub repo, not the design workspace; this paragraph records the requirement. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas, and no other schema is expressed in JSON. (Optionally extending JSON Schema validation to §15 frontmatter is deferred.)
+**Derived CI artifact.** The repo ships `design-spec/catalog.schema.json` — a JSON Schema rendering of the §7A.3/§7A.6 shape — plus `scripts/validate-catalog.py`, run by repo CI on catalog pull requests. Together they mechanically enforce the shape/type surface of V1–V4 and V5 (slug resolution plus `relationship`/`trigger` vocabulary membership — the JSON Schema carries closed enums for both, generated from `vocabulary.relationships`/`vocabulary.triggers`), and `scripts/validate-catalog.py` additionally implements V5's reciprocity-by-trigger-token check and V14 (including its §7A.6 carve-out, which it reads from the catalog's `# edge-sourced` trigger marker). A companion `scripts/check-spec-version.py` enforces cross-file `spec_version`/`status` agreement across the design-spec document set (the mechanical surface of runbook §36.1 step 2.4). Both scripts live under `scripts/` and run in repo CI on design-spec pull requests. The JSON Schema is a **rendering, never the source of truth** (§1.6.1): markdown skeletons remain the normative expression for all document schemas, and no other schema is expressed in JSON. (Optionally extending JSON Schema validation to §15 frontmatter is deferred.)
 
 ## 7A.6 Catalog File Shape and Versioning
 
