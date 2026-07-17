@@ -1,7 +1,7 @@
 ---
 title: Governance
 file_type: config
-openaos_version: 2.4.2
+openaos_version: 3.0.0
 created_date: 2026-07-17
 last_updated: 2026-07-17
 status: active

@@ -13,8 +13,7 @@
 # (§22 tool-access matrix), agent-era file_type tokens, and agent-lifecycle
 # approval actions are removed with their spec sections.
 
-vocabulary_version: 1.0.0
-openaos_version: 2.4.2
+openaos_version: 3.0.0
 
 # ---------------------------------------------------------------------------
 # YAML frontmatter vocabularies (§15)

@@ -5,7 +5,6 @@
   "description": "DERIVED ARTIFACT — a JSON Schema rendering of the controlled vocabularies in design spec §15.4/§15.5 (frontmatter) and §3.2/§3.3/§3.4 (permissions/actions) for design-spec/vocabulary.yaml. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: agent_status and access_levels (§22) are removed with their spec sections. Semantic checks (no dead tokens vs. prose, cross-file openaos_version) are enforced by scripts/validate-vocabulary.py. Per the one-source-per-concern guardrail, the catalog's domain vocabulary is NOT modeled here — vocabulary.yaml cross-references it under `cross_references`.",
   "type": "object",
   "required": [
-    "vocabulary_version",
     "openaos_version",
     "file_type",
     "status",
@@ -17,10 +16,15 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "vocabulary_version": { "$ref": "#/$defs/semver" },
-    "openaos_version": { "$ref": "#/$defs/semver" },
-    "file_type": { "$ref": "#/$defs/tokenList" },
-    "status": { "$ref": "#/$defs/tokenList" },
+    "openaos_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "file_type": {
+      "$ref": "#/$defs/tokenList"
+    },
+    "status": {
+      "$ref": "#/$defs/tokenList"
+    },
     "permission_levels": {
       "type": "array",
       "minItems": 3,
@@ -28,24 +32,49 @@
       "uniqueItems": true,
       "items": {
         "type": "object",
-        "required": ["level", "name", "meaning"],
+        "required": [
+          "level",
+          "name",
+          "meaning"
+        ],
         "additionalProperties": false,
         "properties": {
-          "level": { "type": "integer", "minimum": 1, "maximum": 3 },
-          "name": { "$ref": "#/$defs/token" },
-          "meaning": { "type": "string", "minLength": 1 }
+          "level": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "name": {
+            "$ref": "#/$defs/token"
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
-    "safe_autonomous_actions": { "$ref": "#/$defs/actionList" },
-    "approval_required_actions": { "$ref": "#/$defs/actionList" },
+    "safe_autonomous_actions": {
+      "$ref": "#/$defs/actionList"
+    },
+    "approval_required_actions": {
+      "$ref": "#/$defs/actionList"
+    },
     "prohibited_actions": {
       "type": "object",
-      "required": ["defined_by", "note"],
+      "required": [
+        "defined_by",
+        "note"
+      ],
       "additionalProperties": false,
       "properties": {
-        "defined_by": { "const": "exclusion" },
-        "note": { "type": "string", "minLength": 1 }
+        "defined_by": {
+          "const": "exclusion"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "cross_references": {
@@ -53,25 +82,48 @@
       "minProperties": 1,
       "additionalProperties": {
         "type": "object",
-        "required": ["source", "path", "spec"],
+        "required": [
+          "source",
+          "path",
+          "spec"
+        ],
         "additionalProperties": false,
         "properties": {
-          "source": { "type": "string", "minLength": 1 },
-          "path": { "type": "string", "minLength": 1 },
-          "spec": { "type": "string", "minLength": 1 },
-          "members": { "$ref": "#/$defs/tokenList" }
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "spec": {
+            "type": "string",
+            "minLength": 1
+          },
+          "members": {
+            "$ref": "#/$defs/tokenList"
+          }
         }
       }
     }
   },
   "$defs": {
-    "semver": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "token": { "type": "string", "pattern": "^[a-z0-9]+([_-][a-z0-9]+)*$" },
+    "semver": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+([_-][a-z0-9]+)*$"
+    },
     "tokenList": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/token" }
+      "items": {
+        "$ref": "#/$defs/token"
+      }
     },
     "actionList": {
       "type": "array",
@@ -79,12 +131,23 @@
       "uniqueItems": true,
       "items": {
         "type": "object",
-        "required": ["id", "label"],
+        "required": [
+          "id",
+          "label"
+        ],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "#/$defs/token" },
-          "label": { "type": "string", "minLength": 1 },
-          "note": { "type": "string", "minLength": 1 }
+          "id": {
+            "$ref": "#/$defs/token"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }

@@ -2,7 +2,7 @@
 title: OpenAOS Setup — Interview
 file_type: interview_script
 slug: setup-openaos
-openaos_version: 2.4.2
+openaos_version: 3.0.0
 ---
 # OpenAOS Setup — Interview
 

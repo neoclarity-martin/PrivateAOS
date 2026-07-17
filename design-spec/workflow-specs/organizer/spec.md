@@ -2,7 +2,7 @@
 title: Organizer / Declutter — Builder Spec
 file_type: workflow_spec
 slug: organizer
-openaos_version: 2.4.2
+openaos_version: 3.0.0
 ---
 # Organizer / Declutter — Builder Spec
 

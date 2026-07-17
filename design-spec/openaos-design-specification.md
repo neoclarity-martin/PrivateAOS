@@ -3,8 +3,8 @@ title: OpenAOS Design Specification
 file_type: design_spec
 project: OpenAOS
 created_date: 2026-06-02
-last_updated: 2026-07-16
-openaos_version: 2.4.2
+last_updated: 2026-07-17
+openaos_version: 3.0.0
 status: design_ready_for_generation
 important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
@@ -15,12 +15,11 @@ important_constraint: Do not generate actual openaos files unless the user expli
 
 # 3.0 Rewrite Frame — Minimal, Workflow-First openaos
 
-> **Status of this block (Phase A):** This section is the authoritative
-> destination frame for the 3.0 rewrite (feature spec
-> `internal-only/feature-specs/3.0-create-minimal-openaos.md`). Everything
-> below it is 2.x content that will be cut to this frame in Phase B and
-> renamed in Phase C. Where this frame and the 2.x body conflict, this frame
-> wins. The pre-rewrite spec is preserved at git tag `spec-v2.4.2`.
+> **Status of this block (rewrite complete, 2026-07-17):** This section is
+> the authoritative frame of the 3.0 Minimal design; the body below now
+> implements it in full (Phases B–H of the rewrite, feature spec
+> `internal-only/feature-specs/3.0-create-minimal-openaos.md`). The
+> pre-rewrite 2.x spec is preserved at git tag `spec-v2.4.2`.
 
 ## Goal
 

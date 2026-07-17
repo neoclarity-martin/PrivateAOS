@@ -15,8 +15,7 @@
 # (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
 # here — the prose references the embedded skeleton directly.
 
-skeletons_version: 1.0.0
-openaos_version: 2.4.2
+openaos_version: 3.0.0
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists
