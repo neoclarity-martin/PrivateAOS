@@ -3,13 +3,120 @@ title: AOS Factory Design Specification
 file_type: design_spec
 project: Script to Build Agentic OS Factory
 created_date: 2026-06-02
-last_updated: 2026-07-15
+last_updated: 2026-07-16
 spec_version: 2.4.2
 status: design_ready_for_factory_generation
 important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
 ---
 
 # AOS Factory Design Specification
+
+---
+
+# 3.0 Rewrite Frame — Minimal, Workflow-First openaos
+
+> **Status of this block (Phase A):** This section is the authoritative
+> destination frame for the 3.0 rewrite (feature spec
+> `internal-only/feature-specs/3.0-create-minimal-openaos.md`). Everything
+> below it is 2.x content that will be cut to this frame in Phase B and
+> renamed in Phase C. Where this frame and the 2.x body conflict, this frame
+> wins. The pre-rewrite spec is preserved at git tag `spec-v2.4.2`.
+
+## Goal
+
+Claude Cowork makes Claude accessible to non-technical users, but leaves them
+on their own to turn that access into workflows that are actually good —
+well-designed, tailored to their situation, and safe to run against their real
+files. **openaos exists to close that gap.** Its purpose is to
+**collaboratively build the most useful, most user-friendly workflow for each
+of a non-technical user's core use cases**, through a guided interview that
+embeds AI best practices the user doesn't have to know; to let the user
+**refine any workflow just as easily**, through the same collaborative
+interview style; and to keep all of it **safe by default** (nothing
+destructive without explicit `Proceed`) and **improving over time** (an easy
+channel to send feedback back to the project team). Everything else is
+scaffolding in service of that goal.
+
+## Guiding Principle
+
+**A generative core, guarded — nothing more.** The reason a non-technical
+user adopts openaos is the promise of a genuinely good, tailored workflow for
+the handful of things they actually do. So the whole system is exactly three
+things:
+
+1. **Use-case workflow builders** — guided interviews that co-design a
+   tailored, best-practice workflow for each core use case.
+2. **Workflow refinement** — the same collaborative interview, pointed at an
+   existing workflow, to improve it.
+3. **Guardrails** — the `Proceed` safety gate, durable memory, review rhythms,
+   and a feedback-to-team channel that make those workflows trustworthy.
+
+The builders include a **custom builder** that co-designs brand-new workflows
+for the user's own domain — so openaos is not limited to the use cases we
+anticipated. This is what turns openaos from "a handful of useful workflows"
+into "a way to bring AI into whatever the user actually does to create
+value," and is arguably its highest-leverage capability.
+
+Value to the user is the primary objective. Everything that does not directly
+serve it — the multi-agent roster, the Pro tier, tiered versioning, DDD
+relationship semantics, the factory/instance split — is removed, from both
+this spec and the artifacts it generates.
+
+## Core Model
+
+The Minimal openaos design, in full:
+
+- **Workflows.** The unit of value. Two families:
+  - *Use-case workflows* — five predefined ones, each authored by a builder
+    interview: **inbox triage** (classify, route, and act on inbox items),
+    **research assistant** (scoped, source-disciplined research), **writing
+    assistant** (drafting/editing keyed to the user's voice), **learning
+    assistant / tutor** (guided learning with understanding checks), and
+    **organizer / declutter** (file cleanup — inbox-triage for files).
+  - *Governance workflows*: daily-startup, end-of-day, weekly-review,
+    monthly-review, and feedback submission.
+- **Workflows vs. skills (definition).** *Workflows* are user-owned
+  artifacts: scaffolded into the user's workspace, tailored to their
+  situation, covered by the drift invariant, and refinable via
+  `refine-workflow`. *Skills* (`setup-openaos`, `build-workflow`,
+  `refine-workflow`) are plugin-owned machinery: shipped identical to every
+  user and changed only by plugin updates — never user-refinable.
+- **Governance config.** A single standing-rules file,
+  `/governance/governance.md`: the `Proceed` safety gate, the permission
+  model, and memory boundaries. Standing rules live here; runnable procedures
+  are workflows.
+- **Builder interview** — the `build-workflow` skill: a guided interview that
+  co-designs a tailored workflow. One engine, two modes: **instantiate** one
+  of the five predefined use cases, or **design-new** — co-author a
+  brand-new, domain-specific workflow from the user's own activity. Both
+  embed AI best practices and are value-first; token efficiency is a
+  secondary, never-gating consideration. Both produce a workflow that is
+  refinable via `refine-workflow`.
+- **Refinement interview** — the `refine-workflow` skill: reads an existing
+  workflow, asks what's not working, previews a diff, rewrites on `Proceed`.
+- **Setup** — the `setup-openaos` skill: scaffolds the shared foundation
+  (memory, logs, governance config, governance workflows, user guide) on
+  install, then presents the use-case menu and hands off to `build-workflow`.
+  Zero use-case workflows at setup is valid — every workflow is
+  interview-authored, so nothing generic is ever scaffolded.
+- **Memory & safety.** Durable `/memory` and `/logs`; the definition-vs-data
+  drift invariant (kept, simplified): data files accumulate and are never
+  overwritten; workflow/config definition files change only via the
+  refinement interview or a plugin update, each `Proceed`-gated.
+- **Distribution.** One artifact: the **openaos** Claude plugin, generated
+  directly from this spec. No factory, no instance concept. A single
+  `openaos_version` is the only version fact.
+
+Removed from the spec entirely: the five governance *agents* as separate
+agents, the ten-agent optional roster, the Pro tier and tier concept,
+`spec_version`/`catalog_version`/`compatible_aos_versions` multi-track
+versioning (a single `openaos_version` remains), the DDD relationship
+vocabulary and typed collaboration edges, the factory-vs-instance guard and
+layout, and all sections that exist only to serve those. The exact deletions
+are enumerated in the removal manifest
+(`internal-only/feature-specs/3.0-removal-manifest.md`).
+
+---
 
 ## Purpose of This Document
 
