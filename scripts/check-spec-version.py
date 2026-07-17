@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Verify spec_version (and status) agreement across the design-spec document set.
+"""Verify openaos_version (and status) agreement across the design-spec document set.
 
 DERIVED TOOLING — implements the mechanical surface of runbook §36.1 step 2.4:
-every stamped design-spec file must carry the same spec_version, and every file
+every stamped design-spec file must carry the same openaos_version, and every file
 that carries a status must carry the same status. This catches the cross-cycle
 stamp drift that a catalog-only validator cannot see (the drift resolved at
-spec_version 2.4.1).
+2.x spec_version 2.4.1).
 
-Scope: the 3 main documents, agent-catalog.yaml, vocabulary.yaml,
-aos-interviews.md, and every
-agent-specs/*/{profile,interviews}.md. catalog.schema.json carries no
-spec_version frontmatter (it is a JSON Schema) and is excluded.
+Scope: the 3 main documents, workflow-catalog.yaml, vocabulary.yaml,
+file-skeletons.yaml, and setup-interview.md. The JSON Schema files carry no
+openaos_version frontmatter and are excluded.
 
 Usage: python scripts/check-spec-version.py
 Exit code 0 = all agree, 1 = mismatch found.
@@ -44,30 +43,29 @@ def get_key(path: Path, key: str) -> str | None:
 
 def main() -> int:
     files = [
-        DS / "aos-factory-design-specification.md",
-        DS / "aos-factory-generation-runbook.md",
-        DS / "aos-factory-revision-history.md",
-        DS / "agent-catalog.yaml",
+        DS / "openaos-design-specification.md",
+        DS / "openaos-packaging-runbook.md",
+        DS / "openaos-revision-history.md",
+        DS / "workflow-catalog.yaml",
         DS / "vocabulary.yaml",
-        DS / "aos-interviews.md",
+        DS / "file-skeletons.yaml",
+        DS / "setup-interview.md",
     ]
-    files += sorted(DS.glob("agent-specs/*/profile.md"))
-    files += sorted(DS.glob("agent-specs/*/interviews.md"))
 
     errors: list[str] = []
 
-    # spec_version — must be present on every file and identical across all.
+    # openaos_version — must be present on every file and identical across all.
     versions: dict[str, str] = {}
     for f in files:
-        v = get_key(f, "spec_version")
+        v = get_key(f, "openaos_version")
         rel = f.relative_to(REPO).as_posix()
         if v is None:
-            errors.append(f"[stamp] {rel}: no spec_version stamp found")
+            errors.append(f"[stamp] {rel}: no openaos_version stamp found")
         else:
             versions[rel] = v
     distinct = sorted(set(versions.values()))
     if len(distinct) > 1:
-        errors.append(f"[stamp] spec_version disagreement — found {distinct}:")
+        errors.append(f"[stamp] openaos_version disagreement — found {distinct}:")
         for rel, v in sorted(versions.items()):
             errors.append(f"          {v}  {rel}")
 
@@ -86,7 +84,7 @@ def main() -> int:
     for e in errors:
         print(f"ERROR {e}")
     if not errors:
-        print(f"OK — {len(files)} design-spec files agree at spec_version {distinct[0]}.")
+        print(f"OK — {len(files)} design-spec files agree at openaos_version {distinct[0]}.")
     return 1 if errors else 0
 
 

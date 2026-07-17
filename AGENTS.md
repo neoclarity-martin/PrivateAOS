@@ -19,5 +19,5 @@ workflows; the protection carries over to their successors.)
 ## Contributing
 
 All changes flow through the design spec first. See [CONTRIBUTING.md](CONTRIBUTING.md) —
-only pull requests for `design-spec/aos-factory-design-specification.md`
-(renamed `openaos-design-specification.md` in Phase C) are considered.
+only pull requests for `design-spec/openaos-design-specification.md`
+are considered.

@@ -16,7 +16,7 @@
 # here — the prose references the embedded skeleton directly.
 
 skeletons_version: 1.0.0
-spec_version: 2.4.2
+openaos_version: 2.4.2
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists

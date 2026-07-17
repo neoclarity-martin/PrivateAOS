@@ -2,11 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/neoClarity-AI/Open-AOS-Factory/design-spec/vocabulary.schema.json",
   "title": "Controlled Vocabularies",
-  "description": "DERIVED ARTIFACT — a JSON Schema rendering of the controlled vocabularies in design spec §15.4/§15.5 (frontmatter) and §3.2/§3.3/§3.4 (permissions/actions) for design-spec/vocabulary.yaml. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: agent_status and access_levels (§22) are removed with their spec sections. Semantic checks (no dead tokens vs. prose, cross-file spec_version) are enforced by scripts/validate-vocabulary.py. Per the one-source-per-concern guardrail, the catalog's domain vocabulary is NOT modeled here — vocabulary.yaml cross-references it under `cross_references`.",
+  "description": "DERIVED ARTIFACT — a JSON Schema rendering of the controlled vocabularies in design spec §15.4/§15.5 (frontmatter) and §3.2/§3.3/§3.4 (permissions/actions) for design-spec/vocabulary.yaml. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: agent_status and access_levels (§22) are removed with their spec sections. Semantic checks (no dead tokens vs. prose, cross-file openaos_version) are enforced by scripts/validate-vocabulary.py. Per the one-source-per-concern guardrail, the catalog's domain vocabulary is NOT modeled here — vocabulary.yaml cross-references it under `cross_references`.",
   "type": "object",
   "required": [
     "vocabulary_version",
-    "spec_version",
+    "openaos_version",
     "file_type",
     "status",
     "permission_levels",
@@ -18,7 +18,7 @@
   "additionalProperties": false,
   "properties": {
     "vocabulary_version": { "$ref": "#/$defs/semver" },
-    "spec_version": { "$ref": "#/$defs/semver" },
+    "openaos_version": { "$ref": "#/$defs/semver" },
     "file_type": { "$ref": "#/$defs/tokenList" },
     "status": { "$ref": "#/$defs/tokenList" },
     "permission_levels": {

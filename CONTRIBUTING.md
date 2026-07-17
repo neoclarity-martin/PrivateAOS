@@ -8,7 +8,7 @@ If you are new to contributing on GitHub, see [Contributing to a project](https:
 
 ## The design spec is the single source of truth
 
-The canonical source of truth for **OpenAOS** is `design-spec/aos-factory-design-specification.md` and associated spec files. They record every design decision made during development of **OpenAOS**: the governance model, the permission levels, the folder schema, the builder section structure, agent responsibilities and boundaries, workflow definitions, escalation rules, and the framework-vs-instance layout. **If the spec and a builder file ever disagree, the spec wins.**
+The canonical source of truth for **OpenAOS** is `design-spec/openaos-design-specification.md` and associated spec files. They record every design decision made during development of **OpenAOS**: the governance model, the permission levels, the folder schema, the builder section structure, agent responsibilities and boundaries, workflow definitions, escalation rules, and the framework-vs-instance layout. **If the spec and a builder file ever disagree, the spec wins.**
 
 Because everything is generated from this one canonical spec, the design, the docs, and the implementation can't quietly drift apart. Keeping that discipline is what makes outside contribution practical — and it's why **only pull requests for the design spec will be considered.**
 

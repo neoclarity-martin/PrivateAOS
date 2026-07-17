@@ -9,7 +9,7 @@ faithfully renders it and stays internally + cross-file consistent.
 Checks (each is a domain invariant, not merely a shape check):
 
   VV1  Shape/type conforms to vocabulary.schema.json (via jsonschema if present).
-  VV2  spec_version equals the main design specification's spec_version
+  VV2  openaos_version equals the main design specification's openaos_version
        (cross-file stamp agreement; §14.3).
   VV4  §3.4 permission-level integrity: levels are exactly {1,2,3} and the names
        are exactly {safe-autonomous, approval-required, prohibited}.
@@ -38,8 +38,8 @@ REPO = Path(__file__).resolve().parent.parent
 DS = REPO / "design-spec"
 VOCAB = DS / "vocabulary.yaml"
 SCHEMA = DS / "vocabulary.schema.json"
-CATALOG = DS / "agent-catalog.yaml"
-SPEC = DS / "aos-factory-design-specification.md"
+CATALOG = DS / "workflow-catalog.yaml"
+SPEC = DS / "openaos-design-specification.md"
 
 import yaml  # type: ignore
 
@@ -71,17 +71,17 @@ def main() -> int:
     except ImportError:
         warnings.append("[VV1] jsonschema not installed - shape check skipped")
 
-    # VV2 — spec_version agreement with the main specification
+    # VV2 — openaos_version agreement with the main specification
     spec_head = SPEC.read_text(encoding="utf-8").splitlines()[:25]
     spec_ver = next(
-        (m.group(1) for line in spec_head if (m := re.match(r"spec_version:\s*(\S+)", line))),
+        (m.group(1) for line in spec_head if (m := re.match(r"openaos_version:\s*(\S+)", line))),
         None,
     )
     if spec_ver is None:
-        errors.append("[VV2] could not read spec_version from the design specification")
-    elif data.get("spec_version") != spec_ver:
+        errors.append("[VV2] could not read openaos_version from the design specification")
+    elif data.get("openaos_version") != spec_ver:
         errors.append(
-            f"[VV2] spec_version {data.get('spec_version')!r} != specification {spec_ver!r}"
+            f"[VV2] openaos_version {data.get('openaos_version')!r} != specification {spec_ver!r}"
         )
 
     # VV4 — §3.4 permission-level integrity
@@ -105,7 +105,7 @@ def main() -> int:
     for e in errors:
         print(f"ERROR {e}")
     if not errors:
-        print(f"OK — vocabulary.yaml passes VV1/VV2/VV4/VV6 at spec_version {data.get('spec_version')}.")
+        print(f"OK — vocabulary.yaml passes VV1/VV2/VV4/VV6 at openaos_version {data.get('openaos_version')}.")
     return 1 if errors else 0
 
 

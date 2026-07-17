@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/neoClarity-AI/Open-AOS-Factory/design-spec/catalog.schema.json",
+  "$id": "https://github.com/neoClarity-AI/Open-AOS-Factory/design-spec/workflow-catalog.schema.json",
   "title": "Workflow Catalog",
-  "description": "DERIVED ARTIFACT — a JSON Schema rendering of design spec §7A for agent-catalog.yaml (renamed workflow-catalog.yaml in Phase C), used by repo CI as the shape/type surface of validation checks V1, V3, V4. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: the roster may be empty until Phases D–E author the workflow definitions; the DDD relationship/trigger vocabularies, collaboration edges, catalog_version, and agent-entry lifecycle fields are removed. Cross-entry checks (domain vocabulary membership, domain/artifact disjointness) are enforced by scripts/validate-catalog.py.",
+  "description": "DERIVED ARTIFACT — a JSON Schema rendering of design spec §7A for workflow-catalog.yaml, used by repo CI as the shape/type surface of validation checks V1, V3, V4. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: the roster may be empty until Phases D–E author the workflow definitions; the DDD relationship/trigger vocabularies, collaboration edges, catalog_version, and entry lifecycle fields are removed. Cross-entry checks (domain vocabulary membership, domain/artifact disjointness) are enforced by scripts/validate-workflow-catalog.py.",
   "type": "object",
-  "required": ["spec_version", "vocabulary", "agents"],
+  "required": ["openaos_version", "vocabulary", "workflows"],
   "additionalProperties": false,
   "properties": {
-    "spec_version": { "$ref": "#/$defs/semver" },
+    "openaos_version": { "$ref": "#/$defs/semver" },
     "vocabulary": {
       "type": "object",
       "required": ["domains"],
@@ -20,7 +20,7 @@
         }
       }
     },
-    "agents": {
+    "workflows": {
       "type": "array",
       "items": { "$ref": "#/$defs/workflowEntry" }
     }

@@ -1,13 +1,19 @@
 ---
-title: AOS Setup — Interviews
+title: OpenAOS Setup — Interview
 file_type: interview_script
-slug: build-aos
-spec_version: 2.4.2
+slug: setup-openaos
+openaos_version: 2.4.2
 ---
-# AOS Setup — Interviews
+# OpenAOS Setup — Interview
 
-The AOS-level setup interview, owned by `build-aos.md` (§12.1) and executed
-during initial AOS setup (§9.3). Schema and execution rules: §7C.
+The setup interview, owned by the `setup-openaos` skill and executed during
+initial openaos setup.
+
+> **Phase C note (2026-07-17):** the interview content below is 2.x-era and
+> still references the removed agent roster. It is rewritten as the setup-flow
+> definition (foundation scaffolding, governance install, use-case menu,
+> `build-workflow` handoff) in Phase G (work item G1a); only this file's name
+> and frontmatter were updated in the Phase C rename sweep.
 
 ## Initialization Interview
 

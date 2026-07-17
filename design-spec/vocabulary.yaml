@@ -6,7 +6,7 @@
 #
 # SCOPE / one-source-per-concern: this file owns the frontmatter, permission,
 # and action vocabularies. It does NOT restate the catalog's domain vocabulary —
-# that remains sourced in design-spec/agent-catalog.yaml (§7A) and is
+# that remains sourced in design-spec/workflow-catalog.yaml (§7A) and is
 # cross-referenced here (see `cross_references`), never duplicated.
 #
 # Cut to Minimal in Phase B: agent_status (agent lifecycle), access_levels
@@ -14,7 +14,7 @@
 # approval actions are removed with their spec sections.
 
 vocabulary_version: 1.0.0
-spec_version: 2.4.2
+openaos_version: 2.4.2
 
 # ---------------------------------------------------------------------------
 # YAML frontmatter vocabularies (§15)
@@ -112,6 +112,6 @@ prohibited_actions:
 # ---------------------------------------------------------------------------
 cross_references:
   domains:
-    source: agent-catalog.yaml
+    source: workflow-catalog.yaml
     path: vocabulary.domains
     spec: "§7A"

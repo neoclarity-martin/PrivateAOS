@@ -1,17 +1,23 @@
 ---
-title: AOS Factory Generation Runbook
+title: OpenAOS Packaging Runbook
 file_type: design_spec
-project: Script to Build Agentic OS Factory
-spec_version: 2.4.2
+project: OpenAOS
+openaos_version: 2.4.2
 created_date: 2026-06-02
 last_updated: 2026-07-15
-status: design_ready_for_factory_generation
-important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
+status: design_ready_for_generation
+important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
 
-# AOS Factory Generation Runbook
+# OpenAOS Packaging Runbook
 
-Part of the AOS Factory Design Specification document set. The canonical design is in `aos-factory-design-specification.md` (Sections 1-32); this file holds the build, generation-scope, and handoff procedure (Sections 33-37). Section numbering is preserved from the specification so cross-references continue to resolve. The `Proceed` safety gate applies in full: no AOS Factory files are generated until the user types exactly `Proceed`.
+Part of the OpenAOS Design Specification document set. The canonical design is in `openaos-design-specification.md` (Sections 1-32); this file holds the build, generation-scope, and handoff procedure (Sections 33-37). Section numbering is preserved from the specification so cross-references continue to resolve. The `Proceed` safety gate applies in full: no openaos files are generated until the user types exactly `Proceed`.
+
+> **Phase C note (2026-07-17):** the body below is the 2.x factory-generation
+> procedure and still uses 2.x names for artifacts deleted in the Phase B cut.
+> It is rewritten wholesale as the plugin packaging runbook in Phase G; only
+> this file's name, frontmatter, and header were updated in the Phase C
+> rename sweep.
 
 ---
 
@@ -140,7 +146,7 @@ Read the design-spec document set listed above.
 4. Conduct a safety check by verifying the design complies with each safety-related governance rule in Section 33. Record any safety issues on the issue list.
 5. Review the document set (scoped per the review mode) for logical consistency, including cross-artifact consistency (spec Sections 7A/7B/7C vs. catalog, schema, agent-specs, and interviews). Record on the issue list only inconsistencies that impact the functionality of the factory the design generates.
 6. If the issue list is empty, inform the user; the "no issues found" revision-history entry is written at finalization (step 7), logged at the current `spec_version` (no increment — Section 14, revision history rule). Otherwise, work with the user to resolve each issue one at a time — completeness, safety, and consistency issues alike. For each issue, offer the user options and a recommendation. After resolving issues, repeat steps 2 through 5 until a full pass surfaces no new issues.
-7. When the issue list is clear, present the consolidated resolutions (or the clean-review result) and wait for the user to type exactly: Proceed — to finalize the review. This gate authorizes only finalization of the review and update of the spec, not the generation of AOS Factory files. Finalizing: (a) if issues were resolved, increments `spec_version` and adds the consolidated revision-history entry; if the review was clean, adds the entry at the current `spec_version` with no increment; and (b) restores the `status` of all design-spec files to "design_ready_for_factory_generation".
+7. When the issue list is clear, present the consolidated resolutions (or the clean-review result) and wait for the user to type exactly: Proceed — to finalize the review. This gate authorizes only finalization of the review and update of the spec, not the generation of AOS Factory files. Finalizing: (a) if issues were resolved, increments `spec_version` and adds the consolidated revision-history entry; if the review was clean, adds the entry at the current `spec_version` with no increment; and (b) restores the `status` of all design-spec files to "design_ready_for_generation".
 
 Do not add, modify or delete any files unless the user types exactly: Proceed.
 ```
@@ -150,7 +156,7 @@ When the user requests to "Build the factory" or "Rebuild the factory" or "Gener
 
 ```
 Read the source file `design-spec/aos-factory-design-specification.md`.
-1. Verify that all items in the "34. Design Completion Checklist" are marked Done ([x]), and that the `status` of the design-spec files is "design_ready_for_factory_generation" (not "in_review"). If any items are not Done or the status check fails, notify the user and stop this workflow.
+1. Verify that all items in the "34. Design Completion Checklist" are marked Done ([x]), and that the `status` of the design-spec files is "design_ready_for_generation" (not "in_review"). If any items are not Done or the status check fails, notify the user and stop this workflow.
 2. Verify the design complies with the safety-related governance rules in Section 33. If any are not satisfied, notify the user and stop this workflow.
 3. Review the proposed Builder generation scope (Section 35) and plan with the user.
 4. Answer any additional user questions about the design or generation plan.

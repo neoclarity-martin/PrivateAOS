@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate design-spec/agent-catalog.yaml for repo CI.
+"""Validate design-spec/workflow-catalog.yaml for repo CI.
 
 DERIVED TOOLING — enforces the mechanical surface of design spec §7A (cut to
 Minimal in the 3.0 Phase B rewrite):
@@ -12,10 +12,10 @@ author the governance and use-case workflow definitions. The 2.x checks V2
 (governance-token rule), V5 (collaboration edges / reciprocal handoffs), and
 V14 (dead-token rule) were removed with the DDD relationship vocabulary.
 
-Shape/type checks come from catalog.schema.json (a rendering of §7A; the
+Shape/type checks come from workflow-catalog.schema.json (a rendering of §7A; the
 markdown design specification remains the single source of truth, §1.6.1).
 
-Usage: python scripts/validate-catalog.py [catalog.yaml] [schema.json]
+Usage: python scripts/validate-workflow-catalog.py [catalog.yaml] [schema.json]
 Exit code 0 = pass, 1 = failures found.
 
 Dependencies: pyyaml (required), jsonschema (optional — schema check is
@@ -29,8 +29,8 @@ from pathlib import Path
 import yaml
 
 REPO = Path(__file__).resolve().parent.parent
-CATALOG = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO / "design-spec" / "agent-catalog.yaml"
-SCHEMA = Path(sys.argv[2]) if len(sys.argv) > 2 else REPO / "design-spec" / "catalog.schema.json"
+CATALOG = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO / "design-spec" / "workflow-catalog.yaml"
+SCHEMA = Path(sys.argv[2]) if len(sys.argv) > 2 else REPO / "design-spec" / "workflow-catalog.schema.json"
 
 
 def main() -> int:
@@ -56,7 +56,7 @@ def main() -> int:
         warnings.append("[schema] jsonschema not installed - shape check skipped")
 
     domains_vocab = set((data.get("vocabulary") or {}).get("domains") or [])
-    entries = data.get("agents") or []
+    entries = data.get("workflows") or []
 
     # V1 — every owned domain exists in the vocabulary
     for entry in entries:

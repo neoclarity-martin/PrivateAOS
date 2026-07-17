@@ -1,8 +1,5 @@
-# AOS instance folders — never commit user instances to this factory repo
-# (anchored to repo root so it doesn't also match nested build artifacts,
-# e.g. claude-plugin/aos-factory/skills/build-aos/)
+# AOS workspace folders — never commit user workspaces to this repo
 /*-aos/
-!/aos-factory/
 
 # Common OS and editor files
 .DS_Store

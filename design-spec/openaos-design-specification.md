@@ -1,15 +1,15 @@
 ---
-title: AOS Factory Design Specification
+title: OpenAOS Design Specification
 file_type: design_spec
-project: Script to Build Agentic OS Factory
+project: OpenAOS
 created_date: 2026-06-02
 last_updated: 2026-07-16
-spec_version: 2.4.2
-status: design_ready_for_factory_generation
-important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
+openaos_version: 2.4.2
+status: design_ready_for_generation
+important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
 
-# AOS Factory Design Specification
+# OpenAOS Design Specification
 
 ---
 
@@ -120,11 +120,11 @@ are enumerated in the removal manifest
 
 ## Purpose of This Document
 
-This document is the consolidated design specification for the **Agentic Operating System (AOS) Factory**.
+This document is the consolidated design specification for **openaos**.
 
-This document is a design artifact only. It does **not** authorize creation of actual AOS Factory files.
+This document is a design artifact only. It does **not** authorize creation of actual openaos files.
 
-The assistant must not generate actual AOS Factory files unless the user explicitly types exactly:
+The assistant must not generate actual openaos files unless the user explicitly types exactly:
 
 ```text
 Proceed
@@ -137,7 +137,7 @@ The assistant continuing from this document must:
 ```text
 - Review the next steps with the user.
 - The user may ask additional questions about the design or next steps.
-- Wait for the user to enter the exact instruction “Proceed” to generate the AOS Factory files.
+- Wait for the user to enter the exact instruction “Proceed” to generate the openaos files.
 ```
 
 ## Document Set
@@ -145,28 +145,28 @@ The assistant continuing from this document must:
 This specification is maintained as a small set of companion files in this folder:
 
 ```text
-aos-factory-design-specification.md   - the canonical design (this file)
-aos-factory-generation-runbook.md     - packaging and handoff procedure (rewritten in Phase G)
-aos-factory-revision-history.md       - dated revision and consistency-resolution history
-agent-catalog.yaml                    - the Workflow Catalog: structured workflow identity/ownership data (Section 7A)
+openaos-design-specification.md       - the canonical design (this file)
+openaos-packaging-runbook.md          - packaging and handoff procedure (rewritten in Phase G)
+openaos-revision-history.md           - dated revision and consistency-resolution history
+workflow-catalog.yaml                 - the Workflow Catalog: structured workflow identity/ownership data (Section 7A)
 vocabulary.yaml                       - controlled vocabularies (file_type/status, permissions/actions), source of truth for Sections 3.2-3.4, 15.4-15.5
 file-skeletons.yaml                   - ordered section/field skeletons for generated files (Section 16)
-aos-interviews.md                     - the setup interview script (rewritten as setup-interview.md in Phases C/G)
+setup-interview.md                    - the setup interview script (rewritten in Phase G)
 ```
 
-The canonical specification remains the single source of truth (Section 1.6.1); the companion files hold structured data extracted from it for machine enforcement and are governed by the same `Proceed` safety gate. They are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `spec_version`). For the vocabularies these files own, the prose Sections above carry the normative meaning and rules; the data files carry the enumerated tokens, which the prose references rather than restates.
+The canonical specification remains the single source of truth (Section 1.6.1); the companion files hold structured data extracted from it for machine enforcement and are governed by the same `Proceed` safety gate. They are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `openaos_version`). For the vocabularies these files own, the prose Sections above carry the normative meaning and rules; the data files carry the enumerated tokens, which the prose references rather than restates.
 
 ## Revision History
 
 The full revision history of this specification — including all dated Design Consistency Resolution cycles — is maintained in a companion file:
 
 ```text
-aos-factory-revision-history.md
+openaos-revision-history.md
 ```
 
-Entries there are maintained in reverse chronological order (newest first); new entries are added at the top, as rows in a single table (`spec_version | Date | Change`). The table is a log of completed cycles, not a one-row-per-unique-version index — the same `spec_version` may appear in consecutive rows when multiple cycles complete against it without a content change, each with its own date and change description.
+Entries there are maintained in reverse chronological order (newest first); new entries are added at the top, as rows in a single table (`openaos_version | Date | Change`). The table is a log of completed cycles, not a one-row-per-unique-version index — the same `openaos_version` may appear in consecutive rows when multiple cycles complete against it without a content change, each with its own date and change description.
 
-Every completed §36.1 Design Readiness Review, §36.2 AOS Factory Generation, or §36.3 Claude Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec, the factory, and the plugin. `spec_version` increments only when a cycle actually changes the specification (or, for §36.3, the packaged framework) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Factory/Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `spec_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
+Every completed §36.1 Design Readiness Review, §36.2 openaos Generation, or §36.3 Claude Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec and the plugin. `openaos_version` increments only when a cycle actually changes the specification (or, for §36.3, the packaged framework) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `openaos_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
 
 ---
 
@@ -177,7 +177,7 @@ Every completed §36.1 Design Readiness Review, §36.2 AOS Factory Generation, o
 Working project name:
 
 ```text
-AOS Factory Project
+OpenAOS Project
 ```
 
 The generated system is referred to as:
@@ -187,8 +187,7 @@ Agentic Operating System
 AOS
 ```
 
-The framework and the plugin are both referred to as (Phase C applies this
-rename throughout):
+The framework and the plugin are both referred to as:
 
 ```text
 openaos
@@ -251,14 +250,14 @@ The builder should:
 
 ## 1.6 Design Principles and Goals
 
-This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* the AOS Factory behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
+This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* openaos behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
 
 ### 1.6.1 Design Spec as the Single Source of Truth
 
-The AOS Factory is generated from this design specification, not the other way around. The spec is canonical; the factory framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
+openaos is generated from this design specification, not the other way around. The spec is canonical; the framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
 
 ```text
-- Every builder, agent schema, workflow, and config traces back to a decision
+- Every builder, workflow schema, workflow, and config traces back to a decision
   recorded here.
 - When the spec and a generated artifact disagree, the spec wins and the
   artifact is corrected.
@@ -266,7 +265,7 @@ The AOS Factory is generated from this design specification, not the other way a
   that documentation and marketing cannot silently drift away from the design.
 ```
 
-This is what makes the system auditable and reproducible: anyone can regenerate the factory from the spec and get the same result.
+This is what makes the system auditable and reproducible: anyone can regenerate the plugin from the spec and get the same result.
 
 ### 1.6.2 Governance Before Productivity
 
@@ -360,7 +359,7 @@ User permission applies only to the specific action described.
 ```text
 Never delete, overwrite, rename, move, archive, or bulk-modify files unless the user has given explicit permission.
 
-When an agent proposes one of these actions, it must first:
+When a workflow proposes one of these actions, it must first:
 
 1. Explain exactly what action it wants to take.
 2. Identify the affected file or files.
@@ -368,9 +367,9 @@ When an agent proposes one of these actions, it must first:
 4. Explain the likely consequence of the action.
 5. Ask the user to type exactly: Proceed
 
-If the user does not type Proceed, the agent must not take the action.
+If the user does not type Proceed, the workflow must not take the action.
 
-The agent may suggest safer alternatives, such as copying the file, creating a backup, appending new content, or creating a new versioned file instead of modifying the original.
+The workflow may suggest safer alternatives, such as copying the file, creating a backup, appending new content, or creating a new versioned file instead of modifying the original.
 ```
 
 ## 3.2 Actions Requiring Explicit Approval
@@ -454,8 +453,7 @@ interview):
 
 *(Cut to Minimal in Phase B; renamed in Phase C, repopulated in Phases D–E.)*
 
-The catalog data file (`agent-catalog.yaml`, renamed `workflow-catalog.yaml`
-in the Phase C sweep) is the structured registry of workflow identity and
+The catalog data file (`workflow-catalog.yaml`) is the structured registry of workflow identity and
 ownership data, extracted from this specification for machine enforcement.
 Until Phases D–E author the governance and use-case workflow definitions, the
 roster is legitimately empty — a minimal-but-valid catalog. Mechanical
@@ -494,21 +492,21 @@ is authored in Phase E; the `setup-openaos` flow in Phase G.)*
 ## 14.1 Single Version Track
 
 The specification and everything generated from it share one version fact —
-currently `spec_version`, renamed `openaos_version` in the Phase C sweep.
+`openaos_version`.
 There is no separate catalog version and no per-instance version track.
 `check-spec-version.py` enforces that all design-spec files agree on the
 single version.
 
 ## 14.2 Per-File Version Metadata
 
-Each generated definition file should record, in its YAML frontmatter, the `spec_version` it was rendered from.
+Each generated definition file should record, in its YAML frontmatter, the `openaos_version` it was rendered from.
 
 Example:
 
 ```yaml
 ---
 title: Weekly Review Workflow
-spec_version: 1.0.5
+openaos_version: 1.0.5
 last_updated: 2026-06-11
 ---
 ```
@@ -544,7 +542,7 @@ Example:
 ---
 title: Weekly Review Workflow
 file_type: workflow
-spec_version: 1.0.5
+openaos_version: 1.0.5
 created_date: 2026-06-02
 last_updated: 2026-06-02
 ---
@@ -554,7 +552,7 @@ last_updated: 2026-06-02
 
 The controlled `file_type` tokens are `file_type` in `design-spec/vocabulary.yaml` (source of truth). The meaning of each type and its per-file assignments are normative here in the prose below.
 
-`design_spec` applies to this design specification itself (`aos-factory-design-specification.md`), the source document the AOS Factory is generated from. It is the one source/design artifact in the vocabulary; the other types all describe factory-generated files.
+`design_spec` applies to this design specification itself (`openaos-design-specification.md`), the source document openaos is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
 
 `project_instructions` applies to the root project instruction files (`/CLAUDE.md` and `/AGENTS.md`) scaffolded at the workspace root (Section 16.10).
 
@@ -580,12 +578,10 @@ documentation /docs/user-guide.html (HTML metadata is carried via meta
 project_instructions
               /CLAUDE.md and /AGENTS.md (workspace root)
 
-catalog       design-spec/agent-catalog.yaml (renamed workflow-catalog.yaml
-              in Phase C); see Section 7A
+catalog       design-spec/workflow-catalog.yaml; see Section 7A
 
 interview_script
-              design-spec/aos-interviews.md (renamed setup-interview.md in
-              Phase C); the setup interview script
+              design-spec/setup-interview.md; the setup interview script
 ```
 
 ## 15.5 Controlled Status Vocabulary
@@ -832,7 +828,7 @@ Create:
 Purpose:
 
 ```text
-Provide a standard format for recording decisions in global, project-level, or agent-level decision logs.
+Provide a standard format for recording decisions in global or workflow-level decision logs.
 ```
 
 This template embeds the §16.5 decision-log entry block; it defines no new schema of its own.
@@ -848,7 +844,7 @@ Create:
 Purpose:
 
 ```text
-Standardize how agents ask the user to approve Level 2 actions requiring Proceed.
+Standardize how workflows ask the user to approve Level 2 actions requiring Proceed.
 ```
 
 The request must explain the proposed action, affected files, reason, consequence, and ask the user to type exactly `Proceed`.
@@ -874,7 +870,7 @@ Create:
 Purpose:
 
 ```text
-Standardize how important preferences, facts, decisions, people, projects, and agent learnings are recorded.
+Standardize how important preferences, facts, decisions, people, projects, and workflow learnings are recorded.
 ```
 
 This template embeds the §16.2 dated memory entry block (the seven §20.3 fields); it defines no new schema of its own.
@@ -1047,9 +1043,9 @@ Approved decisions:
 
 ```text
 - Generated files should be detailed enough to be useful but not bloated.
-- Agent instructions should use direct imperative language.
+- Workflow instructions should use direct imperative language.
 - Use must/should/may consistently: must for requirements, should for strong defaults, may for optional behavior.
-- Include examples in agent instruction files and important templates.
+- Include examples in workflow definition files and important templates.
 - Templates should include placeholders plus brief guidance, not long sample completed entries unless useful.
 ```
 
@@ -1060,7 +1056,7 @@ Approved decisions:
 The packaging procedure lives in a companion file (rewritten as the plugin packaging runbook in Phase G):
 
 ```text
-aos-factory-generation-runbook.md
+openaos-packaging-runbook.md
 ```
 
 The `Proceed` safety gate is unchanged: actual plugin file generation remains blocked until the user types exactly `Proceed`, per the Purpose section above and the runbook.

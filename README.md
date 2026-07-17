@@ -130,9 +130,9 @@ OpenAOS/                         ← project root
 ├── LICENSE                      ← MIT license
 │
 ├── design-spec/                 ← canonical design specification document set
-│   ├── aos-factory-design-specification.md  ← canonical design spec
-│   ├── aos-factory-generation-runbook.md    ← build/regeneration runbook
-│   └── aos-factory-revision-history.md      ← spec revision history
+│   ├── openaos-design-specification.md  ← canonical design spec
+│   ├── openaos-packaging-runbook.md    ← build/regeneration runbook
+│   └── openaos-revision-history.md      ← spec revision history
 │
 ├── aos-factory/                 ← factory source (not an AOS instance)
 │   ├── build-aos.md             ← entry-point pointer to the master builder
@@ -185,7 +185,7 @@ OpenAOS/                         ← project root
 
 ## OpenAOS Design Specification
 
-The canonical source of truth for **OpenAOS** is `design-spec/aos-factory-design-specification.md`. It records every design decision made during **OpenAOS**'s development: the governance model, the permission levels, the folder schema, the builder section structure, agent responsibilities and boundaries, workflow definitions, escalation rules, and the framework-vs-instance layout. If the spec and a builder file ever disagree, the spec wins.
+The canonical source of truth for **OpenAOS** is `design-spec/openaos-design-specification.md`. It records every design decision made during **OpenAOS**'s development: the governance model, the permission levels, the folder schema, the builder section structure, agent responsibilities and boundaries, workflow definitions, escalation rules, and the framework-vs-instance layout. If the spec and a builder file ever disagree, the spec wins.
 
 The spec is the correct starting point for any change to **OpenAOS** itself. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
 
