@@ -522,17 +522,53 @@ generated workflow — a question whose answer changes nothing is removed.
 
 ---
 
-# 8. Builder Skills and Setup Flow (placeholder — Phase G)
+# 8. Plugin Skills and Setup Flow
 
-*(2.x builder-framework and build-flow content cut in Phase B. Replaced by
-the `setup-openaos`, `build-workflow`, and `refine-workflow` plugin skills.
-The `build-workflow` engine contract is Section 12 and the `refine-workflow`
-engine is Section 13; the setup flow and skill packaging are authored in
-Phase G, per the 3.0 Rewrite Frame.)*
+openaos ships exactly three skills. Skills are plugin-owned machinery
+(Core Model): identical for every user, changed only by plugin updates,
+never user-refinable. Everything user-owned is a workflow.
+
+```text
+setup-openaos    — scaffolds the foundation and presents the use-case menu
+build-workflow   — the builder engine (Section 12): one engine, two modes
+refine-workflow  — the refinement engine (Section 13)
+```
+
+## 8.1 The setup-openaos Flow
+
+Run once after install (and re-runnable safely — 8.2):
+
+```text
+1. Welcome & interview — run the setup interview
+   (design-spec/setup-interview.md is the source definition).
+2. Preview the scaffold — list every folder (§4) and file (§6) that will be
+   created, explicitly noting that nothing exists yet and nothing is
+   overwritten.
+3. Create on Proceed — scaffold the §4 folders and §6 files: governance.md
+   rendered per §16.1; the five governance workflows rendered per §17 and
+   the §16.3 schema; memory and log data files created empty (or seeded from
+   the interview — never fabricated); the §18 templates; /CLAUDE.md and
+   /AGENTS.md per §16.10; the User Guide generated per §16.6. Log setup to
+   /logs/change-log.md.
+4. Use-case menu — present the five §7B use cases plus the design-new
+   option, and hand off to build-workflow for each selection. Zero
+   selections is valid: every use-case workflow is interview-authored, so
+   nothing generic is ever scaffolded.
+5. Close — show where things live, how to run a workflow, how to refine
+   one, and how to send feedback (§17.5).
+```
+
+## 8.2 Re-Run Behavior
+
+Setup is non-destructive and idempotent: on a re-run it detects the existing
+foundation, never overwrites a data file (§14.8), and offers only to create
+what is missing — each creation previewed and `Proceed`-gated. Repairing or
+updating an existing definition file is `refine-workflow`'s or the plugin
+update's job (§14.4), not setup's.
 
 ---
 
-# 9. (Removed — merged into Section 8 placeholder)
+# 9. (Removed — merged into Section 8)
 
 *(2.x build-flow content cut in Phase B; see Section 8.)*
 
@@ -735,10 +771,25 @@ last_updated: 2026-06-11
 ---
 ```
 
-## 14.4 Update Modes (placeholder — Phase G)
+## 14.4 Update Modes
 
-*(2.x update-mode content cut in Phase B. The only update path is a plugin
-update, specified with distribution in Phase G.)*
+The only update path is a **plugin update** (§28). It has exactly two
+surfaces, split by the §14.8 classification:
+
+```text
+- Plugin-owned machinery (skills, packaged specs and templates inside the
+  plugin) — replaced wholesale by the update; the user's workspace is not
+  touched by this replacement.
+- Workspace definition files (governance config, governance workflows,
+  templates, the User Guide projection) — the update may PROPOSE revisions:
+  each changed file is previewed as a diff and applied only on Proceed,
+  file by file. A declined proposal leaves the file as it is.
+- Workspace data files — never touched by an update, without exception.
+```
+
+User-authored use-case and design-new workflows are never force-updated: an
+update may at most suggest a refinement session. There is no downgrade
+machinery; recovering an older state is a user-level file operation.
 
 ## 14.8 Definition Files, Data Files, and the Drift Invariant
 
@@ -1016,17 +1067,35 @@ Decision logs should be append-only, with newest entries at the top.
 **Follow-Up Needed:**  
 ```
 
-## 16.6 User Guide Schema (placeholder — Phase G)
+## 16.6 User Guide Schema
 
-*(2.x agent-era user-guide schema cut in Phase B. The plugin's User Guide
-template — what workflows are, running the builders, `Proceed` and the safety
-model, refinement, governance rhythms, feedback — is authored in Phase G. The
-guide remains a §14.8 projection: regenerable from definitions plus its
-embedded change log, which is data. The load-bearing 2.x generation rules —
-mandatory linked table of contents, embedded newest-on-top change log, the
-`Proceed`-is-the-only-exact-command contrast, and the consistency checks that
-every TOC entry resolves to an anchor and vice versa — carry forward into the
-Phase G authoring.)*
+`/docs/user-guide.html` (file_type `documentation`) is the workspace's
+plain-language manual, written for a non-technical reader. It is a §14.8
+**projection**: regenerated from the current definitions (governance config,
+installed workflows) plus one data input — its embedded change log — which is
+preserved verbatim across regenerations. It is generated at setup (§8.1),
+regenerated by the monthly review (§17.4), and may be regenerated after any
+build or refinement.
+
+Generation rules (normative):
+
+```text
+- Linked table of contents is mandatory; every TOC entry resolves to an
+  anchor in the document and every section anchor appears in the TOC.
+- The embedded change log is newest-on-top and carried forward unchanged;
+  regeneration appends its own entry.
+- The safety section must state the exact-command contrast: `Proceed` is the
+  only exact-word command in the system; everything else is conversation.
+- The guide documents what is actually installed — it lists the user's real
+  workflows by name, not the hypothetical roster.
+```
+
+Content sections, in order: What openaos Is; Your Workflows (the installed
+list); Building a Workflow (the §12 modes, in user terms); Refining a
+Workflow (§13); The Proceed Gate and Safety Model (§3, §16.1); Governance
+Rhythms (§17); Memory and What Gets Remembered (§20); Sending Feedback
+(§17.5); Change Log. The packaged template is
+`content/templates/user-guide-template.html` in the plugin (§28).
 
 ## 16.7 Feedback Log Schema
 
@@ -1068,10 +1137,27 @@ Entries in `/logs/change-log.md` (file_type `change_log`, a data file per §14.8
 **Files Affected:** [paths]
 ```
 
-## 16.10 Workspace-Root Scaffold Files (placeholder — Phase G)
+## 16.10 Workspace-Root Scaffold Files
 
-*(2.x CLAUDE.md/AGENTS.md schema cut in Phase B; the plugin's workspace
-scaffolding is specified in Phase G.)*
+Setup provisions `/CLAUDE.md` and `/AGENTS.md` (file_type
+`project_instructions`) at the workspace root from the plugin's
+`templates/` (§28), non-destructively: if either file already exists, setup
+never overwrites it — it proposes the openaos block as an addition, applied
+only on `Proceed`.
+
+```text
+/CLAUDE.md  — session entry point: names the workspace as an openaos
+              workspace and includes /AGENTS.md.
+/AGENTS.md  — standing instructions for any AI agent in the workspace:
+              read /governance/governance.md before consequential actions;
+              the Proceed gate summary (exact word, anything short is a
+              hold); the governance layer is not removable; workflows live
+              in /workflows and change only via refine-workflow or a plugin
+              update.
+```
+
+These files carry pointers, not rules: the standing rules live in
+governance.md (§16.1), so the root files stay small and stable.
 
 
 ---
@@ -1382,12 +1468,50 @@ Approved decisions:
 
 ---
 
-# 28. Distribution (placeholder — Phase G)
+# 28. Distribution
 
-*(2.x distribution and update mechanics cut in Phase B. Distribution is
-plugin-only: the openaos Claude plugin, generated directly from this
-specification — no factory instance, no multi-format delivery. Specified in
-Phase G.)*
+Distribution is plugin-only: one artifact, the **openaos** Claude plugin,
+generated directly from this specification per the packaging runbook
+(Section 33). There is no factory package and no instance concept — the
+plugin, once installed, scaffolds the user's workspace (§8) and runs the
+builders.
+
+## 28.1 Plugin Layout
+
+```text
+claude-plugin/openaos/
+  .claude-plugin/plugin.json      manifest: name `openaos`, version synced
+                                  to openaos_version, description, author
+  skills/setup-openaos/SKILL.md   the §8.1 setup flow
+  skills/build-workflow/SKILL.md  the §12 engine (both modes)
+  skills/refine-workflow/SKILL.md the §13 engine
+  workflow-specs/[slug]/spec.md   the five §7B builder specs, byte-identical
+                                  to their design-spec/workflow-specs sources
+  content/governance/governance.md      rendered §16.1 config (setup source)
+  content/workflows/[slug].md           the five §17 governance workflows,
+                                        rendered per §16.3
+  content/templates/*.md|*.html         the §18 templates + the §16.6
+                                        user-guide template
+  templates/CLAUDE.md, templates/AGENTS.md   the §16.10 root scaffolds
+  README.md                       install + quick start
+```
+
+## 28.2 Packaging Rules
+
+```text
+- Everything in the plugin is rendered from this spec (§1.6.1); the runbook
+  (Section 33) is the procedure, and regeneration must be reproducible.
+- plugin.json version equals openaos_version — the single version fact.
+- The packaged workflow-specs are copies: byte-identical to the design-spec
+  sources, verified at packaging (empty diff).
+- The plugin repo path claude-plugin/openaos/ is what
+  .claude-plugin/marketplace.json publishes as its source.
+- The feedback address baked into the packaged feedback workflow is
+  openaos@neoclarity.ai (verified live before release).
+- Install → run setup-openaos. Update → §14.4 modes. Uninstall leaves the
+  user's workspace untouched (everything user-owned lives there, not in the
+  plugin).
+```
 
 ---
 

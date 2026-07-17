@@ -1,0 +1,10 @@
+{
+  "name": "openaos",
+  "version": "2.4.2",
+  "description": "Build the most useful, most user-friendly AI workflow for each of your core use cases — through a guided interview, safe by default (nothing destructive without 'Proceed').",
+  "author": {
+    "name": "neoClarity",
+    "email": "openaos@neoclarity.ai"
+  },
+  "keywords": ["workflows", "productivity", "governance", "non-technical", "openaos"]
+}

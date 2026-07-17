@@ -6,61 +6,68 @@ openaos_version: 2.4.2
 ---
 # OpenAOS Setup — Interview
 
-The setup interview, owned by the `setup-openaos` skill and executed during
-initial openaos setup.
+The setup-flow interview, owned by the `setup-openaos` skill (§8.1 step 1)
+and executed once after install. Question schema: §7B.2. Answers feed the
+scaffold preview (§8.1 step 2); nothing is written before `Proceed`.
 
-> **Phase C note (2026-07-17):** the interview content below is 2.x-era and
-> still references the removed agent roster. It is rewritten as the setup-flow
-> definition (foundation scaffolding, governance install, use-case menu,
-> `build-workflow` handoff) in Phase G (work item G1a); only this file's name
-> and frontmatter were updated in the Phase C rename sweep.
+## Setup Interview
 
-## Initialization Interview
-
-Begin by displaying this welcome message: "Thank you for choosing to install OpenAOS. We'll start by asking a few simple questions." Then, conduct this interview:
+Begin by displaying this welcome message: "Welcome to openaos. A few quick
+questions, then I'll show you exactly what will be set up — nothing is
+created until you approve it." Then conduct this interview:
 
 ```yaml
-- id: aos-purpose
-  ask: What is this AOS for?
-  type: choice
-  options: [Personal Productivity, Project Management, Client Specific, Other]
-  default: none
+- id: workspace-root
+  ask: Which folder should be your openaos workspace? Everything openaos creates will live inside it.
+  type: text
+  default: the current folder, named explicitly for confirmation
   skippable: no
   when: always
-  captures: scope; proposed instance name; /aos-manifest.md
+  captures: the workspace root the §4 folder structure is scaffolded into
 
-- id: aos-name
-  ask: What should the AOS be named?
+- id: work-focus
+  ask: What kind of work do you most want help with? (a sentence or two is plenty)
   type: text
-  default: proposed from the stated purpose (file-safe slug, §29)
+  default: none
   skippable: yes
   when: always
-  captures: instance root folder slug; /aos-manifest.md
+  captures: ordering and emphasis of the §8.1 use-case menu; /memory/user-profile.md seed (with approval)
 
-- id: optional-agents
-  ask: Which optional productive agents do you want first? At least one is required (§2.3, §7.2); the rest can be added later (§9.4).
-  type: text
-  default: recommend by the stated aos-purpose category — Inbox + Task + Calendar + Document for Personal Productivity, Project Manager + Task + Document for Project Management, Personal CRM + Task + Calendar for Client Specific; for Other, present the full §7.2 roster with no default
-  skippable: no
+- id: rhythm-optin
+  ask: openaos includes optional check-in rhythms — a short daily startup and wrap-up, a weekly review, and a monthly health check. Which would you like to start with?
+  type: choice
+  options: [all of them, daily only, weekly and monthly only, none for now]
+  default: all of them
+  skippable: yes
   when: always
-  captures: agent selection; /configs/agent-registry.md; /aos-map.md
+  captures: which §17 governance workflows are scheduled (all five files are always installed; this sets only the active cadences)
 
 - id: memory-seeds
-  ask: Any known people, projects, tools, or preferences to seed memory with?
+  ask: Any people, tools, or preferences I should remember from the start?
   type: text
   default: none — seed empty, never fabricate
   skippable: yes
   when: always
-  captures: /memory global files initial entries
+  captures: initial entries in the §20.1 memory files (each shown in the scaffold preview)
 
+- id: use-case-selection
+  ask: Which workflows would you like to build first? (You can build any of these later, or design your own.)
+  type: choice
+  options: [Inbox triage, Research assistant, Writing assistant, Learning assistant, Organizer / declutter, Design my own, None yet]
+  default: none — zero selections is valid (§8.1 step 4)
+  skippable: yes
+  when: always
+  captures: the build-workflow handoffs run after scaffolding (§8.1 step 4)
 ```
 
-Purpose categories: Personal Productivity merges the former separate "work"
-and "personal" answers, since neither carried distinct downstream behavior. If
-the user selects Other, capture a short free-text description alongside it —
-that description substitutes for the category name wherever purpose feeds
-`aos-name`'s default slug (§29) and the /aos-manifest.md scope field.
+Rules: `rhythm-optin` never uninstalls a governance workflow — all five are
+always scaffolded (§16.1 non-removable layer); the answer only sets which
+cadences are scheduled, and any of them can be started later.
+`use-case-selection` may take multiple choices; each selected use case (or
+"Design my own") becomes one `build-workflow` session after the foundation
+is approved and created.
 
 ## Update Interview
 
-No questions — no migration required at this release.
+No questions — a plugin update proposes per-file diffs (§14.4) rather than
+re-interviewing.

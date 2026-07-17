@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "openaos",
-      "source": "./claude-plugin/aos-factory",
-      "description": "An open source tool that helps you create and maintain your own custom Agenetic Operating System (AOS)."
+      "source": "./claude-plugin/openaos",
+      "description": "Build the most useful, most user-friendly AI workflow for each of your core use cases - through a guided interview, safe by default (nothing destructive without Proceed)."
     }
   ]
 }
