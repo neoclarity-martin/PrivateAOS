@@ -8,8 +8,8 @@
 #
 # Cut to Minimal in Phase B: agent-era skeletons (agent instruction, registry,
 # map, tool-access matrix, project brief, handoff summary, per-agent config)
-# are removed with their spec sections. The governance-config skeleton is
-# authored in Phase D; the user-guide skeleton in Phase G.
+# are removed with their spec sections. The governance-config skeleton was
+# authored in Phase D; the user-guide skeleton follows in Phase G.
 #
 # Scope note: entries that "embed" another schema and define none of their own
 # (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
@@ -90,6 +90,21 @@ file_skeletons:
     applies_to: /templates/status-report-template.md
     sections: [Priorities, Active Projects, Pending Approvals, Recent Decisions, Next Actions, Processed Inbox]
 
+  - id: governance_config
+    spec: "§16.1"
+    file_type: config
+    applies_to: /governance/governance.md
+    sections:
+      - Purpose
+      - The Proceed Gate
+      - Permission Model
+      - Memory Boundaries
+      - Escalation to the User
+      - Local Rules
+      - Change Notes
+    # dated block under `## Change Notes`
+    entry_fields: [Change]
+
   - id: approval_request
     spec: "§18.5"
     file_type: template
@@ -98,16 +113,17 @@ file_skeletons:
     entry_fields: [Proposed Action, Affected Files, Reason, Consequence, Approval]
 
 # ---------------------------------------------------------------------------
-# Governance workflows (§17) — enumerable fields only; the workflow definitions
-# are authored in Phase D and the narrative stays in §17 prose.
+# Governance workflows (§17) — enumerable fields only (paths, purposes, review
+# questions, brief categories); the normative definitions are §17.1–§17.5 prose.
 # ---------------------------------------------------------------------------
 workflows:
   - id: daily-startup
-    spec: "§17"
+    spec: "§17.1"
     path: /workflows/daily-startup.md
     purpose: >-
       Help the user start the day by reviewing priorities, commitments, inbox
       items, and recently processed inbox items.
+    review_questions: ["What matters today?"]
     # startup-brief skeleton (§31)
     brief_categories:
       - Items processed
@@ -116,30 +132,35 @@ workflows:
       - Items requiring user approval
 
   - id: end-of-day
-    spec: "§17"
+    spec: "§17.2"
     path: /workflows/end-of-day.md
     purpose: >-
       Capture what changed today, what must not be lost, unresolved
       obligations, decisions made, follow-ups needed, and next-day carryover.
+    review_questions: ["What changed today, and what must not be lost?"]
 
   - id: weekly-review
-    spec: "§17"
+    spec: "§17.3"
     path: /workflows/weekly-review.md
     purpose: >-
       Review commitments, decisions, unresolved items, workflow performance,
       stale memory signals, and next-week priorities.
+    review_questions: ["What needs follow-up soon?"]
 
   - id: monthly-review
-    spec: "§17"
+    spec: "§17.4"
     path: /workflows/monthly-review.md
     purpose: >-
       Review memory hygiene, workflow quality, permission boundaries,
       structural clutter, and system cleanup needs; and review whether the
       system is still aimed at the right goals and whether workflows still
       support the user's priorities.
+    review_questions:
+      - "What is stale, misplaced, or structurally messy?"
+      - "Is the whole system still aimed at the right goals?"
 
   - id: feedback
-    spec: "§17"
+    spec: "§17.5"
     path: /workflows/feedback.md
     purpose: >-
       Capture feedback for the project team, scrub names, file content, and

@@ -455,8 +455,9 @@ interview):
 
 The catalog data file (`workflow-catalog.yaml`) is the structured registry of workflow identity and
 ownership data, extracted from this specification for machine enforcement.
-Until Phases D–E author the governance and use-case workflow definitions, the
-roster is legitimately empty — a minimal-but-valid catalog. Mechanical
+The five §17 governance workflows are entries of `kind: governance` (added in
+Phase D); the predefined use-case workflows are added as `kind: use-case`
+entries in Phase E. Mechanical
 validation keeps: domain existence against the vocabulary (V1) and pairwise
 disjointness of owned domains (V3) and owned artifacts (V4); validators must
 not require a non-empty roster. The DDD relationship vocabulary, typed
@@ -518,7 +519,7 @@ update, specified with distribution in Phase G.)*
 
 ## 14.8 Definition Files, Data Files, and the Drift Invariant
 
-A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds. (This invariant is restated for governance in Phase D and amended in Phase F to name the refinement interview as the sanctioned in-place edit path.)
+A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds. (Amended in Phase F to name the refinement interview as the sanctioned in-place edit path.)
 
 **Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation), the refinement interview, or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
 
@@ -527,6 +528,8 @@ A user's workspace is a living system: its files change after setup. To keep tha
 **Projections.** A regenerable view built from definitions plus named data inputs (for example the User Guide, Section 16.6) is treated as a **definition file** for update purposes (safe to regenerate), with its data inputs stored separately as data files.
 
 **The drift invariant.** Workflow runs write data files; definition files change only via the sanctioned, `Proceed`-gated paths above. This bounds drift to data (which is supposed to grow) and keeps definitions deliberate, so an update or refinement is a clean, reviewed change rather than a three-way merge.
+
+**Governance application.** `/governance/governance.md` and the five §17 governance workflows are definition files, with two extra rules: every governance change also appends a dated entry to governance.md's Change Notes and to `/logs/change-log.md` (§16.1), and the sanctioned paths may revise but never remove them — the governance layer itself is not removable (§16.1).
 
 ---
 
@@ -606,11 +609,82 @@ Use timestamps only when there is a specific need to track time of day.
 
 # 16. Generated File Schemas by File Type
 
-## 16.1 Governance Config Schema (placeholder — Phase D)
+## 16.1 Governance Config Schema
 
-*(2.x per-agent config-file schema cut in Phase B. The single standing-rules
-file `/governance/governance.md` — `Proceed` gate, permission model, memory
-boundaries — is authored in Phase D.)*
+`/governance/governance.md` (file_type `config`) is the single standing-rules
+file of the workspace: the `Proceed` safety gate, the permission model, memory
+boundaries, and escalation-to-user rules, in one place. Standing rules live
+here; runnable procedures are workflows (Section 17). It folds together the
+load-bearing rules of the 2.x Security and Memory agents and the 2.x global
+permissions seed (old §16.11) — the coverage of that fold is verified by the
+Phase D governance coverage table.
+
+Generation rules:
+
+```text
+- governance.md restates nothing the spec does not say: its Proceed Gate
+  section renders §3.1, its Permission Model section renders §3.2–§3.4 (the
+  action lists come from vocabulary.yaml, the source of truth), its Memory
+  Boundaries section renders §20.2–§20.3, and its Escalation section renders
+  the §3 escalation-to-user rules. Workspace-specific tightening (never
+  loosening) is recorded in the Local Rules section, not by editing the
+  rendered sections.
+- Tools and integrations follow a default-deny rule: a tool or integration
+  the user has not explicitly approved is treated as approval-required
+  (Level 2) the first time a workflow wants to use it; the grant is recorded
+  in Local Rules with a dated Change Notes entry.
+- governance.md is a definition file (§14.8): it changes only via a
+  `Proceed`-gated refinement or a plugin update, and every change appends a
+  dated entry to its Change Notes section and to /logs/change-log.md.
+- The governance layer is not removable: setup always installs this file and
+  the five §17 governance workflows, and no sanctioned path deletes or
+  disables them.
+```
+
+Frontmatter (§15.3) plus this ordered section skeleton (enumerated as
+`governance_config` in `design-spec/file-skeletons.yaml`):
+
+```markdown
+---
+title: Governance
+file_type: config
+openaos_version: [version]
+created_date: YYYY-MM-DD
+last_updated: YYYY-MM-DD
+status: active
+---
+# Governance
+
+## Purpose
+[what this file is; standing rules vs. runnable workflows]
+
+## The Proceed Gate
+[§3.1 rendered: the protected actions, the five-element approval request,
+the exact-word rule — anything short of the exact word `Proceed` is a hold]
+
+## Permission Model
+[§3.2–§3.4 rendered: the three levels; the Level 1 and Level 2 action lists
+from vocabulary.yaml; Level 3 defined by exclusion; the tool/integration
+default-deny rule]
+
+## Memory Boundaries
+[§20.2–§20.3 rendered: the four memory files and their scopes; what is
+memory-worthy; sensitive entries require explicit approval]
+
+## Escalation to the User
+[when a workflow must stop and ask: approval-required actions, ambiguity
+with material consequences, external communication, publishing, spending,
+sensitive information, or irreversible changes; failed actions are reported
+when relevant and logged when they affect future behavior]
+
+## Local Rules
+[workspace-specific tightening the user has approved; empty at setup]
+
+## Change Notes
+
+### YYYY-MM-DD — [change]
+[dated, append-only record of every governance change]
+```
 
 ## 16.2 Memory File Schema
 
@@ -776,15 +850,117 @@ scaffolding is specified in Phase G.)*
 
 ---
 
-# 17. Governance Workflows (placeholder — Phase D)
+# 17. Governance Workflows
 
-*(2.x global-workflow content cut in Phase B. Phase D authors the five
-governance workflows — `daily-startup`, `end-of-day`, `weekly-review`,
-`monthly-review`, and `feedback` — which also absorb the load-bearing content
-of the 2.x operating rhythms (old Section 25). The agent-era workflows
-(inbox-to-task, project kickoff, decision capture, memory review) are
-removed; their surviving concerns are covered by the use-case workflows
-authored in Phase E and the memory governance rules of Section 20.)*
+Every workspace includes exactly five governance workflows, scaffolded at
+setup (Section 6) and defined here. They are the runnable half of governance:
+`/governance/governance.md` (§16.1) holds the standing rules; these workflows
+carry the operating rhythms and the feedback channel. They absorb the
+load-bearing content of the 2.x operating rhythms (old Section 25) and the
+2.x Review and Feedback agents.
+
+Common rules:
+
+```text
+- Each file follows the §16.3 workflow schema and lives at the path listed in
+  file-skeletons.yaml `workflows:` (source of truth for the enumerable
+  fields: paths, purposes, review questions, and the startup-brief
+  categories).
+- Governance workflows are definition files (§14.8) and part of the
+  non-removable governance layer (§16.1): a plugin update may revise them,
+  and refinement may tailor their inputs and outputs, but no sanctioned path
+  deletes them or removes their approval gates.
+- Runs write data files only (logs, memory, outputs) under the normal §3
+  rules; a governance workflow never edits a definition file as a side
+  effect.
+- Cadences are suggestions the user approves at setup (daily, daily,
+  weekly, monthly); any run can also be invoked on demand.
+```
+
+## 17.1 Daily Startup Workflow
+
+`/workflows/daily-startup.md`. Review question: **What matters today?**
+
+Help the user start the day by reviewing priorities, commitments, inbox
+items, and recently processed inbox items. The run produces a startup brief
+(rendered with the §18.1 status-report template where useful) whose sections
+are the four `brief_categories` in file-skeletons.yaml, in order: items
+processed, items still unresolved, where items were promoted to, and items
+requiring user approval (Section 31).
+
+## 17.2 End-of-Day Workflow
+
+`/workflows/end-of-day.md`. Review question: **What changed today, and what
+must not be lost?**
+
+Capture what changed today, unresolved obligations, decisions made,
+follow-ups needed, and next-day carryover. Decisions surfaced here are
+recorded via the §18.3 decision entry template; carryover feeds the next
+daily startup.
+
+## 17.3 Weekly Review Workflow
+
+`/workflows/weekly-review.md`. Review question: **What needs follow-up
+soon?**
+
+Review commitments, decisions, unresolved items, workflow performance, stale
+memory signals, and next-week priorities. The weekly review keeps the
+workspace operationally clean and prevents loose ends from becoming forgotten
+obligations. Memory receives a lightweight review here (§20.3); items that
+look stale are flagged for the monthly review, not silently changed.
+
+Workflow performance review is observational: if a workflow produced friction
+this week, the run suggests a `refine-workflow` session (Phase F) — a
+suggestion only, never an unprompted edit.
+
+## 17.4 Monthly Review Workflow
+
+`/workflows/monthly-review.md`. Review questions: **What is stale, misplaced,
+or structurally messy? Is the whole system still aimed at the right goals?**
+
+Review memory hygiene (the deeper §20.3 pass), workflow quality, permission
+boundaries and tool grants (governance.md Local Rules and Change Notes),
+structural clutter, and cleanup needs; and review whether the system is still
+aimed at the right goals and whether the installed workflows still support
+the user's priorities. The monthly review keeps the workspace structurally
+healthy and aligned with larger goals, so it doesn't stay well-maintained but
+aimed at outdated priorities.
+
+The monthly review also:
+
+```text
+- Regenerates the User Guide (/docs/user-guide.html, §16.6) as a projection,
+  preserving its embedded change log.
+- Runs the feedback self-examination: reviews recent friction, errors, and
+  preferences for enhancement candidates and presents them for
+  accept / edit / discard; accepted items enter the §17.5 feedback flow.
+- May suggest building a use-case workflow for an observed gap, or refining
+  or archiving one that no longer earns its place. Anti-nagging rule
+  (normative): a declined suggestion is logged and not re-raised until the
+  next monthly review or a material change in usage pattern. Archiving is
+  Level 2 and never touches the governance layer.
+```
+
+## 17.5 Feedback Workflow
+
+`/workflows/feedback.md`. The upstream feedback channel to the project team.
+
+Flow (each step gates the next):
+
+```text
+1. Capture — record the bug report or suggestion as a feedback-log entry
+   (§16.7), status `captured`.
+2. Scrub — remove names, file contents, memory quotes, and anything
+   identifying; keep only what the project team needs to act.
+3. Preview — show the user exactly what would be sent, marked scrubbed.
+4. Send on Proceed — email openaos@neoclarity.ai; anything short of the
+   exact word is a hold. Record the outcome in the entry's Sent field.
+5. Offline fallback — if sending is unavailable, stage the entry in
+   /logs/feedback-log.md as `staged` and prompt the user to send manually.
+```
+
+Nothing leaves the machine without scrub + preview + `Proceed`. This is the
+privacy boundary of the whole system and is not weakened by refinement.
 
 ---
 
