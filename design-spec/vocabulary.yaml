@@ -1,16 +1,17 @@
-# vocabulary.yaml (framework-level, read-only in instances)
+# vocabulary.yaml (design-time source artifact)
 # SOURCE OF TRUTH for the controlled vocabularies that otherwise live only in
 # design-spec prose. Lives in design-spec/ and is versioned with the spec.
-# Framework-owned: created/updated only by the framework, never edited by an
-# operating agent (§14.8 drift invariant). Each block cites the design
-# specification section it renders; prose in those sections references this file
-# rather than restating the tokens.
+# Each block cites the design specification section it renders; prose in those
+# sections references this file rather than restating the tokens.
 #
-# SCOPE / one-source-per-concern (feature-spec §7 guardrail): this file owns the
-# frontmatter, permission, action, and tool-access vocabularies. It does NOT
-# restate the catalog's domain / relationship / trigger vocabularies — those
-# remain sourced in design-spec/agent-catalog.yaml (§7A.2) and are
+# SCOPE / one-source-per-concern: this file owns the frontmatter, permission,
+# and action vocabularies. It does NOT restate the catalog's domain vocabulary —
+# that remains sourced in design-spec/agent-catalog.yaml (§7A) and is
 # cross-referenced here (see `cross_references`), never duplicated.
+#
+# Cut to Minimal in Phase B: agent_status (agent lifecycle), access_levels
+# (§22 tool-access matrix), agent-era file_type tokens, and agent-lifecycle
+# approval actions are removed with their spec sections.
 
 vocabulary_version: 1.0.0
 spec_version: 2.4.2
@@ -20,14 +21,9 @@ spec_version: 2.4.2
 # ---------------------------------------------------------------------------
 
 # §15.4 — controlled file_type vocabulary. `design_spec` is the one source/design
-# artifact; the rest describe factory-generated files. Per-file assignments and
-# the meaning of each type stay in §15.4 prose.
+# artifact; the rest describe generated files. Per-file assignments and the
+# meaning of each type stay in §15.4 prose.
 file_type:
-  - builder_entry
-  - aos_builder
-  - agent_builder
-  - aos_manifest
-  - aos_map
   - config
   - memory
   - workflow
@@ -35,30 +31,14 @@ file_type:
   - decision_log
   - change_log
   - feedback_log
-  - builder_changelog
   - documentation
-  - project_doc
-  - handoff_summary
-  - build_summary
-  - agent_instruction
   - project_instructions
   - design_spec
-  - agent_catalog
-  - agent_profile
+  - catalog
   - interview_script
 
-# §15.5 — agent lifecycle state (§10.1). Lowercase in frontmatter; display tables
-# may capitalize. `active` is the only value shared with `status` below.
-agent_status:
-  - available
-  - selected
-  - built
-  - active
-  - paused
-  - retired
-
-# §15.5 — file / builder / template / workflow / artifact status. Governs
-# factory-generated files; the `design_spec` source artifact is exempt (§15.5).
+# §15.5 — file / template / workflow / artifact status. Governs generated
+# files; the `design_spec` source artifact is exempt (§15.5).
 status:
   - draft
   - active
@@ -74,13 +54,13 @@ status:
 permission_levels:
   - level: 1
     name: safe-autonomous
-    meaning: The agent may do these without asking.
+    meaning: The workflow may do these without asking.
   - level: 2
     name: approval-required
-    meaning: The agent may recommend these, but must ask the user to type Proceed.
+    meaning: The workflow may recommend these, but must ask the user to type Proceed.
   - level: 3
     name: prohibited
-    meaning: The agent must not do these at all.
+    meaning: The workflow must not do these at all.
 
 # §3.3 — Level 1 safe autonomous actions. Allowed only when the action does not
 # overwrite, delete, move, rename, archive, publish, send, spend money, or expose
@@ -98,7 +78,7 @@ safe_autonomous_actions:
 
 # §3.2 — Level 2 actions that always require approval; the user must type exactly
 # "Proceed" (§3.2, kept in prose). `note` preserves an action's embedded
-# exception — domain meaning that must not be flattened (feature-spec §7).
+# exception — domain meaning that must not be flattened.
 approval_required_actions:
   - { id: delete-files, label: Delete files }
   - { id: overwrite-files, label: Overwrite files }
@@ -106,9 +86,9 @@ approval_required_actions:
   - id: move-files
     label: Move files
     note: >-
-      Except moving items into /inbox/processed under the approved
-      inbox-to-task workflow, which is pre-authorized as part of that
-      workflow (§17.5, §31).
+      Except moving items into /inbox/processed under the user-approved
+      inbox-triage workflow, which is pre-authorized as part of that
+      workflow (§31).
   - { id: archive-files, label: Archive files }
   - { id: bulk-modify-files, label: Bulk-modify files }
   - { id: send-messages, label: Send messages }
@@ -117,36 +97,15 @@ approval_required_actions:
   - { id: share-private-information, label: Share private information }
   - { id: change-calendar-events-involving-others, label: Change calendar events involving other people }
   - { id: irreversible-changes, label: Make irreversible or difficult-to-reverse changes }
-  - { id: pause-or-retire-agent, label: Pause or retire an agent }
-  - id: refresh-replace-overwrite-builder-files
-    label: "Refresh, replace, or overwrite existing builder files"
-  - { id: restore-retired-agent, label: Restore a retired agent to Active status }
 
 # §3.4 Level 3 — prohibited actions are defined by EXCLUSION, not enumeration.
-# The spec does not give a closed token set, so none is invented here (§7
-# guardrail: do not fabricate). Prohibition is: any action that is neither
-# safe-autonomous nor an approvable Level-2 action, plus the `prohibited` value
-# in the §22 tool-access matrix.
+# The spec does not give a closed token set, so none is invented here.
 prohibited_actions:
   defined_by: exclusion
   note: >-
     Level 3 has no enumerated token set in the spec. An action is prohibited
     when it is neither a safe_autonomous_action (§3.3) nor an
-    approval_required_action the user has approved (§3.2), or when the tool
-    access matrix (§22) assigns the tool the `prohibited` access level.
-
-# ---------------------------------------------------------------------------
-# Tool access (§22)
-# ---------------------------------------------------------------------------
-
-# §22 — tool access matrix levels. `not-configured` is the default: the agent may
-# not use the tool until access is explicitly granted (§22, kept in prose).
-access_levels:
-  - allowed
-  - read-only
-  - approval-required
-  - prohibited
-  - not-configured
+    approval_required_action the user has approved (§3.2).
 
 # ---------------------------------------------------------------------------
 # Cross-references — vocabularies sourced elsewhere, not duplicated here
@@ -155,23 +114,4 @@ cross_references:
   domains:
     source: agent-catalog.yaml
     path: vocabulary.domains
-    spec: "§7A.2"
-  relationships:
-    source: agent-catalog.yaml
-    path: vocabulary.relationships
-    spec: "§7A.7"
-  triggers:
-    source: agent-catalog.yaml
-    path: vocabulary.triggers
-    spec: "§7A.2"
-  # §24 escalation causes are trigger tokens, sourced in the catalog and valid
-  # without a using edge (V14 carve-out, §7A.5). Named here for traceability.
-  escalation_causes:
-    source: agent-catalog.yaml
-    path: vocabulary.triggers
-    spec: "§24"
-    members:
-      - permission-conflict
-      - privacy-risk
-      - sensitive-memory-question
-      - routing-conflict
+    spec: "§7A"

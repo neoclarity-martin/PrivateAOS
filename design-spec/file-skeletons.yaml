@@ -1,12 +1,15 @@
-# file-skeletons.yaml (framework-level, read-only in instances)
-# SOURCE OF TRUTH for the ordered section / field / column skeletons that
-# otherwise live only as markdown code blocks in the design-spec prose, plus the
-# §17 global-workflow table and the §20.1 required global memory files. Lives in
-# design-spec/ and is versioned with the spec. Framework-owned: created/updated
-# only by the framework, never edited by an operating agent (§14.8 drift
-# invariant). Each entry cites the section it renders; that section's prose
-# carries the normative meaning, generation rules, and examples, and references
-# this file for the enumerated skeleton (feature-spec §7 guardrail).
+# file-skeletons.yaml (design-time source artifact)
+# SOURCE OF TRUTH for the ordered section / field skeletons that otherwise live
+# only as markdown code blocks in the design-spec prose, plus the §17 governance
+# workflows and the §20.1 required global memory files. Lives in design-spec/
+# and is versioned with the spec. Each entry cites the section it renders; that
+# section's prose carries the normative meaning, generation rules, and examples,
+# and references this file for the enumerated skeleton.
+#
+# Cut to Minimal in Phase B: agent-era skeletons (agent instruction, registry,
+# map, tool-access matrix, project brief, handoff summary, per-agent config)
+# are removed with their spec sections. The governance-config skeleton is
+# authored in Phase D; the user-guide skeleton in Phase G.
 #
 # Scope note: entries that "embed" another schema and define none of their own
 # (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
@@ -16,30 +19,12 @@ skeletons_version: 1.0.0
 spec_version: 2.4.2
 
 # ---------------------------------------------------------------------------
-# File skeletons — ordered section lists, entry-field lists, and table columns
+# File skeletons — ordered section lists and entry-field lists
 # ---------------------------------------------------------------------------
 # Each entry has `id`, `spec`, and at least one of: `sections` (ordered `##`
-# headings), `entry_fields` (ordered labels for a dated/append entry block),
-# `table_columns` (ordered columns for a table-shaped file), `anchors` (stable
-# in-page anchor slugs). `file_type` (when present) must exist in
-# vocabulary.yaml `file_type`.
+# headings) or `entry_fields` (ordered labels for a dated/append entry block).
+# `file_type` (when present) must exist in vocabulary.yaml `file_type`.
 file_skeletons:
-  - id: config
-    spec: "§16.1"
-    file_type: config
-    applies_to: Global and agent config files
-    sections:
-      - Purpose
-      - Scope
-      - Inherited Rules
-      - Allowed Autonomous Actions
-      - Approval-Required Actions
-      - Prohibited Actions
-      - Tool Access
-      - Memory Access
-      - Escalation Triggers
-      - Notes
-
   - id: memory
     spec: "§16.2"
     file_type: memory
@@ -97,66 +82,13 @@ file_skeletons:
     spec: "§16.8"
     file_type: change_log
     # §16.8 defines an entry schema only; the file has no fixed section skeleton.
-    entry_fields: [Change, Type, Agent, Files Affected, Version Impact]
-
-  - id: agent_instruction
-    spec: "§11"
-    file_type: agent_instruction
-    applies_to: Every generated [agent-name]-agent.md
-    sections:
-      - Purpose
-      - Responsibilities
-      - Non-Responsibilities
-      - Inputs
-      - Outputs
-      - Workflows
-      - Collaboration Rules
-      - Autonomy Rules
-      - Approval Requirements
-      - Escalation Rules
-      - Operating Procedure
-      - Quality Standards
-      - Failure Modes
-      - Example Requests
-      - Maintenance Notes
-
-  - id: agent_registry
-    spec: "§10.3"
-    file_type: config
-    applies_to: /configs/agent-registry.md
-    table_columns: [Agent, Status, Required?, Agent Folder, Notes]
-
-  - id: aos_map
-    spec: "§10.4"
-    file_type: aos_map
-    applies_to: /aos-map.md
-    sections: [Overview, Agents, Folder Map]
-    table_columns: [Agent, Status, Required?, Folder]  # for the `## Agents` table
-
-  - id: tool_access_matrix
-    spec: "§22"
-    file_type: config
-    applies_to: /configs/tool-access-matrix.md
-    sections: [Purpose, Rules, Matrix, Change Notes]
-    table_columns: [Agent, Tool, Access Level, Approval Required?, Notes]
+    entry_fields: [Change, Made By, Files Affected]
 
   - id: status_report
     spec: "§18.1"
     file_type: template
     applies_to: /templates/status-report-template.md
     sections: [Priorities, Active Projects, Pending Approvals, Recent Decisions, Next Actions, Processed Inbox]
-
-  - id: project_brief
-    spec: "§18.2"
-    file_type: template
-    applies_to: /templates/project-brief-template.md
-    sections: [Purpose, Desired Outcome, Scope, Stakeholders, Milestones, Risks, Next Actions, Review Cadence]
-
-  - id: handoff_summary
-    spec: "§18.4"
-    file_type: template
-    applies_to: /templates/handoff-summary-template.md
-    sections: [From / To, Trigger, Work Completed, Open Items, Files Touched, Decisions Needed]
 
   - id: approval_request
     spec: "§18.5"
@@ -165,122 +97,54 @@ file_skeletons:
     # the five §3.1 elements as labeled fields
     entry_fields: [Proposed Action, Affected Files, Reason, Consequence, Approval]
 
-  - id: user_guide
-    spec: "§16.6"
-    file_type: documentation
-    applies_to: /docs/aos-user-guide.html
-    # fixed top-level sections, in order (below the header metadata / title)
-    sections:
-      - Header metadata
-      - Title and subtitle
-      - Table of Contents
-      - Change Log
-      - Introduction
-      - Folder Orientation
-      - Agents Overview
-      - Core Rules & Safety
-      - Operating Rhythms
-      - Managing Agents
-      - Invocation Reference
-    # stable in-page anchor slugs for the sections that follow the TOC (§16.6)
-    anchors:
-      - change-log
-      - introduction
-      - folder-orientation
-      - agents-overview
-      - core-rules-safety
-      - operating-rhythms
-      - managing-agents
-      - invocation-reference
-
 # ---------------------------------------------------------------------------
-# Global workflows (§17) — enumerable fields only; narrative stays in §17 prose
+# Governance workflows (§17) — enumerable fields only; the workflow definitions
+# are authored in Phase D and the narrative stays in §17 prose.
 # ---------------------------------------------------------------------------
 workflows:
   - id: daily-startup
-    spec: "§17.1"
-    path: /workflows/daily-startup-workflow.md
+    spec: "§17"
+    path: /workflows/daily-startup.md
     purpose: >-
-      Help the user start the day by reviewing priorities, calendar,
-      commitments, inbox items, active projects, and recently processed inbox
-      items.
-    review_questions: ["What matters today?"]
-    primary_owner: Chief of Staff Agent
-    # ordered startup-brief skeleton (§17.1); mirrors §17.5/§31 promotion targets
+      Help the user start the day by reviewing priorities, commitments, inbox
+      items, and recently processed inbox items.
+    # startup-brief skeleton (§31)
     brief_categories:
-      - Items processed today
+      - Items processed
       - Items still unresolved
-      - Items promoted to tasks
-      - Items promoted to projects
-      - Items promoted to calendar items
-      - Items promoted to memory
-      - Items promoted to decisions
-      - Items promoted to archive
+      - Where items were promoted to
       - Items requiring user approval
 
-  - id: end-of-day-shutdown
-    spec: "§17.2"
-    path: /workflows/end-of-day-shutdown-workflow.md
+  - id: end-of-day
+    spec: "§17"
+    path: /workflows/end-of-day.md
     purpose: >-
       Capture what changed today, what must not be lost, unresolved
       obligations, decisions made, follow-ups needed, and next-day carryover.
-    review_questions: ["What changed today, and what must not be lost?"]
-    primary_owner: Chief of Staff Agent
 
   - id: weekly-review
-    spec: "§17.3"
-    path: /workflows/weekly-review-workflow.md
+    spec: "§17"
+    path: /workflows/weekly-review.md
     purpose: >-
-      Review commitments, projects, decisions, unresolved items, agent
-      performance, stale memory signals, and next-week priorities.
-    review_questions: ["What needs follow-up soon?"]
-    primary_owner: Review Agent
+      Review commitments, decisions, unresolved items, workflow performance,
+      stale memory signals, and next-week priorities.
 
   - id: monthly-review
-    spec: "§17.4"
-    path: /workflows/monthly-review-workflow.md
+    spec: "§17"
+    path: /workflows/monthly-review.md
     purpose: >-
-      Review stale projects, memory hygiene, workflow quality, permission
-      boundaries, tool access, structural clutter, and system cleanup needs;
-      and review whether the AOS is still aimed at the right goals, whether
-      agents remain useful, and whether workflows still support the user's
-      priorities.
-    review_questions:
-      - What is stale, misplaced, or structurally messy?
-      - Is the whole system still aimed at the right goals?
-    primary_owner: Review Agent
+      Review memory hygiene, workflow quality, permission boundaries,
+      structural clutter, and system cleanup needs; and review whether the
+      system is still aimed at the right goals and whether workflows still
+      support the user's priorities.
 
-  - id: inbox-to-task
-    spec: "§17.5"
-    path: /workflows/inbox-to-task-workflow.md
+  - id: feedback
+    spec: "§17"
+    path: /workflows/feedback.md
     purpose: >-
-      Convert raw inbox notes, messages, or captured thoughts into tasks,
-      projects, calendar items, memory updates, decisions, or archive items.
-    primary_owner: Chief of Staff Agent, with Inbox Agent support when installed.
-
-  - id: project-kickoff
-    spec: "§17.6"
-    path: /workflows/project-kickoff-workflow.md
-    purpose: >-
-      Turn a new project idea into a project folder, project brief, goals,
-      stakeholders, milestones, tasks, and review cadence.
-    primary_owner: Chief of Staff Agent, with Project Manager Agent support when installed.
-
-  - id: decision-capture
-    spec: "§17.7"
-    path: /workflows/decision-capture-workflow.md
-    purpose: >-
-      Capture important decisions consistently in the correct decision log,
-      including context, rationale, affected files, and follow-up.
-    primary_owner: Chief of Staff Agent, with Memory Agent support.
-
-  - id: memory-review
-    spec: "§17.8"
-    path: /workflows/memory-review-workflow.md
-    purpose: >-
-      Review memory files for stale, duplicated, misplaced, sensitive, or
-      low-value information.
-    primary_owner: Memory Agent, with Review Agent support.
+      Capture feedback for the project team, scrub names, file content, and
+      memory quotes, preview, and send only on Proceed; stage offline in
+      /logs/feedback-log.md.
 
 # ---------------------------------------------------------------------------
 # Required global memory files (§20.1)
@@ -289,6 +153,4 @@ global_memory_files:
   - /memory/user-profile.md
   - /memory/preferences.md
   - /memory/people.md
-  - /memory/projects.md
   - /memory/decisions.md
-  - /memory/agent-learnings-index.md
