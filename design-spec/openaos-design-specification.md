@@ -526,9 +526,9 @@ generated workflow — a question whose answer changes nothing is removed.
 
 *(2.x builder-framework and build-flow content cut in Phase B. Replaced by
 the `setup-openaos`, `build-workflow`, and `refine-workflow` plugin skills.
-The `build-workflow` engine contract is Section 12 (Phase E); the setup flow,
-skill packaging, and refine-workflow are authored in Phases F–G, per the 3.0
-Rewrite Frame.)*
+The `build-workflow` engine contract is Section 12 and the `refine-workflow`
+engine is Section 13; the setup flow and skill packaging are authored in
+Phase G, per the 3.0 Rewrite Frame.)*
 
 ---
 
@@ -648,6 +648,69 @@ and refinable via `refine-workflow`.
 
 ---
 
+# 13. The refine-workflow Engine
+
+The `refine-workflow` skill is the one sanctioned way a workflow definition
+changes in place (§14.8). It is the same collaborative interview style as
+`build-workflow`, pointed at an existing workflow instead of a blank one:
+read it, ask what's not working, preview a diff, rewrite on `Proceed`.
+
+Refinement is generic — one engine for every workflow in `/workflows`,
+whether it began as an instantiated use case, a design-new original, or a
+governance workflow (within the §13.3 limits). It never needs to know how
+the workflow was built: the workflow file itself is the whole input.
+
+## 13.1 Refinement Interview
+
+```text
+1. Select & read — identify the target workflow file; read it in full and
+   restate, in plain language, what it currently does.
+2. Elicit the friction — ask what's not working, in situation terms: where
+   the workflow's output disappoints, where it asks too much or too little,
+   what changed in the user's situation. Recent run evidence (log entries,
+   outputs) may be offered as prompts, never as accusations.
+3. Propose the change — describe the smallest revision that fixes the
+   friction, in the user's terms, and name anything the change trades away.
+   The §12.1 contract applies to the revision: tailored to the situation,
+   best practices kept, token efficiency secondary.
+4. Preview a diff — show current vs. proposed, marked so a non-technical
+   user can see exactly what changes and what stays.
+5. Rewrite on Proceed — apply the revision only when the user types exactly
+   Proceed; anything short is a hold, and a hold leaves the file untouched.
+   Update last_updated, and log the refinement to /logs/change-log.md.
+```
+
+## 13.2 Refinement Rules
+
+```text
+- One workflow per session: a refinement session edits exactly one workflow
+  definition file, plus its change-log entry — nothing else (§14.8).
+- Smallest change that works: prefer revising the flagged sections over
+  wholesale rewrites; a rewrite is proposed only when the user's situation
+  has genuinely outgrown the structure, and is named as such in the preview.
+- Approval gates are load-bearing: a refinement may add or tune approval
+  gates, but a change that removes or weakens one must be called out
+  explicitly in the preview — never buried in a larger diff.
+- No silent scope creep: if the friction points at a different activity than
+  the workflow covers, recommend build-workflow (design-new) for the new
+  activity instead of stretching this one.
+- Refinement targets workflows: governance.md Local Rules changes and
+  template changes follow the same preview-diff-Proceed pattern, but the
+  skill's scope is /workflows files.
+```
+
+## 13.3 Refining Governance Workflows
+
+Governance workflows are refinable like any other — cadence, inputs, output
+shape, and emphasis may all be tailored — within the §16.1 non-removable
+boundary: a refinement must not delete a governance workflow, remove its
+approval gates, bypass the §17.5 scrub-preview-Proceed sequence, or weaken
+the §3 rules it enforces. A requested change that would cross that boundary
+is declined with the reason, and the nearest compliant alternative is
+offered.
+
+---
+
 # 14. Versioning and Update Policy
 
 ## 14.1 Single Version Track
@@ -679,9 +742,9 @@ update, specified with distribution in Phase G.)*
 
 ## 14.8 Definition Files, Data Files, and the Drift Invariant
 
-A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds. (Amended in Phase F to name the refinement interview as the sanctioned in-place edit path.)
+A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds.
 
-**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation), the refinement interview, or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
+**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation, §12), the refinement interview (`refine-workflow`, §13 — the one sanctioned way a definition file changes in place), or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
 
 **Data file.** A file whose content accumulates from operation and the user's input. *Test: regenerating this file would destroy information the user relies on.* Data files are created once at setup (empty or seeded) and never overwritten by a plugin update; workflows append to and maintain them under the normal non-destructive and approval rules (Sections 2.4, 3). Examples: everything in `/memory`, `/logs`, `/outputs`, `/inbox`, and `/archive`.
 
@@ -1073,7 +1136,7 @@ obligations. Memory receives a lightweight review here (§20.3); items that
 look stale are flagged for the monthly review, not silently changed.
 
 Workflow performance review is observational: if a workflow produced friction
-this week, the run suggests a `refine-workflow` session (Phase F) — a
+this week, the run suggests a `refine-workflow` session (§13) — a
 suggestion only, never an unprompted edit.
 
 ## 17.4 Monthly Review Workflow
