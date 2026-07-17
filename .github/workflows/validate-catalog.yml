@@ -21,8 +21,8 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml jsonschema
-      - name: Validate catalog (schema + V1-V5, V14)
-        run: python scripts/validate-catalog.py
+      - name: Validate workflow catalog (schema + V1, V3, V4)
+        run: python scripts/validate-workflow-catalog.py
 
   check-spec-version:
     runs-on: ubuntu-latest
@@ -31,5 +31,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check spec_version agreement across the design-spec set (§36.1 step 2.4)
+      - name: Check openaos_version agreement across the design-spec set
         run: python scripts/check-spec-version.py

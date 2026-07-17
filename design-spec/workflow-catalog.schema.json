@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/neoClarity-AI/Open-AOS-Factory/design-spec/workflow-catalog.schema.json",
+  "title": "Workflow Catalog",
+  "description": "DERIVED ARTIFACT — a JSON Schema rendering of design spec §7A for workflow-catalog.yaml, used by repo CI as the shape/type surface of validation checks V1, V3, V4. The markdown design specification is the single source of truth (§1.6.1); this file is a rendering, never the source. Cut to Minimal in Phase B: the roster may be empty until Phases D–E author the workflow definitions; the DDD relationship/trigger vocabularies, collaboration edges, catalog_version, and entry lifecycle fields are removed. Cross-entry checks (domain vocabulary membership, domain/artifact disjointness) are enforced by scripts/validate-workflow-catalog.py.",
+  "type": "object",
+  "required": ["openaos_version", "vocabulary", "workflows"],
+  "additionalProperties": false,
+  "properties": {
+    "openaos_version": { "$ref": "#/$defs/semver" },
+    "vocabulary": {
+      "type": "object",
+      "required": ["domains"],
+      "additionalProperties": false,
+      "properties": {
+        "domains": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/domainToken" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "workflows": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workflowEntry" }
+    }
+  },
+  "$defs": {
+    "semver": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "domainToken": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*$" },
+    "workflowEntry": {
+      "type": "object",
+      "required": ["slug", "display_name", "kind", "one_line", "domains_owned", "artifacts_owned"],
+      "additionalProperties": false,
+      "properties": {
+        "slug": { "$ref": "#/$defs/slug" },
+        "display_name": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["governance", "use-case"] },
+        "one_line": { "type": "string", "minLength": 1 },
+        "domains_owned": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/domainToken" },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "artifacts_owned": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

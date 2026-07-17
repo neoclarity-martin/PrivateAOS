@@ -1,0 +1,98 @@
+# workflow-catalog.yaml — the Workflow Catalog. SOURCE OF TRUTH. Lives in
+# design-spec/ and is versioned with the spec. Defined in
+# design-spec/openaos-design-specification.md §7A.
+#
+# Cut to Minimal in Phase B: the 2.x fifteen-entry roster, the DDD relationship
+# vocabulary, typed collaboration edges, and catalog_version are removed.
+# Phase D added the five governance workflows (§17); Phase E adds the
+# use-case workflows. Validators accept an empty roster (§7A).
+
+openaos_version: 3.0.0
+
+vocabulary:
+  # workflow domain tokens (governance from §17; use-case from §7B)
+  domains:
+    - daily-startup
+    - end-of-day
+    - weekly-review
+    - monthly-review
+    - feedback-channel
+    - inbox-triage
+    - research
+    - writing
+    - learning
+    - file-organization
+
+workflows:
+  - slug: daily-startup
+    display_name: Daily Startup
+    kind: governance
+    one_line: Start the day by reviewing priorities, commitments, and inbox items, producing a startup brief. (§17.1)
+    domains_owned: [daily-startup]
+    artifacts_owned: []
+
+  - slug: end-of-day
+    display_name: End of Day
+    kind: governance
+    one_line: Capture what changed today, decisions made, follow-ups, and next-day carryover. (§17.2)
+    domains_owned: [end-of-day]
+    artifacts_owned: []
+
+  - slug: weekly-review
+    display_name: Weekly Review
+    kind: governance
+    one_line: Review commitments, unresolved items, workflow performance, and stale memory signals. (§17.3)
+    domains_owned: [weekly-review]
+    artifacts_owned: []
+
+  - slug: monthly-review
+    display_name: Monthly Review
+    kind: governance
+    one_line: Deep review of memory hygiene, workflow quality, permission boundaries, and goal alignment; regenerates the User Guide. (§17.4)
+    domains_owned: [monthly-review]
+    artifacts_owned: [/docs/user-guide.html]
+
+  - slug: feedback
+    display_name: Feedback
+    kind: governance
+    one_line: Capture, scrub, preview, and (on Proceed) email feedback to the project team; stage offline otherwise. (§17.5)
+    domains_owned: [feedback-channel]
+    artifacts_owned: [/logs/feedback-log.md]
+
+  # Use-case workflows (§7B) — instantiated per user by build-workflow;
+  # artifacts_owned lists the default generated path (the interview may tailor
+  # the slug; the catalog records the design identity, not the user's copy).
+  - slug: inbox-triage
+    display_name: Inbox Triage
+    kind: use-case
+    one_line: Classify, route, and act on inbox items. (§7B)
+    domains_owned: [inbox-triage]
+    artifacts_owned: [/workflows/inbox-triage.md]
+
+  - slug: research-assistant
+    display_name: Research Assistant
+    kind: use-case
+    one_line: Scoped, source-disciplined research with findings kept separate from synthesis. (§7B)
+    domains_owned: [research]
+    artifacts_owned: [/workflows/research-assistant.md]
+
+  - slug: writing-assistant
+    display_name: Writing Assistant
+    kind: use-case
+    one_line: Drafting and editing keyed to the user's voice, draft-then-critique. (§7B)
+    domains_owned: [writing]
+    artifacts_owned: [/workflows/writing-assistant.md]
+
+  - slug: learning-assistant
+    display_name: Learning Assistant
+    kind: use-case
+    one_line: Guided learning with understanding checks and durable progress tracking. (§7B)
+    domains_owned: [learning]
+    artifacts_owned: [/workflows/learning-assistant.md]
+
+  - slug: organizer
+    display_name: Organizer / Declutter
+    kind: use-case
+    one_line: Propose-then-move file cleanup; never bulk-deletes. (§7B)
+    domains_owned: [file-organization]
+    artifacts_owned: [/workflows/organizer.md]

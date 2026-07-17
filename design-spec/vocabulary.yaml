@@ -1,0 +1,117 @@
+# vocabulary.yaml (design-time source artifact)
+# SOURCE OF TRUTH for the controlled vocabularies that otherwise live only in
+# design-spec prose. Lives in design-spec/ and is versioned with the spec.
+# Each block cites the design specification section it renders; prose in those
+# sections references this file rather than restating the tokens.
+#
+# SCOPE / one-source-per-concern: this file owns the frontmatter, permission,
+# and action vocabularies. It does NOT restate the catalog's domain vocabulary —
+# that remains sourced in design-spec/workflow-catalog.yaml (§7A) and is
+# cross-referenced here (see `cross_references`), never duplicated.
+#
+# Cut to Minimal in Phase B: agent_status (agent lifecycle), access_levels
+# (§22 tool-access matrix), agent-era file_type tokens, and agent-lifecycle
+# approval actions are removed with their spec sections.
+
+openaos_version: 3.0.0
+
+# ---------------------------------------------------------------------------
+# YAML frontmatter vocabularies (§15)
+# ---------------------------------------------------------------------------
+
+# §15.4 — controlled file_type vocabulary. `design_spec` is the one source/design
+# artifact; the rest describe generated files. Per-file assignments and the
+# meaning of each type stay in §15.4 prose.
+file_type:
+  - config
+  - memory
+  - workflow
+  - template
+  - decision_log
+  - change_log
+  - feedback_log
+  - documentation
+  - project_instructions
+  - design_spec
+  - catalog
+  - interview_script
+  - workflow_spec
+
+# §15.5 — file / template / workflow / artifact status. Governs generated
+# files; the `design_spec` source artifact is exempt (§15.5).
+status:
+  - draft
+  - active
+  - deprecated
+  - archived
+
+# ---------------------------------------------------------------------------
+# Permission & action vocabularies (§3)
+# ---------------------------------------------------------------------------
+
+# §3.4 — three-level permission model. `name` is the stable token; `meaning` is
+# the one-line gloss from §3.4 (full rules stay in §3.2–§3.4 prose).
+permission_levels:
+  - level: 1
+    name: safe-autonomous
+    meaning: The workflow may do these without asking.
+  - level: 2
+    name: approval-required
+    meaning: The workflow may recommend these, but must ask the user to type Proceed.
+  - level: 3
+    name: prohibited
+    meaning: The workflow must not do these at all.
+
+# §3.3 — Level 1 safe autonomous actions. Allowed only when the action does not
+# overwrite, delete, move, rename, archive, publish, send, spend money, or expose
+# private information (§3.3 qualifier — kept in prose).
+safe_autonomous_actions:
+  - { id: create-new-files, label: Create new files }
+  - { id: create-new-folders, label: Create new folders }
+  - { id: append-to-logs, label: Append to logs }
+  - { id: draft-content, label: Draft content }
+  - { id: summarize-information, label: Summarize information }
+  - { id: propose-plans, label: Propose plans }
+  - { id: create-non-destructive-templates, label: Create non-destructive templates }
+  - { id: read-files-in-scope, label: Read files within their approved scope }
+  - { id: recommend-next-actions, label: Recommend next actions }
+
+# §3.2 — Level 2 actions that always require approval; the user must type exactly
+# "Proceed" (§3.2, kept in prose). `note` preserves an action's embedded
+# exception — domain meaning that must not be flattened.
+approval_required_actions:
+  - { id: delete-files, label: Delete files }
+  - { id: overwrite-files, label: Overwrite files }
+  - { id: rename-files, label: Rename files }
+  - id: move-files
+    label: Move files
+    note: >-
+      Except moving items into /inbox/processed under the user-approved
+      inbox-triage workflow, which is pre-authorized as part of that
+      workflow (§31).
+  - { id: archive-files, label: Archive files }
+  - { id: bulk-modify-files, label: Bulk-modify files }
+  - { id: send-messages, label: Send messages }
+  - { id: publish-content, label: Publish content }
+  - { id: spend-money, label: Spend money }
+  - { id: share-private-information, label: Share private information }
+  - { id: change-calendar-events-involving-others, label: Change calendar events involving other people }
+  - { id: irreversible-changes, label: Make irreversible or difficult-to-reverse changes }
+
+# §3.4 Level 3 — prohibited actions are defined by EXCLUSION, not enumeration.
+# The spec does not give a closed token set, so none is invented here.
+prohibited_actions:
+  defined_by: exclusion
+  note: >-
+    Level 3 has no enumerated token set in the spec. An action is prohibited
+    when it is neither a safe_autonomous_action (§3.3) nor an
+    approval_required_action the user has approved (§3.2).
+
+# ---------------------------------------------------------------------------
+# Cross-references — vocabularies sourced elsewhere, not duplicated here
+# ---------------------------------------------------------------------------
+cross_references:
+  domains:
+    source: workflow-catalog.yaml
+    path: vocabulary.domains
+    spec: "§7A"

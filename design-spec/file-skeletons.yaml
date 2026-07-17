@@ -1,0 +1,187 @@
+# file-skeletons.yaml (design-time source artifact)
+# SOURCE OF TRUTH for the ordered section / field skeletons that otherwise live
+# only as markdown code blocks in the design-spec prose, plus the §17 governance
+# workflows and the §20.1 required global memory files. Lives in design-spec/
+# and is versioned with the spec. Each entry cites the section it renders; that
+# section's prose carries the normative meaning, generation rules, and examples,
+# and references this file for the enumerated skeleton.
+#
+# Cut to Minimal in Phase B: agent-era skeletons (agent instruction, registry,
+# map, tool-access matrix, project brief, handoff summary, per-agent config)
+# are removed with their spec sections. The governance-config skeleton was
+# authored in Phase D; the user-guide skeleton follows in Phase G.
+#
+# Scope note: entries that "embed" another schema and define none of their own
+# (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
+# here — the prose references the embedded skeleton directly.
+
+openaos_version: 3.0.0
+
+# ---------------------------------------------------------------------------
+# File skeletons — ordered section lists and entry-field lists
+# ---------------------------------------------------------------------------
+# Each entry has `id`, `spec`, and at least one of: `sections` (ordered `##`
+# headings) or `entry_fields` (ordered labels for a dated/append entry block).
+# `file_type` (when present) must exist in vocabulary.yaml `file_type`.
+file_skeletons:
+  - id: memory
+    spec: "§16.2"
+    file_type: memory
+    sections:
+      - Purpose
+      - Scope
+      - What Belongs Here
+      - What Does Not Belong Here
+      - Memory Entries
+      - Review / Cleanup Notes
+    # dated block under `## Memory Entries` — the seven §20.3 fields (§18.6)
+    entry_fields: [Type, Summary, Source, Confidence, Owner, Review Date, Notes]
+
+  - id: workflow
+    spec: "§16.3"
+    file_type: workflow
+    sections:
+      - Purpose
+      - When to Use
+      - Inputs
+      - Outputs
+      - Steps
+      - Decision Points
+      - Approval Gates
+      - Escalation Triggers
+      - Completion Criteria
+
+  - id: template
+    spec: "§16.4"
+    file_type: template
+    sections:
+      - Purpose
+      - When to Use
+      - Template
+      - Completion Checklist
+      - Notes
+
+  - id: decision_log
+    spec: "§16.5"
+    file_type: decision_log
+    sections:
+      - Log Rules
+      - Entries
+    entry_fields: [Decision, Context, Reasoning, Approved By, Impacted Files, Follow-Up Needed]
+
+  - id: feedback_log
+    spec: "§16.7"
+    file_type: feedback_log
+    sections:
+      - Log Rules
+      - Entries
+    entry_fields: [Type, Status, Scrub, Summary, Sent]
+
+  - id: change_log
+    spec: "§16.8"
+    file_type: change_log
+    # §16.8 defines an entry schema only; the file has no fixed section skeleton.
+    entry_fields: [Change, Made By, Files Affected]
+
+  - id: status_report
+    spec: "§18.1"
+    file_type: template
+    applies_to: /templates/status-report-template.md
+    sections: [Priorities, Active Projects, Pending Approvals, Recent Decisions, Next Actions, Processed Inbox]
+
+  - id: governance_config
+    spec: "§16.1"
+    file_type: config
+    applies_to: /governance/governance.md
+    sections:
+      - Purpose
+      - The Proceed Gate
+      - Permission Model
+      - Memory Boundaries
+      - Escalation to the User
+      - Local Rules
+      - Change Notes
+    # dated block under `## Change Notes`
+    entry_fields: [Change]
+
+  - id: workflow_spec
+    spec: "§7B.1"
+    file_type: workflow_spec
+    applies_to: design-spec/workflow-specs/[slug]/spec.md
+    sections:
+      - Purpose
+      - Situation Interview
+      - Baked-In Best Practices
+      - Default Skeleton
+      - Notes
+
+  - id: approval_request
+    spec: "§18.5"
+    file_type: template
+    applies_to: /templates/approval-request-template.md
+    # the five §3.1 elements as labeled fields
+    entry_fields: [Proposed Action, Affected Files, Reason, Consequence, Approval]
+
+# ---------------------------------------------------------------------------
+# Governance workflows (§17) — enumerable fields only (paths, purposes, review
+# questions, brief categories); the normative definitions are §17.1–§17.5 prose.
+# ---------------------------------------------------------------------------
+workflows:
+  - id: daily-startup
+    spec: "§17.1"
+    path: /workflows/daily-startup.md
+    purpose: >-
+      Help the user start the day by reviewing priorities, commitments, inbox
+      items, and recently processed inbox items.
+    review_questions: ["What matters today?"]
+    # startup-brief skeleton (§31)
+    brief_categories:
+      - Items processed
+      - Items still unresolved
+      - Where items were promoted to
+      - Items requiring user approval
+
+  - id: end-of-day
+    spec: "§17.2"
+    path: /workflows/end-of-day.md
+    purpose: >-
+      Capture what changed today, what must not be lost, unresolved
+      obligations, decisions made, follow-ups needed, and next-day carryover.
+    review_questions: ["What changed today, and what must not be lost?"]
+
+  - id: weekly-review
+    spec: "§17.3"
+    path: /workflows/weekly-review.md
+    purpose: >-
+      Review commitments, decisions, unresolved items, workflow performance,
+      stale memory signals, and next-week priorities.
+    review_questions: ["What needs follow-up soon?"]
+
+  - id: monthly-review
+    spec: "§17.4"
+    path: /workflows/monthly-review.md
+    purpose: >-
+      Review memory hygiene, workflow quality, permission boundaries,
+      structural clutter, and system cleanup needs; and review whether the
+      system is still aimed at the right goals and whether workflows still
+      support the user's priorities.
+    review_questions:
+      - "What is stale, misplaced, or structurally messy?"
+      - "Is the whole system still aimed at the right goals?"
+
+  - id: feedback
+    spec: "§17.5"
+    path: /workflows/feedback.md
+    purpose: >-
+      Capture feedback for the project team, scrub names, file content, and
+      memory quotes, preview, and send only on Proceed; stage offline in
+      /logs/feedback-log.md.
+
+# ---------------------------------------------------------------------------
+# Required global memory files (§20.1)
+# ---------------------------------------------------------------------------
+global_memory_files:
+  - /memory/user-profile.md
+  - /memory/preferences.md
+  - /memory/people.md
+  - /memory/decisions.md
