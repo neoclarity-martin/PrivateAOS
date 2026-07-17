@@ -36,6 +36,7 @@ file_type:
   - design_spec
   - catalog
   - interview_script
+  - workflow_spec
 
 # §15.5 — file / template / workflow / artifact status. Governs generated
 # files; the `design_spec` source artifact is exempt (§15.5).

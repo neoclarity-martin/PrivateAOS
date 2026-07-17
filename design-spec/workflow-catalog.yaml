@@ -10,13 +10,18 @@
 openaos_version: 2.4.2
 
 vocabulary:
-  # workflow domain tokens (governance from §17; use-case tokens added in Phase E)
+  # workflow domain tokens (governance from §17; use-case from §7B)
   domains:
     - daily-startup
     - end-of-day
     - weekly-review
     - monthly-review
     - feedback-channel
+    - inbox-triage
+    - research
+    - writing
+    - learning
+    - file-organization
 
 workflows:
   - slug: daily-startup
@@ -53,3 +58,41 @@ workflows:
     one_line: Capture, scrub, preview, and (on Proceed) email feedback to the project team; stage offline otherwise. (§17.5)
     domains_owned: [feedback-channel]
     artifacts_owned: [/logs/feedback-log.md]
+
+  # Use-case workflows (§7B) — instantiated per user by build-workflow;
+  # artifacts_owned lists the default generated path (the interview may tailor
+  # the slug; the catalog records the design identity, not the user's copy).
+  - slug: inbox-triage
+    display_name: Inbox Triage
+    kind: use-case
+    one_line: Classify, route, and act on inbox items. (§7B)
+    domains_owned: [inbox-triage]
+    artifacts_owned: [/workflows/inbox-triage.md]
+
+  - slug: research-assistant
+    display_name: Research Assistant
+    kind: use-case
+    one_line: Scoped, source-disciplined research with findings kept separate from synthesis. (§7B)
+    domains_owned: [research]
+    artifacts_owned: [/workflows/research-assistant.md]
+
+  - slug: writing-assistant
+    display_name: Writing Assistant
+    kind: use-case
+    one_line: Drafting and editing keyed to the user's voice, draft-then-critique. (§7B)
+    domains_owned: [writing]
+    artifacts_owned: [/workflows/writing-assistant.md]
+
+  - slug: learning-assistant
+    display_name: Learning Assistant
+    kind: use-case
+    one_line: Guided learning with understanding checks and durable progress tracking. (§7B)
+    domains_owned: [learning]
+    artifacts_owned: [/workflows/learning-assistant.md]
+
+  - slug: organizer
+    display_name: Organizer / Declutter
+    kind: use-case
+    one_line: Propose-then-move file cleanup; never bulk-deletes. (§7B)
+    domains_owned: [file-organization]
+    artifacts_owned: [/workflows/organizer.md]

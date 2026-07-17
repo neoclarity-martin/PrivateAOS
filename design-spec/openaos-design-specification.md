@@ -465,12 +465,70 @@ collaboration edges, and their validator checks (V2, V5, V14) are removed.
 
 ---
 
-# 8. Builder Skills and Setup Flow (placeholder — Phases E/G)
+# 7B. Use-Case Workflow Specs
+
+The five predefined use-case workflows are the value spine of openaos. None
+is ever scaffolded generically: each is authored into the user's workspace by
+the `build-workflow` engine's **instantiate** mode (Section 12), driven by
+that use case's builder spec.
+
+| Workflow (slug) | Purpose |
+|---|---|
+| Inbox triage (`inbox-triage`) | Classify, route, and act on inbox items |
+| Research assistant (`research-assistant`) | Scoped, source-disciplined research |
+| Writing assistant (`writing-assistant`) | Drafting/editing keyed to the user's voice |
+| Learning assistant (`learning-assistant`) | Guided learning with understanding checks |
+| Organizer / declutter (`organizer`) | File cleanup — inbox triage for files |
+
+## 7B.1 Builder Spec Files
+
+Each use case has one builder spec at
+`design-spec/workflow-specs/[slug]/spec.md` (file_type `workflow_spec`).
+Builder specs are design-time source artifacts, versioned with the spec and
+shipped inside the plugin for the instantiate mode to consume. Ordered
+section skeleton (enumerated as `workflow_spec` in
+`design-spec/file-skeletons.yaml`):
+
+```text
+## Purpose                    what the workflow is for; who benefits
+## Situation Interview        the §7B.2 question script — elicits the user's
+                              real context so the result is tailored
+## Baked-In Best Practices    the use-case-specific techniques the generated
+                              workflow encodes by default (§12 contract, b)
+## Default Skeleton           use-case guidance for each §16.3 workflow
+                              section, adapted per interview answers
+## Notes                      constraints, common pitfalls, refinement hints
+```
+
+## 7B.2 Interview Script Schema
+
+Interview questions (here and in `setup-interview.md`) use this YAML question
+schema, carried over from 2.x:
+
+```yaml
+- id: kebab-case-question-id
+  ask: The question, phrased for a non-technical user.
+  type: choice | text
+  options: [only for choice]
+  default: a sensible default, or none
+  skippable: yes | no
+  when: always | condition
+  captures: what the answer feeds in the generated workflow
+```
+
+Scripts are short (roughly four to eight questions), ask about the user's
+situation rather than about AI, and every answer must visibly shape the
+generated workflow — a question whose answer changes nothing is removed.
+
+---
+
+# 8. Builder Skills and Setup Flow (placeholder — Phase G)
 
 *(2.x builder-framework and build-flow content cut in Phase B. Replaced by
-the `setup-openaos`, `build-workflow`, and `refine-workflow` plugin skills:
-the builder-interview contract is authored in Phase E, the setup flow and
-packaging in Phase G, per the 3.0 Rewrite Frame.)*
+the `setup-openaos`, `build-workflow`, and `refine-workflow` plugin skills.
+The `build-workflow` engine contract is Section 12 (Phase E); the setup flow,
+skill packaging, and refine-workflow are authored in Phases F–G, per the 3.0
+Rewrite Frame.)*
 
 ---
 
@@ -480,11 +538,113 @@ packaging in Phase G, per the 3.0 Rewrite Frame.)*
 
 ---
 
-# 12. Build Engine (placeholder — Phases E/G)
+# 12. The build-workflow Engine
 
-*(2.x generic-build-engine and Build-AOS schemas cut in Phase B. The
-`build-workflow` engine — one engine, two modes (instantiate / design-new) —
-is authored in Phase E; the `setup-openaos` flow in Phase G.)*
+The `build-workflow` skill is the one builder engine: a guided interview that
+co-designs a tailored, best-practice workflow with the user. One engine, two
+modes:
+
+```text
+- instantiate  — build one of the five predefined use cases (§7B), driven by
+                 that use case's builder spec.
+- design-new   — co-author a brand-new, domain-specific workflow from the
+                 user's own activity, driven by the §12.3 pattern library.
+```
+
+Both modes produce the same thing: a user-owned workflow file at
+`/workflows/[slug].md`, conforming to the §16.3 workflow schema and §15.3
+frontmatter, written only on exact `Proceed`, and refinable afterward via
+`refine-workflow` — a design-new workflow is indistinguishable from an
+instantiated one.
+
+## 12.1 Builder-Interview Contract
+
+Every builder interview, in either mode, is defined by three elements:
+
+**(a) Situation elicitation.** Questions (§7B.2 schema) that surface the
+user's real context — their material, their volume, what "good" looks like,
+where mistakes are costly — so the workflow is tailored, not generic. The
+engine never asks the user about AI techniques; it asks about their
+situation and applies the techniques itself.
+
+**(b) Baked-in best practices.** The techniques the generated workflow
+encodes by default: in instantiate mode, the use case's Baked-In Best
+Practices section (§7B.1); in design-new mode, patterns selected from the
+§12.3 library. Best practices are defaults the user benefits from without
+knowing they exist; the interview may tune them but never silently drops a
+safety-relevant one (anything protecting the §3 rules).
+
+**(c) Token-efficiency as a secondary guideline.** Generated workflows avoid
+needless context re-reading and process material in sensible passes — but
+this never gates authoring and never compromises workflow quality.
+Delivering maximum user value is primary; token efficiency is a secondary
+consideration only.
+
+## 12.2 Engine Flow (both modes)
+
+```text
+1. Elicit    — run the situation interview ((a) above; in design-new mode,
+               the §12.4 activity elicitation).
+2. Propose   — present the proposed workflow structure in plain language:
+               what it will do, the steps, where it will pause for approval.
+               Iterate with the user until it fits.
+3. Preview   — show the complete drafted workflow file.
+4. Write on Proceed — write /workflows/[slug].md only when the user types
+               exactly Proceed (§3.1); anything short is a hold. Log the
+               creation to /logs/change-log.md.
+5. Hand off  — offer a first run, and name refine-workflow as the way to
+               adjust it later.
+```
+
+Guardrails: the engine writes exactly one new workflow file plus its log
+entry per build — it never edits governance files, other workflows, memory,
+or templates as a side effect (§14.8). A build that would overwrite an
+existing workflow file is Level 2 twice over: it requires the overwrite
+approval *and* the engine recommends `refine-workflow` instead. Generated
+workflows must carry their approval gates in the §16.3 Approval Gates
+section, consistent with governance.md.
+
+## 12.3 General AI-Pattern Library (design-new mode)
+
+Design-new has no fixed use-case contract, so element (b) draws from this
+library of general patterns, applied to whatever domain the user describes:
+
+```text
+- Task decomposition        — break the activity into small, checkable steps.
+- Checkpoint / confirm      — pause and confirm before consequential steps.
+- Non-destructive by default— propose, copy, or append rather than change;
+                              destructive steps go behind the Proceed gate.
+- Capture-then-critique     — produce a draft, then critique and revise it
+                              against the user's stated standard.
+- Understanding checks      — verify comprehension before building on it.
+- Source discipline         — separate what the source says from what is
+                              inferred; cite; never fabricate.
+- Batch similar items       — group like items and process them in one pass.
+- Classify before acting    — decide what an item is before doing anything
+                              to it.
+```
+
+The library is guidance, not a checklist: the engine applies the patterns
+that fit the activity and omits the rest.
+
+## 12.4 Design-New Mode
+
+The design-new interview:
+
+```text
+1. Elicit the activity — what the user does, what "good" looks like, the
+   steps they take today, the inputs and outputs, and where mistakes are
+   costly.
+2. Propose a workflow structure — apply the §12.3 patterns to the activity;
+   explain the proposal in the user's own terms.
+3. Preview the drafted workflow.
+4. Write on Proceed — as a normal §16.3 workflow definition.
+```
+
+This is the capability that lets users bring AI into their own
+value-creating work, not just the activities openaos shipped with. Its
+outputs are ordinary user-owned workflows: covered by the drift invariant
+and refinable via `refine-workflow`.
 
 ---
 
@@ -585,6 +745,9 @@ catalog       design-spec/workflow-catalog.yaml; see Section 7A
 
 interview_script
               design-spec/setup-interview.md; the setup interview script
+
+workflow_spec design-spec/workflow-specs/[slug]/spec.md; the use-case
+              builder specs (Section 7B.1)
 ```
 
 ## 15.5 Controlled Status Vocabulary

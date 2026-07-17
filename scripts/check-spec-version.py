@@ -8,8 +8,8 @@ stamp drift that a catalog-only validator cannot see (the drift resolved at
 2.x spec_version 2.4.1).
 
 Scope: the 3 main documents, workflow-catalog.yaml, vocabulary.yaml,
-file-skeletons.yaml, and setup-interview.md. The JSON Schema files carry no
-openaos_version frontmatter and are excluded.
+file-skeletons.yaml, setup-interview.md, and every workflow-specs/*/spec.md.
+The JSON Schema files carry no openaos_version frontmatter and are excluded.
 
 Usage: python scripts/check-spec-version.py
 Exit code 0 = all agree, 1 = mismatch found.
@@ -51,6 +51,7 @@ def main() -> int:
         DS / "file-skeletons.yaml",
         DS / "setup-interview.md",
     ]
+    files += sorted(DS.glob("workflow-specs/*/spec.md"))
 
     errors: list[str] = []
 

@@ -105,6 +105,17 @@ file_skeletons:
     # dated block under `## Change Notes`
     entry_fields: [Change]
 
+  - id: workflow_spec
+    spec: "§7B.1"
+    file_type: workflow_spec
+    applies_to: design-spec/workflow-specs/[slug]/spec.md
+    sections:
+      - Purpose
+      - Situation Interview
+      - Baked-In Best Practices
+      - Default Skeleton
+      - Notes
+
   - id: approval_request
     spec: "§18.5"
     file_type: template
