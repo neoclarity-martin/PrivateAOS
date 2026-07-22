@@ -1,9 +1,9 @@
 ---
 title: Weekly Review Workflow
 file_type: workflow
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # Weekly Review Workflow
@@ -23,7 +23,9 @@ The week's carryover notes, `/logs/decision-log.md`, `/logs/change-log.md`,
 
 ## Outputs
 A follow-up list for next week; flags (not changes) on stale-looking memory
-entries; optionally a refinement suggestion.
+entries; optionally a refinement suggestion. The follow-up list is rendered
+as HTML using `/templates/weekly-review-report-template.html`, saved to
+`/outputs/weekly-review-<date>.html`.
 
 ## Steps
 1. Ask: "What needs follow-up soon?"
@@ -33,6 +35,9 @@ entries; optionally a refinement suggestion.
 4. Workflow performance: if a workflow produced friction this week, suggest
    a refine-workflow session. Suggestion only — never an unprompted edit.
 5. Set next-week priorities.
+6. Render the follow-up list as HTML using
+   `/templates/weekly-review-report-template.html`, saved to
+   `/outputs/weekly-review-<date>.html`.
 
 ## Decision Points
 Follow-up now vs. next week vs. flag for monthly review.

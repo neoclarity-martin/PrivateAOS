@@ -1,9 +1,9 @@
 ---
 title: Governance
 file_type: config
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # Governance
@@ -60,7 +60,7 @@ not explicitly approved is treated as approval-required the first time a
 workflow wants to use it; the grant is recorded under Local Rules with a
 dated Change Notes entry.
 
-## Memory Boundaries
+## Memory
 
 Your durable memory lives in four files:
 
@@ -83,6 +83,16 @@ memory is never silently deleted — it is marked stale, superseded,
 corrected with a new entry, or archived only with approval. Memory gets a
 lightweight look in the weekly review and a deeper hygiene pass monthly.
 
+## Workflows
+
+Workflow files in `/workflows` change only via the `refine-workflow` skill
+or a plugin update — never as a side effect of running one.
+
+## Logs
+
+Logs in `/logs` accumulate: they are appended to under these rules and never
+regenerated or overwritten.
+
 ## Escalation to the User
 
 A workflow stops and asks you when it hits: an approval-required action;
@@ -94,9 +104,38 @@ behavior, files, or permissions.
 ## Local Rules
 
 Workspace-specific tightening you have approved (rules here may only add
-restrictions, never loosen the sections above). Empty at setup.
+restrictions, never loosen the sections above).
+
+### Output reports render as HTML
+Daily-startup, weekly-review, monthly-review, and end-of-day reports, plus
+inbox-triage, organizer, and learning-assistant when built, must render
+their user-facing output report as HTML, using the matching template in
+`/templates/*-report-template.html`, saved to `/outputs` as a `.html` file.
+Logs (`/logs/*.md`) and memory (`/memory/*.md`) are unaffected and stay
+markdown — this rule covers reports only, not append-only logs.
 
 ## Change Notes
 
 ### 2026-07-17 — Installed
 **Change:** Governance config installed by setup-openaos.
+
+### 2026-07-22 — Workflows and Logs sections added
+**Change:** Renamed "Memory Boundaries" to "Memory"; added "Workflows" and
+"Logs" sections capturing the two standing rules not already covered by
+governance.md (workflow files change only via refine-workflow/plugin update;
+logs are append-only, never regenerated or overwritten).
+
+### 2026-07-22 — Output reports standardized as HTML
+**Change:** Added Local Rule requiring daily-startup, weekly-review,
+monthly-review, and end-of-day output reports, plus inbox-triage,
+organizer, and learning-assistant when built, to render as HTML using new
+per-workflow templates in `/templates`. Four governance workflow files
+updated to reference their template and output path; the three use-case
+builder specs updated so instantiate mode ships and wires the matching
+template. `status-report-template.md` retired.
+
+### 2026-07-22 — status-report-template.md retired
+**Change:** Removed `status-report-template.md`; its content now lives
+solely in the HTML report templates. The three remaining Markdown templates
+(approval-request, decision-entry, memory-entry) are kept as
+user-interview / interaction templates. Setup no longer scaffolds it.

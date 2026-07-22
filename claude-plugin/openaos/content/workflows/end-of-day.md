@@ -1,9 +1,9 @@
 ---
 title: End-of-Day Workflow
 file_type: workflow
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # End-of-Day Workflow
@@ -23,14 +23,18 @@ from the daily startup.
 ## Outputs
 Appended entries: decisions to `/logs/decision-log.md` (decision-entry
 template), memory-worthy items proposed for `/memory` (each approved
-individually), and a carryover note for tomorrow's startup.
+individually), and a carryover note for tomorrow's startup, rendered as
+HTML using `/templates/end-of-day-carryover-template.html` and saved to
+`/outputs/end-of-day-<date>.html`.
 
 ## Steps
 1. Ask: "What changed today, and what must not be lost?"
 2. Walk through: decisions made, obligations still open, follow-ups needed.
 3. Record decisions; propose memory entries (approval per entry, per the
    governance memory rules).
-4. Write the next-day carryover note.
+4. Write the next-day carryover note as HTML using
+   `/templates/end-of-day-carryover-template.html`, saved to
+   `/outputs/end-of-day-<date>.html`.
 
 ## Decision Points
 Whether an item is a decision (log it), a memory (propose it), or a task

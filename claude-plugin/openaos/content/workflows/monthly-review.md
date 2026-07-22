@@ -1,9 +1,9 @@
 ---
 title: Monthly Review Workflow
 file_type: workflow
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # Monthly Review Workflow
@@ -24,8 +24,12 @@ All `/memory` files (deep pass), the month's weekly-review flags,
 `/workflows` (the installed list), `/docs/user-guide.html`.
 
 ## Outputs
-A health report; proposed memory cleanups (each approved individually); a
-regenerated User Guide; feedback candidates; workflow suggestions.
+A health report, rendered as HTML using
+`/templates/monthly-review-report-template.html` and saved to
+`/outputs/monthly-review-<date>.html`; proposed memory cleanups (each
+approved individually); a regenerated User Guide (stays HTML at
+`/docs/user-guide.html`, unaffected by this change); feedback candidates;
+workflow suggestions.
 
 ## Steps
 1. Deep memory hygiene pass: for each flagged or aging entry, propose mark
@@ -45,6 +49,9 @@ regenerated User Guide; feedback candidates; workflow suggestions.
    accepted items enter the feedback workflow.
 6. Regenerate `/docs/user-guide.html` from what is actually installed,
    preserving its embedded change log.
+7. Render the health report as HTML using
+   `/templates/monthly-review-report-template.html`, saved to
+   `/outputs/monthly-review-<date>.html`.
 
 ## Decision Points
 Per memory entry: stale / supersede / correct / archive / leave. Per

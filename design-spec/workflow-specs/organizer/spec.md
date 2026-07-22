@@ -2,7 +2,7 @@
 title: Organizer / Declutter — Builder Spec
 file_type: workflow_spec
 slug: organizer
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 ---
 # Organizer / Declutter — Builder Spec
 
@@ -71,18 +71,24 @@ anything on its own.
   groups, so approval is a readable list rather than a hundred questions.
 - Verify after moving: confirm each approved move landed; report anything
   that failed rather than retrying silently.
+- Render the move plan and completion report as HTML using the shipped
+  `organizer-report-template.html` (§18.2, §12.5 condition met: a
+  recurring, structured, user-facing report), saved to
+  `/outputs/organizer-<date>.html`.
 ```
 
 ## Default Skeleton
 
 Per §16.3 section: **Inputs** — the scoped folders and the keep rules.
 **Steps** — survey and map, propose target structure, plan moves in
-batches, execute approved batches, verify, report. **Decision Points** —
-the exclusion list; files that fit nowhere go to a proposed "review"
-folder, not a guess. **Approval Gates** — every move batch and every
-archive proposal (only the §31 /inbox/processed move is pre-authorized).
-**Outputs** — the move plan and a completion report. **Completion Criteria**
-— scoped folders match the approved structure; nothing deleted; every file
+batches, execute approved batches, verify, render the report as HTML.
+**Decision Points** — the exclusion list; files that fit nowhere go to a
+proposed "review" folder, not a guess. **Approval Gates** — every move
+batch and every archive proposal (only the §31 /inbox/processed move is
+pre-authorized). **Outputs** — the move plan and a completion report,
+rendered as HTML using `/templates/organizer-report-template.html`, saved
+to `/outputs/organizer-<date>.html`. **Completion Criteria** — scoped
+folders match the approved structure; nothing deleted; every file
 accounted for.
 
 ## Notes

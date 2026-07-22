@@ -9,13 +9,16 @@
 # Cut to Minimal in Phase B: agent-era skeletons (agent instruction, registry,
 # map, tool-access matrix, project brief, handoff summary, per-agent config)
 # are removed with their spec sections. The governance-config skeleton was
-# authored in Phase D; the user-guide skeleton follows in Phase G.
+# authored in Phase D; the user-guide skeleton follows in Phase G. In 3.1,
+# the status_report skeleton is retired and replaced by seven html_report
+# entries (§18.2) sharing the §18.1 canonical CSS; governance_config gains
+# the Workflows/Logs sections (renamed from Memory Boundaries -> Memory).
 #
 # Scope note: entries that "embed" another schema and define none of their own
 # (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
 # here — the prose references the embedded skeleton directly.
 
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists
@@ -83,11 +86,56 @@ file_skeletons:
     # §16.8 defines an entry schema only; the file has no fixed section skeleton.
     entry_fields: [Change, Made By, Files Affected]
 
-  - id: status_report
+  # HTML report templates (§18.2) — retire status_report (2.x
+  # status-report-template.md); each entry's `sections` is its ordered
+  # `<section class="card ...">` <h2> list, which the workflow's Outputs
+  # section must match exactly. All seven embed the §18.1 canonical CSS
+  # verbatim (id: canonical_report_css, below).
+  - id: canonical_report_css
     spec: "§18.1"
+    applies_to: "embedded <style> block in every html_report_* template"
+
+  - id: html_report_daily_startup
+    spec: "§18.2"
     file_type: template
-    applies_to: /templates/status-report-template.md
-    sections: [Priorities, Active Projects, Pending Approvals, Recent Decisions, Next Actions, Processed Inbox]
+    applies_to: /templates/daily-startup-report-template.html
+    sections: [Items processed, Items still unresolved, Where items were promoted, Items requiring user approval, What matters today, Completion]
+
+  - id: html_report_end_of_day
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/end-of-day-carryover-template.html
+    sections: [Decisions logged today, Open obligations, Proposed memory entries, Follow-ups needed, Carryover for tomorrow]
+
+  - id: html_report_weekly_review
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/weekly-review-report-template.html
+    sections: [At-risk commitments, Follow-up list for next week, Stale memory flags, Workflow performance notes, Next-week priorities]
+
+  - id: html_report_monthly_review
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/monthly-review-report-template.html
+    sections: [Memory hygiene, Permission boundary review, Structural pass, Goal alignment, Feedback candidates, User guide regeneration]
+
+  - id: html_report_inbox_triage
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/inbox-triage-report-template.html
+    sections: [Category breakdown, Items processed, Items still unresolved, Where items were promoted, Items requiring user approval]
+
+  - id: html_report_organizer
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/organizer-report-template.html
+    sections: [Survey summary, Proposed move plan, Duplicates found, Executed moves, Review folder, Verification]
+
+  - id: html_report_learning_assistant
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/learning-assistant-report-template.html
+    sections: [Session recap, What was covered, Understanding checks, Practice, Next-session plan, Progress snapshot]
 
   - id: governance_config
     spec: "§16.1"
@@ -97,7 +145,9 @@ file_skeletons:
       - Purpose
       - The Proceed Gate
       - Permission Model
-      - Memory Boundaries
+      - Memory
+      - Workflows
+      - Logs
       - Escalation to the User
       - Local Rules
       - Change Notes

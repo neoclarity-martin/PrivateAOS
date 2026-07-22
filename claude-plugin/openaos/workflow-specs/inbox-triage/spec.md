@@ -2,7 +2,7 @@
 title: Inbox Triage — Builder Spec
 file_type: workflow_spec
 slug: inbox-triage
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 ---
 # Inbox Triage — Builder Spec
 
@@ -70,18 +70,26 @@ promotes each item to where it belongs.
   every other move or deletion follows the §3 rules.
 - Surface a triage summary using the §17.1 startup-brief categories, so the
   daily-startup workflow can report on it.
+- Render the triage summary as HTML using the shipped
+  `inbox-triage-report-template.html` (§18.2, §12.5 condition met: a
+  recurring, structured, user-facing report), saved to
+  `/outputs/inbox-triage-<date>-<run>.html`.
 ```
 
 ## Default Skeleton
 
 Per §16.3 section: **When to Use** — the user's stated cadence plus on
-demand. **Inputs** — the elicited sources. **Steps** — collect, classify
-(one pass), then act per category batch: promote, draft, archive, or defer.
-**Decision Points** — the classification categories with one-line rules for
-each. **Approval Gates** — sending, deleting, and any move outside
-`/inbox/processed`. **Escalation Triggers** — items the workflow cannot
-classify, and anything sensitive. **Completion Criteria** — inbox empty or
-every remaining item consciously deferred, with the summary produced.
+demand. **Inputs** — the elicited sources. **Outputs** — the triage summary
+(the four §17.1 brief categories, plus a category breakdown), rendered as
+HTML using `/templates/inbox-triage-report-template.html`, saved to
+`/outputs/inbox-triage-<date>-<run>.html`. **Steps** — collect, classify
+(one pass), then act per category batch: promote, draft, archive, or defer;
+render the summary as HTML as the final step. **Decision Points** — the
+classification categories with one-line rules for each. **Approval Gates**
+— sending, deleting, and any move outside `/inbox/processed`. **Escalation
+Triggers** — items the workflow cannot classify, and anything sensitive.
+**Completion Criteria** — inbox empty or every remaining item consciously
+deferred, with the summary produced.
 
 ## Notes
 

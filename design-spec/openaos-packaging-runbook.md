@@ -2,9 +2,9 @@
 title: OpenAOS Packaging Runbook
 file_type: design_spec
 project: OpenAOS
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-06-02
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: design_ready_for_generation
 important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
@@ -69,7 +69,11 @@ skills/*/SKILL.md            authored from §8.1, §12, §13
 workflow-specs/              byte-identical copies of design-spec sources
 content/governance/          rendered from §16.1 + vocabulary.yaml
 content/workflows/           rendered from §17 + §16.3 + file-skeletons.yaml
-content/templates/           rendered from §18 + §16.6
+content/templates/           rendered from §18 + §16.6 — the three §18.3/
+                              §18.5/§18.6 interaction templates, the seven
+                              §18.2 HTML report templates (status-report-
+                              template.md retired), and the user-guide
+                              template
 templates/CLAUDE.md, AGENTS.md   rendered from §16.10
 .claude-plugin/plugin.json   name openaos; version = openaos_version
 README.md                    install + quick start
@@ -107,7 +111,12 @@ README.md                    install + quick start
    and `description` frontmatter; in-skill file references resolve;
    `workflow-specs/` byte-identical to the design-spec sources (empty diff);
    `.claude-plugin/marketplace.json` `source` points at
-   `./claude-plugin/openaos`.
+   `./claude-plugin/openaos`; no remaining reference to the retired
+   `status-report-template.md` anywhere in the plugin; every report-producing
+   workflow (§17.1–§17.4, and inbox-triage/organizer/learning-assistant when
+   built) points at a real `content/templates/*-report-template.html` file
+   and a `/outputs/[slug]-<date>.html` path; every such HTML template opens
+   standalone (embeds the §18.1 CSS inline, no external asset references).
 5. Add a revision-history row for the completed generation (no
    `openaos_version` increment unless the packaged framework changed).
 

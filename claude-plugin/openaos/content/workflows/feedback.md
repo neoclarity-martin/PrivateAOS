@@ -1,9 +1,9 @@
 ---
 title: Feedback Workflow
 file_type: workflow
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # Feedback Workflow

@@ -1,9 +1,9 @@
 ---
 title: Daily Startup Workflow
 file_type: workflow
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 created_date: 2026-07-17
-last_updated: 2026-07-17
+last_updated: 2026-07-22
 status: active
 ---
 # Daily Startup Workflow
@@ -23,11 +23,15 @@ Yesterday's end-of-day carryover, `/inbox` and `/inbox/processed`,
 ## Outputs
 A startup brief with these sections, in order: Items processed; Items still
 unresolved; Where items were promoted to; Items requiring user approval.
+Rendered as HTML using `/templates/daily-startup-report-template.html`,
+saved to `/outputs/daily-startup-<date>.html`.
 
 ## Steps
 1. Read the inputs; do not modify them.
 2. Gather today's commitments and open follow-ups.
-3. Produce the startup brief (the four sections above).
+3. Produce the startup brief as HTML using
+   `/templates/daily-startup-report-template.html` (the four sections
+   above), saved to `/outputs/daily-startup-<date>.html`.
 4. Ask: "What matters today?" and capture the answer as the day's priorities.
 
 ## Decision Points
