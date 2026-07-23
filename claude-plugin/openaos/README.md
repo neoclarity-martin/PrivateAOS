@@ -45,4 +45,4 @@ openaos@neoclarity.ai only on `Proceed`.
 ---
 
 Generated from the openaos design specification (openaos_version 3.1.0).
-Source: https://github.com/neoClarity-AI/Open-AOS-Factory
+Source: https://github.com/neoClarity-AI/OpenAOS

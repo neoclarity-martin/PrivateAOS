@@ -165,7 +165,7 @@ openaos-revision-history.md
 
 Entries there are maintained in reverse chronological order (newest first); new entries are added at the top, as rows in a single table (`openaos_version | Date | Change`). The table is a log of completed cycles, not a one-row-per-unique-version index — the same `openaos_version` may appear in consecutive rows when multiple cycles complete against it without a content change, each with its own date and change description.
 
-Every completed §36.1 Design Readiness Review, §36.2 openaos Generation, or §36.3 Claude Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec and the plugin. `openaos_version` increments only when a cycle actually changes the specification (or, for §36.3, the packaged framework) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `openaos_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
+Every completed §36.1 Design Readiness Review or §36.2 Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec and the plugin. `openaos_version` increments only when a cycle actually changes the specification (or, for §36.2, the packaged plugin) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `openaos_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
 
 ---
 
@@ -297,7 +297,7 @@ The project is released openly on Github. Openness reinforces key principles tha
 The project is hosted at:
 
 ```text
-https://github.com/neoClarity-AI/Open-AOS-Factory
+https://github.com/neoClarity-AI/OpenAOS
 ```
 
 The contribution model follows directly from Section 1.6.1 (design spec as the single source of truth). The repository accepts pull requests **only against the design specification**. The Claude plugin is not accepted as a direct contribution; it is regenerated and published by neoClarity from the approved spec, so that quality and safety can be maintained and every released artifact provably traces back to a reviewed design. Although you can generate your own plugin, the way to change the "official" neoClarity plugin is to change the spec.
@@ -418,7 +418,8 @@ root because deliverables are user-facing, not system plumbing. Rules:
 - §14.8 classification: /outputs is DATA — never touched by a plugin update.
   Writing a new file there is Level 1 safe-autonomous (§3.3); modifying or
   archiving an existing output follows the normal §3 rules.
-- Naming: YYYY-MM-DD-[slug].md, or the appropriate extension (§29).
+- Naming: [slug]-<date>, with the appropriate extension for the artifact
+  type (§29) — for example /outputs/weekly-review-2026-07-22.html.
 ```
 
 # 6. Global Files
@@ -1224,7 +1225,7 @@ file_type: feedback_log
 ### YYYY-MM-DD — [Title]
 
 **Type:** bug | enhancement
-**Status:** staged | approved | sent | discarded
+**Status:** captured | staged | sent | discarded
 **Scrub:** pending | done (date)
 **Summary:** [what was observed or proposed, scrubbed of names, file
 content, and memory quotes before send]
@@ -1316,9 +1317,12 @@ Common rules:
 
 Help the user start the day by reviewing priorities, commitments, inbox
 items, and recently processed inbox items. The run produces a startup brief
-whose sections are the four `brief_categories` in file-skeletons.yaml, in
-order: items processed, items still unresolved, where items were promoted
-to, and items requiring user approval (Section 31). Rendered as HTML using
+that opens with the four inbox `brief_categories` in file-skeletons.yaml, in
+order — items processed, items still unresolved, where items were promoted
+to, and items requiring user approval (Section 31) — and closes with two
+further sections, "What matters today" (the review question) and
+"Completion". The full ordered section list is the `html_report_daily_startup`
+skeleton in file-skeletons.yaml. Rendered as HTML using
 `/templates/daily-startup-report-template.html` (§18.2), saved to
 `/outputs/daily-startup-<date>.html`.
 
@@ -1834,8 +1838,10 @@ Approved decisions:
 - Do not use spaces in generated folder names.
 - Preserve human-readable names in frontmatter and headings.
 - Handle duplicates by appending a short numeric suffix, such as -2 or -3.
-- Standalone deliverables in /outputs use YYYY-MM-DD-[slug].md (or the
-  appropriate extension for the artifact type).
+- Standalone deliverables in /outputs use [slug]-<date> with the appropriate
+  extension for the artifact type (for example .html for §18.2 reports, .md
+  for markdown deliverables). Grouping by workflow keeps a workflow's runs
+  adjacent when the folder is sorted by name.
 ```
 
 ---
