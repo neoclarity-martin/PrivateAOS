@@ -14,9 +14,12 @@
 # entries (§18.2) sharing the §18.1 canonical CSS; governance_config gains
 # the Workflows/Logs sections (renamed from Memory Boundaries -> Memory).
 #
-# Scope note: entries that "embed" another schema and define none of their own
-# (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
-# here — the prose references the embedded skeleton directly.
+# Scope note: the three interaction templates (§18.3 decision-entry, §18.5
+# approval-request, §18.6 memory-entry) embed another schema for their
+# `## Template` block (§16.5 / §18.5 fields / §16.2 respectively) but are
+# themselves §16.4 template files, so each now carries an explicit skeleton
+# entry below for §18.7 validation; the embedded block stays defined by the
+# section it comes from.
 
 openaos_version: 3.1.0
 
@@ -141,6 +144,16 @@ file_skeletons:
     spec: "§16.1"
     file_type: config
     applies_to: /governance/governance.md
+    content_source: design-spec/content/governance/governance.md
+    # §18.7: literal markers that must appear inside the named section — the
+    # permission model's three levels are bold leads, not `###` headings.
+    required_markers:
+      Permission Model:
+        - "**Level 1"
+        - "**Level 2"
+        - "**Level 3"
+      Local Rules:
+        - Output reports render as HTML
     sections:
       - Purpose
       - The Proceed Gate
@@ -165,12 +178,65 @@ file_skeletons:
       - Default Skeleton
       - Notes
 
+  # Interaction templates (§18.3, §18.5, §18.6) — §16.4 template files whose
+  # `## Template` block embeds another schema. Validated by §18.7.
   - id: approval_request
     spec: "§18.5"
     file_type: template
     applies_to: /templates/approval-request-template.md
-    # the five §3.1 elements as labeled fields
+    content_source: design-spec/content/templates/approval-request-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # the five §3.1 elements as labeled fields, inside `## Template`
     entry_fields: [Proposed Action, Affected Files, Reason, Consequence, Approval]
+
+  - id: decision_entry
+    spec: "§18.3"
+    file_type: template
+    applies_to: /templates/decision-entry-template.md
+    content_source: design-spec/content/templates/decision-entry-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # `## Template` embeds the §16.5 dated decision-log entry block
+    entry_fields: [Decision, Context, Reasoning, Approved By, Impacted Files, Follow-Up Needed]
+
+  - id: memory_entry
+    spec: "§18.6"
+    file_type: template
+    applies_to: /templates/memory-entry-template.md
+    content_source: design-spec/content/templates/memory-entry-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # `## Template` embeds the §16.2 dated memory entry block (seven §20.3 fields)
+    entry_fields: [Type, Summary, Source, Confidence, Owner, Review Date, Notes]
+
+  - id: user_guide
+    spec: "§16.6"
+    file_type: template
+    applies_to: /templates/user-guide-template.html
+    content_source: design-spec/content/templates/user-guide-template.html
+    # ordered <h2> list of the generated guide (§16.6 content sections)
+    sections: [What openaos Is, Your Workflows, Building a Workflow, Refining a Workflow, The Proceed Gate and Safety Model, Governance Rhythms, Memory and What Gets Remembered, Sending Feedback, Change Log]
+
+# ---------------------------------------------------------------------------
+# Workspace-root scaffolds (§16.10) — not §16.4 template files: they open with
+# an HTML comment and carry pointers, so they have no frontmatter and no `##`
+# skeleton. §18.7 checks only that these required anchors are present.
+# ---------------------------------------------------------------------------
+root_scaffold:
+  - id: root_claude_md
+    spec: "§16.10"
+    content_source: design-spec/content/root/CLAUDE.md
+    ships_to: /CLAUDE.md
+    required_anchors:
+      - openaos
+      - "@AGENTS.md"
+
+  - id: root_agents_md
+    spec: "§16.10"
+    content_source: design-spec/content/root/AGENTS.md
+    ships_to: /AGENTS.md
+    required_anchors:
+      - Proceed
+      - governance
+      - refine-workflow
 
 # ---------------------------------------------------------------------------
 # Governance workflows (§17) — enumerable fields only (paths, purposes, review

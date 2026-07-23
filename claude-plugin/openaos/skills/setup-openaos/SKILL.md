@@ -66,7 +66,8 @@ Files:
 - `/docs/user-guide.html` — generated from
   `content/templates/user-guide-template.html`, listing what is actually
   installed
-- `/CLAUDE.md` and `/AGENTS.md` — from `templates/`; if either exists,
+- `/CLAUDE.md` and `/AGENTS.md` — from `content/root/` (the one place
+  `content/X` maps to the workspace root, not `/X`); if either exists,
   propose the openaos block as an addition instead of creating the file
 
 Then ask the user to type exactly `Proceed`.

@@ -549,10 +549,11 @@ Run once after install (and re-runnable safely — 8.2):
 2. Preview the scaffold — list every folder (§4) and file (§6) that will be
    created, explicitly noting that nothing exists yet and nothing is
    overwritten.
-3. Create on Proceed — scaffold the §4 folders and §6 files: governance.md
-   rendered per §16.1 (including the shipped "Output reports render as HTML"
-   Local Rule); the five governance workflows rendered per §17 and the
-   §16.3 schema; memory and log data files created empty (or seeded from
+3. Create on Proceed — scaffold the §4 folders and §6 files, shipping the
+   plugin's `content/` verbatim: governance.md per §16.1 (including the
+   shipped "Output reports render as HTML" Local Rule); the five governance
+   workflows per §17 and the §16.3 schema; memory and log data files created
+   empty (or seeded from
    the interview — never fabricated); the §18 templates — the three
    interaction templates (§18.3, §18.5, §18.6) plus all seven §18.2 HTML
    report templates (the four governance ones plus inbox-triage, organizer,
@@ -970,6 +971,10 @@ load-bearing rules of the 2.x Security and Memory agents and the 2.x global
 permissions seed (old §16.11) — the coverage of that fold is verified by the
 Phase D governance coverage table.
 
+Canonical body: `design-spec/content/governance/governance.md`; this section
+is its contract (meaning, governing rule, and the `vocabulary.yaml`
+action-list linkage). The plugin copy is byte-identical (§28.1, §18.7).
+
 Generation rules:
 
 ```text
@@ -1091,6 +1096,11 @@ Entries under `## Memory Entries` use this dated entry block — the seven §20.
 
 ## 16.3 Workflow File Schema
 
+Canonical bodies of the five governance workflows:
+`design-spec/content/workflows/*.md`; this section and §17.1–§17.5 are their
+contract (meaning and governing rule). The plugin copies are byte-identical
+(§28.1, §18.7).
+
 Workflow files should follow:
 
 ```markdown
@@ -1186,8 +1196,12 @@ Content sections, in order: What openaos Is; Your Workflows (the installed
 list); Building a Workflow (the §12 modes, in user terms); Refining a
 Workflow (§13); The Proceed Gate and Safety Model (§3, §16.1); Governance
 Rhythms (§17); Memory and What Gets Remembered (§20); Sending Feedback
-(§17.5); Change Log. The packaged template is
-`content/templates/user-guide-template.html` in the plugin (§28).
+(§17.5); Change Log.
+
+Canonical body: `design-spec/content/templates/user-guide-template.html`;
+this section is its contract. The packaged template is
+`content/templates/user-guide-template.html` in the plugin, a byte-identical
+copy (§28.1, §18.7).
 
 ## 16.7 Feedback Log Schema
 
@@ -1233,7 +1247,7 @@ Entries in `/logs/change-log.md` (file_type `change_log`, a data file per §14.8
 
 Setup provisions `/CLAUDE.md` and `/AGENTS.md` (file_type
 `project_instructions`) at the workspace root from the plugin's
-`templates/` (§28), non-destructively: if either file already exists, setup
+`content/root/` (§28), non-destructively: if either file already exists, setup
 never overwrites it — it proposes the openaos block as an addition, applied
 only on `Proceed`.
 
@@ -1251,6 +1265,16 @@ only on `Proceed`.
 These files carry pointers, not rules: the standing rules live in
 governance.md (§16.1), so the root files stay small and stable.
 
+Canonical bodies: `design-spec/content/root/{CLAUDE.md,AGENTS.md}`; this
+section is their contract (the required anchors checked by §18.7). The plugin
+copies live at `content/root/` and are byte-identical (§28.1).
+
+**Content→workspace mapping exception.** Every other `content/X` in the
+plugin maps to workspace `/X`. `content/root/` maps to the workspace **root**
+(`/`), not `/root` — the setup behavior described above. This is the one
+place the `content/X → /X` model does not hold; it is recorded here and in
+`setup-openaos` so it is not mistaken for drift.
+
 
 ---
 
@@ -1262,6 +1286,11 @@ setup (Section 6) and defined here. They are the runnable half of governance:
 carry the operating rhythms and the feedback channel. They absorb the
 load-bearing content of the 2.x operating rhythms (old Section 25) and the
 2.x Review and Feedback agents.
+
+Canonical bodies: `design-spec/content/workflows/{daily-startup,end-of-day,
+weekly-review,monthly-review,feedback}.md`; §17.1–§17.5 are their contract
+(purpose, review question, inputs/outputs, and governing rule). The plugin
+copies are byte-identical (§28.1, §18.7).
 
 Common rules:
 
@@ -1459,6 +1488,11 @@ output shape is user-chosen at build time (§7B, no fixed template — see
 its builder spec Notes), and writing-assistant's deliverable is prose, not
 a structured report.
 
+Canonical bodies: `design-spec/content/templates/*-report-template.html`;
+this section is their contract (which template serves which workflow, the
+rendered path, and the card-section order). The plugin copies are
+byte-identical (§28.1, §18.7).
+
 Generation rules:
 
 ```text
@@ -1493,6 +1527,9 @@ Provide a standard format for recording decisions in global or workflow-level de
 
 This template embeds the §16.5 decision-log entry block; it defines no new schema of its own.
 
+Canonical body: `design-spec/content/templates/decision-entry-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
+
 ## 18.5 Approval Request Template
 
 Create:
@@ -1519,6 +1556,9 @@ Body skeleton (the five §3.1 elements as labeled fields):
 **Approval:** type exactly `Proceed` to authorize
 ```
 
+Canonical body: `design-spec/content/templates/approval-request-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
+
 ## 18.6 Memory Entry Template
 
 Create:
@@ -1534,6 +1574,90 @@ Standardize how important preferences, facts, decisions, people, projects, and w
 ```
 
 This template embeds the §16.2 dated memory entry block (the seven §20.3 fields); it defines no new schema of its own.
+
+Canonical body: `design-spec/content/templates/memory-entry-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
+
+## 18.7 Content Source Validation
+
+The files under `design-spec/content/` are the canonical bodies of everything
+the plugin ships verbatim (§35), and they are meant to be **hand-edited
+directly**. Structural validation is therefore normative, not optional:
+`scripts/validate-content.py` checks the criteria below, and it must pass
+before a spec change or plugin regeneration is considered complete (§27, §34).
+
+**All markdown templates** (governance, the five workflows, the three §18.3 /
+§18.5 / §18.6 interaction templates):
+
+```text
+- Valid YAML frontmatter carrying title, file_type, openaos_version,
+  created_date, last_updated, status; file_type exists in vocabulary.yaml and
+  matches the file's expected type; openaos_version is a valid version on the
+  single track and never ahead of the current spec version (§14.2: a file
+  records the version it was rendered from, so an unchanged file may lag).
+- ## section headings present, non-empty, and in the exact order of the
+  file's file-skeletons.yaml skeleton — none missing, extra, empty, or
+  reordered.
+- Required in-section markers present where the skeleton's `required_markers`
+  enumerates them (e.g. governance Permission Model must carry its Level 1 /
+  Level 2 / Level 3 leads, which are bold leads rather than ### headings).
+```
+
+**governance.md specifically:**
+
+```text
+- Permission Model Level 1 and Level 2 action lists equal vocabulary.yaml —
+  the consistency guard against the rendered text freezing out of date.
+- The default "Output reports render as HTML" Local Rule is present (§16.1).
+```
+
+**Workflow files specifically:**
+
+```text
+- The Outputs section names a real content/templates/*-report-template.html
+  file and an /outputs/[slug]-<date>.html path (report-producing workflows).
+- Report section order matches the workflow's brief_categories in
+  file-skeletons.yaml where those are defined.
+```
+
+**HTML templates** (the seven §18.2 reports plus the §16.6 user guide):
+
+```text
+- Parses as well-formed HTML and is self-contained: no external stylesheet,
+  script, font, or image references and no CSS @import.
+- The seven §18.2 reports embed the §18.1 canonical CSS verbatim; the §16.6
+  user guide is a document, not a card report, so it carries its own embedded
+  layout CSS instead.
+- Report <section class="card …"> <h2> order equals the file's html_report_*
+  sections list (a heading may trail a badge span); card classes drawn only
+  from {accent or unclassed, warn, danger, success, muted}; the top-of-file
+  <!-- --> mapping comment is present; empty sections use <p class="none">.
+- The user guide's <h2> order equals its file-skeletons user_guide sections.
+```
+
+**Root scaffolds** (`content/root/CLAUDE.md`, `content/root/AGENTS.md`) — not
+standard templates:
+
+```text
+- No YAML-frontmatter or section-skeleton check: they open with an HTML
+  comment and carry pointers, not the §16.4 schema. Instead the §16.10
+  required anchors are confirmed — CLAUDE.md names the workspace and includes
+  @AGENTS.md; AGENTS.md contains the Proceed-gate summary, the
+  governance-layer-not-removable statement, and the rule that workflows change
+  only via refine-workflow or a plugin update. The anchor phrases are listed
+  in file-skeletons.yaml `root_scaffold:`.
+```
+
+**Tree completeness:**
+
+```text
+- design-spec/content/ contains exactly the expected set of files — none
+  missing, no orphans — and each has a byte-identical copy under the plugin's
+  content/ (§28.1, §36.2 step 4).
+- No live reference to the retired status-report-template.md. Historical
+  records of the retirement itself (the governance Change Notes entry) are
+  expected and exempt.
+```
 
 ---
 
@@ -1636,6 +1760,11 @@ Approved decisions:
 - Catalog validation (Section 7A: V1, V3, V4) must pass before a spec change
   or a plugin regeneration is considered complete; validators accept an
   empty use-case roster.
+- Content-source validation (Section 18.7) must pass before a spec change or
+  a plugin regeneration is considered complete, alongside the catalog,
+  vocabulary, and version validators. The files under design-spec/content/
+  are hand-editable, so their structure is checked mechanically rather than
+  assumed.
 ```
 
 ---
@@ -1659,12 +1788,16 @@ claude-plugin/openaos/
   skills/refine-workflow/SKILL.md the §13 engine
   workflow-specs/[slug]/spec.md   the five §7B builder specs, byte-identical
                                   to their design-spec/workflow-specs sources
-  content/governance/governance.md      rendered §16.1 config (setup source)
+  content/governance/governance.md      the §16.1 config (setup source),
+                                        byte-identical to its
+                                        design-spec/content/ source
   content/workflows/[slug].md           the five §17 governance workflows,
-                                        rendered per §16.3
+                                        byte-identical copies
   content/templates/*.md|*.html         the §18 templates + the §16.6
-                                        user-guide template
-  templates/CLAUDE.md, templates/AGENTS.md   the §16.10 root scaffolds
+                                        user-guide template, byte-identical
+                                        copies
+  content/root/{CLAUDE.md,AGENTS.md}    the §16.10 root scaffolds,
+                                        byte-identical copies
   README.md                       install + quick start
 ```
 
@@ -1676,6 +1809,9 @@ claude-plugin/openaos/
 - plugin.json version equals openaos_version — the single version fact.
 - The packaged workflow-specs are copies: byte-identical to the design-spec
   sources, verified at packaging (empty diff).
+- The whole of content/ follows the same rule: byte-identical to
+  design-spec/content/, verified at packaging (empty diff, §36.2 step 4).
+  Spec→plugin is a copy, not a re-render.
 - The plugin repo path claude-plugin/openaos/ is what
   .claude-plugin/marketplace.json publishes as its source.
 - The feedback address baked into the packaged feedback workflow is
