@@ -14,8 +14,9 @@ Hard rules, before anything else:
   short of that exact word is a hold.
 - Setup is non-destructive: never overwrite an existing file. On a re-run,
   detect what exists and offer only to create what is missing.
-- The governance layer (governance.md + the five governance workflows) is
-  always installed and is not removable. Do not offer to skip it.
+- The governance layer (everything under `/governance/` + the five governance
+  workflows) is always installed and is not removable. Do not offer to skip
+  it.
 
 ## Step 1 — Welcome & interview
 
@@ -46,6 +47,10 @@ Folders: `/governance /workflows /memory /logs /templates /docs /outputs
 
 Files:
 - `/governance/governance.md` — from `content/governance/governance.md`
+- `/governance/workflow-router.md` — from
+  `content/governance/workflow-router.md`; the routing table that decides
+  which workflow a prompt loads, shipped with the five governance rows.
+  build-workflow appends a row for each use-case workflow built in step 4
 - `/workflows/daily-startup.md`, `end-of-day.md`, `weekly-review.md`,
   `monthly-review.md`, `feedback.md` — from `content/workflows/`
 - `/memory/user-profile.md`, `preferences.md`, `people.md`, `decisions.md` —

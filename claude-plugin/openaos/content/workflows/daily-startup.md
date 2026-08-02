@@ -1,9 +1,9 @@
 ---
 title: Daily Startup Workflow
 file_type: workflow
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # Daily Startup Workflow
@@ -11,10 +11,6 @@ status: active
 ## Purpose
 Help you start the day by reviewing priorities, commitments, inbox items,
 and recently processed inbox items. Review question: **What matters today?**
-
-## When to Use
-Daily, at the start of the working day (or on demand: "run my daily
-startup").
 
 ## Inputs
 Yesterday's end-of-day carryover, `/inbox` and `/inbox/processed`,

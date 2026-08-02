@@ -3,8 +3,8 @@ title: OpenAOS Design Specification
 file_type: design_spec
 project: OpenAOS
 created_date: 2026-06-02
-last_updated: 2026-07-22
-openaos_version: 3.1.0
+last_updated: 2026-08-02
+openaos_version: 3.2.0
 status: design_ready_for_generation
 important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
@@ -430,6 +430,7 @@ interview):
 
 ```text
 /governance/governance.md
+/governance/workflow-router.md
 /memory/user-profile.md
 /memory/preferences.md
 /memory/people.md
@@ -552,7 +553,8 @@ Run once after install (and re-runnable safely — 8.2):
    overwritten.
 3. Create on Proceed — scaffold the §4 folders and §6 files, shipping the
    plugin's `content/` verbatim: governance.md per §16.1 (including the
-   shipped "Output reports render as HTML" Local Rule); the five governance
+   shipped "Output reports render as HTML" Local Rule); workflow-router.md
+   per §16.11, carrying the five governance rows; the five governance
    workflows per §17 and the §16.3 schema; memory and log data files created
    empty (or seeded from
    the interview — never fabricated); the §18 templates — the three
@@ -637,15 +639,30 @@ consideration only.
                Iterate with the user until it fits.
 3. Preview   — show the complete drafted workflow file.
 4. Write on Proceed — write /workflows/[slug].md only when the user types
-               exactly Proceed (§3.1); anything short is a hold. Log the
-               creation to /logs/change-log.md.
+               exactly Proceed (§3.1); anything short is a hold. Append the
+               workflow's row to /governance/workflow-router.md (§16.11) on
+               the same Proceed. Log the creation to /logs/change-log.md.
 5. Hand off  — offer a first run, and name refine-workflow as the way to
                adjust it later.
 ```
 
-Guardrails: the engine writes exactly one new workflow file plus its log
-entry per build — it never edits governance files, other workflows, or
-memory as a side effect (§14.8). The one templates exception is §12.5: when
+Guardrails: the engine writes exactly one new workflow file, its router row,
+and its log entry per build — it never edits other workflows or memory as a
+side effect (§14.8).
+
+**The router exception (3.2).** Appending the workflow's row to
+`/governance/workflow-router.md` is the one governance-file write
+build-workflow is authorized to make. It is narrow by construction: append a
+single new row, never edit or remove an existing one, never touch any other
+part of the file or any other file under `/governance/`. The write is Level 1
+(§3.3 — appending to a file, creating nothing destructive) and rides the same
+`Proceed` that writes the workflow. The exception exists because trigger
+authority now lives only in the router (§16.3): a workflow written without its
+row is unreachable, so the row is part of creating the workflow, not a side
+effect of it. A build that produced a workflow file but no row would be
+incomplete (§27).
+
+The other exception is §12.5: when
 the report-output condition is met, the build also writes one new
 `/templates/[slug]-report-template.html` (design-new mode only —
 instantiate mode's use-case templates are already shipped at setup, §8.1,
@@ -767,7 +784,15 @@ the workflow was built: the workflow file itself is the whole input.
 
 ```text
 - One workflow per session: a refinement session edits exactly one workflow
-  definition file, plus its change-log entry — nothing else (§14.8).
+  definition file, its row in /governance/workflow-router.md when that row's
+  triggers change, plus its change-log entry — nothing else (§14.8).
+- Triggers live in the router: when a refinement changes when the workflow
+  should run — a new cadence, a widened or narrowed scope, a rename — the
+  matching router row (§16.11) is updated in the same session and shown in
+  the same previewed diff, so the user approves the workflow and its triggers
+  together. A refinement that changes only how the workflow works leaves the
+  row untouched. Editing that one row is the only governance-file write this
+  skill makes; rows for other workflows are never touched.
 - Smallest change that works: prefer revising the flagged sections over
   wholesale rewrites; a rewrite is proposed only when the user's situation
   has genuinely outgrown the structure, and is named as such in the preview.
@@ -871,7 +896,7 @@ machinery; recovering an older state is a user-level file operation.
 
 A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds.
 
-**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation, §12), the refinement interview (`refine-workflow`, §13 — the one sanctioned way a definition file changes in place), or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
+**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, the workflow router (§16.11), and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation, §12), the refinement interview (`refine-workflow`, §13 — the one sanctioned way a definition file changes in place), or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
 
 **Data file.** A file whose content accumulates from operation and the user's input. *Test: regenerating this file would destroy information the user relies on.* Data files are created once at setup (empty or seeded) and never overwritten by a plugin update; workflows append to and maintain them under the normal non-destructive and approval rules (Sections 2.4, 3). Examples: everything in `/memory`, `/logs`, `/outputs`, `/inbox`, and `/archive`.
 
@@ -879,7 +904,9 @@ A user's workspace is a living system: its files change after setup. To keep tha
 
 **The drift invariant.** Workflow runs write data files; definition files change only via the sanctioned, `Proceed`-gated paths above. This bounds drift to data (which is supposed to grow) and keeps definitions deliberate, so an update or refinement is a clean, reviewed change rather than a three-way merge.
 
-**Governance application.** `/governance/governance.md` and the five §17 governance workflows are definition files, with two extra rules: every governance change also appends a dated entry to governance.md's Change Notes and to `/logs/change-log.md` (§16.1), and the sanctioned paths may revise but never remove them — the governance layer itself is not removable (§16.1).
+**Governance application.** Everything under `/governance/` — `governance.md` and `workflow-router.md` — and the five §17 governance workflows are definition files, with two extra rules: every governance change also appends a dated entry to governance.md's Change Notes and to `/logs/change-log.md` (§16.1), and the sanctioned paths may revise but never remove them — the governance layer itself is not removable (§16.1).
+
+The router is the one governance file with sanctioned writers beyond `refine-workflow` and a plugin update: `build-workflow` appends a row per §12.2. This is a deliberate, bounded widening of the invariant, not an exception to it — a row is appended only as part of a `Proceed`-gated workflow creation, never by a workflow *run*, so definitions still change only deliberately.
 
 ---
 
@@ -915,6 +942,9 @@ File-type assignments by file:
 
 ```text
 config        /governance/governance.md
+
+router        /governance/workflow-router.md; the routing table that maps
+              user prompts to workflow files (Section 16.11)
 
 memory        /memory/user-profile.md, /memory/preferences.md,
               /memory/people.md, /memory/decisions.md
@@ -995,9 +1025,11 @@ Generation rules:
 - governance.md is a definition file (§14.8): it changes only via a
   `Proceed`-gated refinement or a plugin update, and every change appends a
   dated entry to its Change Notes section and to /logs/change-log.md.
-- The governance layer is not removable: setup always installs this file and
-  the five §17 governance workflows, and no sanctioned path deletes or
-  disables them.
+- The governance layer is not removable: setup always installs everything
+  under `/governance/` — this file and the §16.11 workflow router — plus the
+  five §17 governance workflows, and no sanctioned path deletes or disables
+  them. Removing the router would leave every workflow unreachable, so it
+  sits inside the boundary rather than beside it.
 - Setup ships one Local Rule by default, "Output reports render as HTML":
   the daily-startup, weekly-review, monthly-review, and end-of-day reports,
   plus the inbox-triage, organizer, and learning-assistant reports when
@@ -1102,14 +1134,19 @@ Canonical bodies of the five governance workflows:
 contract (meaning and governing rule). The plugin copies are byte-identical
 (§28.1, §18.7).
 
+**No `When to Use` section (3.2).** A workflow file states what it does, not
+when to reach for it. Trigger authority belongs solely to the Workflow Router
+(§16.11): a workflow's example prompts live in exactly one file, so there is
+no second place to keep in sync and no incentive to load a workflow just to
+find out whether it applies. Removing the section is what makes the router
+authoritative rather than advisory.
+
 Workflow files should follow:
 
 ```markdown
 # [Workflow Name]
 
 ## Purpose
-
-## When to Use
 
 ## Inputs
 
@@ -1260,8 +1297,13 @@ only on `Proceed`.
               the Proceed gate summary (exact word, anything short is a
               hold); the governance layer is not removable; workflows live
               in /workflows and change only via refine-workflow or a plugin
-              update.
+              update; and a Workflow routing section importing
+              @governance/workflow-router.md (§16.11).
 ```
+
+The routing import is what makes the router load at session start: CLAUDE.md
+imports AGENTS.md, AGENTS.md imports the router. Agents therefore arrive with
+the routing table but *not* with any workflow body — the point of the pattern.
 
 These files carry pointers, not rules: the standing rules live in
 governance.md (§16.1), so the root files stay small and stable.
@@ -1276,6 +1318,49 @@ plugin maps to workspace `/X`. `content/root/` maps to the workspace **root**
 place the `content/X → /X` model does not hold; it is recorded here and in
 `setup-openaos` so it is not mistaken for drift.
 
+## 16.11 Workflow Router Schema
+
+`/governance/workflow-router.md` (file_type `router`) is the routing table an
+agent consults to decide which workflow to load. It exists so that answering
+"which workflow is this?" costs one small file rather than every workflow file
+in `/workflows`. It is loaded at session start through the §16.10 import chain
+(`/CLAUDE.md` → `/AGENTS.md` → the router), so routing is available before the
+first prompt is read.
+
+```markdown
+# Workflow Router
+
+## Purpose
+
+## Routes
+```
+
+**Format.** `Routes` is a two-column markdown table — `Example Prompts` and
+`File to Load`, one row per workflow. Markdown table over YAML or JSON: the
+data is flat and uniform, and a table carries the least structural overhead
+per row of the three, which matters for a file loaded into every session.
+
+```text
+| Example Prompts | File to Load |
+|---|---|
+| "run my daily startup", "start my day" | /workflows/daily-startup.md |
+```
+
+**Matching rule (stated in the file's own Purpose section, for the agent that
+reads it).** The prompts are illustrative, not exact commands: match on
+meaning, load the single most likely workflow, and ask the user for
+clarification when nothing matches — never guess, and never load several
+workflows to compare them.
+
+**Ownership.** Scaffolded by `setup-openaos` with the five §17 governance
+rows. `build-workflow` appends a row when it creates a workflow (§12.2);
+`refine-workflow` updates a row when triggers change (§13.2). Those two skills
+are the only sanctioned writers, matching the §14.8 rule for workflow
+definitions themselves. The router is a `/governance/*` file and is therefore
+part of the non-removable governance layer (§17).
+
+Canonical body: `design-spec/content/governance/workflow-router.md`; this
+section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
 
 ---
 
@@ -1309,6 +1394,10 @@ Common rules:
   effect.
 - Cadences are suggestions the user approves at setup (daily, daily,
   weekly, monthly); any run can also be invoked on demand.
+- Each has a row in the §16.11 workflow router, shipped with the router at
+  setup rather than authored per workspace. The rows are the only record of
+  what invokes these workflows; the workflow files themselves carry no
+  `When to Use` section (§16.3).
 ```
 
 ## 17.1 Daily Startup Workflow
@@ -1590,8 +1679,8 @@ directly**. Structural validation is therefore normative, not optional:
 `scripts/validate-content.py` checks the criteria below, and it must pass
 before a spec change or plugin regeneration is considered complete (§27, §34).
 
-**All markdown templates** (governance, the five workflows, the three §18.3 /
-§18.5 / §18.6 interaction templates):
+**All markdown templates** (governance, the §16.11 workflow router, the five
+workflows, the three §18.3 / §18.5 / §18.6 interaction templates):
 
 ```text
 - Valid YAML frontmatter carrying title, file_type, openaos_version,
@@ -1613,6 +1702,17 @@ before a spec change or plugin regeneration is considered complete (§27, §34).
 - Permission Model Level 1 and Level 2 action lists equal vocabulary.yaml —
   the consistency guard against the rendered text freezing out of date.
 - The default "Output reports render as HTML" Local Rule is present (§16.1).
+```
+
+**workflow-router.md specifically:**
+
+```text
+- The Routes section carries the two-column table header, and every row's
+  `File to Load` resolves to a real content/workflows/*.md file.
+- Every shipped governance workflow has exactly one row — no workflow left
+  unroutable, no row pointing at a workflow that does not exist.
+- No workflow file carries a `When to Use` section (§16.3): trigger authority
+  is the router's alone, so a second copy is drift by definition.
 ```
 
 **Workflow files specifically:**
@@ -1754,11 +1854,13 @@ Approved decisions:
 
 ```text
 - A complete setup must include the required folders, the governance config,
-  the five governance workflows, the required global files (Section 6), and
-  the User Guide. Zero use-case workflows at setup is valid.
+  the workflow router (Section 16.11), the five governance workflows, the
+  required global files (Section 6), and the User Guide. Zero use-case
+  workflows at setup is valid.
 - A complete workflow build must include the workflow definition file
-  (Section 16.3) and a change-log entry; the builder previews the workflow
-  and writes it only on Proceed.
+  (Section 16.3), its router row (Section 16.11), and a change-log entry;
+  the builder previews the workflow and its row and writes both only on
+  Proceed. A workflow without a row is unreachable and therefore incomplete.
 - The weekly and monthly review workflows audit generated files for
   completeness, consistency, permissions, and memory hygiene.
 - Catalog validation (Section 7A: V1, V3, V4) must pass before a spec change
@@ -1795,6 +1897,8 @@ claude-plugin/openaos/
   content/governance/governance.md      the §16.1 config (setup source),
                                         byte-identical to its
                                         design-spec/content/ source
+  content/governance/workflow-router.md the §16.11 routing table (setup
+                                        source), byte-identical copy
   content/workflows/[slug].md           the five §17 governance workflows,
                                         byte-identical copies
   content/templates/*.md|*.html         the §18 templates + the §16.6

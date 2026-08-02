@@ -24,15 +24,28 @@ build-workflow, pointed at an existing workflow.
 4. **Preview a diff** — show current vs. proposed so a non-technical reader
    can see exactly what changes and what stays.
 5. **Rewrite on `Proceed`** — apply only when the user types exactly
-   `Proceed`; anything short is a hold that leaves the file untouched.
-   Update `last_updated`; append a refinement entry to
-   `/logs/change-log.md`.
+   `Proceed`; anything short is a hold that leaves the files untouched.
+   Update `last_updated`; apply the router-row change if there is one;
+   append a refinement entry to `/logs/change-log.md`.
 
 ## Rules
 
-- **One workflow per session** — edit exactly one workflow file plus its
-  change-log entry; nothing else, ever. (Exception: **Batch Refinement
-  Mode**, below.)
+- **One workflow per session** — edit exactly one workflow file, its router
+  row when triggers changed, plus its change-log entry; nothing else, ever.
+  (Exception: **Batch Refinement Mode**, below.)
+- **Triggers live in the router** — workflow files carry no "When to Use"
+  section. When a refinement changes *when* the workflow should run — a new
+  cadence, a wider or narrower scope, a rename, or simply phrasings the user
+  keeps reaching for that don't match — update that workflow's row in
+  `/governance/workflow-router.md` and show the before/after row inside the
+  same previewed diff, so one `Proceed` covers the workflow and its triggers
+  together. A change to *how* the workflow works leaves the row alone. Only
+  the target workflow's row is ever touched; other rows and the rest of
+  `/governance/` are off limits.
+- **Ask about triggers when the friction sounds like routing** — "it didn't
+  run when I expected", "the wrong workflow started", "I have to spell it
+  out every time" are router problems, not workflow-body problems. Fix the
+  row rather than rewriting steps.
 - **Approval gates are load-bearing** — you may add or tune gates, but a
   change that removes or weakens one must be called out explicitly in the
   preview, never buried in a larger diff.
@@ -43,7 +56,9 @@ build-workflow, pointed at an existing workflow.
   output shape, emphasis: yes. Deleting a governance workflow, removing its
   approval gates, bypassing the feedback scrub-preview-Proceed sequence, or
   weakening the governance.md rules: no — decline with the reason and offer
-  the nearest compliant alternative. The governance layer is not removable.
+  the nearest compliant alternative. The governance layer — everything under
+  `/governance/`, including the router, plus the five governance workflows —
+  is not removable.
 
 ## Batch Refinement Mode (design spec §13.4)
 

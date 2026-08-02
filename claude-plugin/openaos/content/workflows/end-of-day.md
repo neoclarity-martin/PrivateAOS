@@ -1,9 +1,9 @@
 ---
 title: End-of-Day Workflow
 file_type: workflow
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # End-of-Day Workflow
@@ -12,9 +12,6 @@ status: active
 Capture what changed today, what must not be lost, unresolved obligations,
 decisions made, follow-ups needed, and next-day carryover. Review question:
 **What changed today, and what must not be lost?**
-
-## When to Use
-Daily, at the end of the working day (or on demand).
 
 ## Inputs
 Today's session activity, `/outputs` (today's files), the day's priorities

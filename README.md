@@ -7,7 +7,9 @@
 
 ## Why This Exists
 
-Claude Cowork makes Claude accessible to non-technical users — but it leaves them on their own to turn that access into workflows that are actually good: well-designed, tailored to their situation, and safe to run against their real files. **OpenAOS** closes that gap. Its purpose is to collaboratively build the best possible workflow for each of the things you actually do, through a guided interview that embeds AI best practices you don't have to know; to let you refine any workflow just as easily; and to keep all of it safe by default — nothing destructive happens without the one word `Proceed` — and improving over time, with an easy channel to send feedback back to the project team.
+Claude Cowork makes Claude accessible to non-technical users — but it leaves them on their own to turn that access into workflows that are actually good: well-designed, tailored to their situation, and safe to run against their real files. 
+
+**OpenAOS** closes that gap. Its purpose is to collaboratively build the best possible workflow for each of the things you actually do, through a guided interview that embeds AI best practices you don't have to know; to let you refine any workflow just as easily; and to keep all of it safe by default — nothing destructive happens without the one word `Proceed` — and improving over time, with an easy channel to send feedback back to the project team.
 
 ## What It Is
 
@@ -28,8 +30,6 @@ Claude Cowork makes Claude accessible to non-technical users — but it leaves t
 2. **Workflow refinement** — the same collaborative interview, pointed at an existing workflow: say what's not working, see a before/after preview, approve the change.
 
 3. **Guardrails** — a governance config (the `Proceed` gate, permission model, memory boundaries) and five governance workflows (daily startup, end of day, weekly review, monthly review, feedback) that make the workflows trustworthy. The governance layer is installed with every workspace and is not removable.
-
-There is no multi-agent roster, no tiers, no factory/instance machinery — everything that doesn't directly serve user value was removed in the 3.0 rewrite.
 
 ## How It Works
 

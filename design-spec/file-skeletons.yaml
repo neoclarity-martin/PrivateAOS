@@ -12,7 +12,9 @@
 # authored in Phase D; the user-guide skeleton follows in Phase G. In 3.1,
 # the status_report skeleton is retired and replaced by seven html_report
 # entries (§18.2) sharing the §18.1 canonical CSS; governance_config gains
-# the Workflows/Logs sections (renamed from Memory Boundaries -> Memory).
+# the Workflows/Logs sections (renamed from Memory Boundaries -> Memory). In
+# 3.2, the workflow skeleton drops `When to Use`; workflow_router (§16.11)
+# takes over trigger authority.
 #
 # Scope note: the three interaction templates (§18.3 decision-entry, §18.5
 # approval-request, §18.6 memory-entry) embed another schema for their
@@ -20,8 +22,7 @@
 # themselves §16.4 template files, so each now carries an explicit skeleton
 # entry below for §18.7 validation; the embedded block stays defined by the
 # section it comes from.
-
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists
@@ -48,7 +49,6 @@ file_skeletons:
     file_type: workflow
     sections:
       - Purpose
-      - When to Use
       - Inputs
       - Outputs
       - Steps
@@ -167,6 +167,19 @@ file_skeletons:
     # dated block under `## Change Notes`
     entry_fields: [Change]
 
+  - id: workflow_router
+    spec: "§16.11"
+    file_type: router
+    applies_to: /governance/workflow-router.md
+    content_source: design-spec/content/governance/workflow-router.md
+    # §18.7: the routing table itself must be present and carry its header row
+    required_markers:
+      Routes:
+        - "| Example Prompts | File to Load |"
+    sections:
+      - Purpose
+      - Routes
+
   - id: workflow_spec
     spec: "§7B.1"
     file_type: workflow_spec
@@ -237,6 +250,7 @@ root_scaffold:
       - Proceed
       - governance
       - refine-workflow
+      - "@governance/workflow-router.md"
 
 # ---------------------------------------------------------------------------
 # Governance workflows (§17) — enumerable fields only (paths, purposes, review

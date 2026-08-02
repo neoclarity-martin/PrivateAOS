@@ -2,9 +2,9 @@
 title: OpenAOS Packaging Runbook
 file_type: design_spec
 project: OpenAOS
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-06-02
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: design_ready_for_generation
 important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
@@ -46,7 +46,8 @@ Verified by every §36.1 review; each item maps to spec sections:
 [ ] Goal, guiding principle, and core model are consistent (Frame).
 [ ] Safety and approval rules are complete (§3) and rendered into the
     governance config schema (§16.1).
-[ ] The five governance workflows are defined (§17) with catalog entries.
+[ ] The five governance workflows are defined (§17) with catalog entries,
+    and each has a workflow-router row (§16.11).
 [ ] The five use-case builder specs exist and follow §7B.1 (workflow-specs/).
 [ ] The build-workflow contract (§12) and refine-workflow engine (§13) are
     consistent with the drift invariant (§14.8).
@@ -70,7 +71,8 @@ out per spec §28.1. Its sources:
 skills/*/SKILL.md            authored from §8.1, §12, §13
 workflow-specs/              byte-identical copies of design-spec sources
 content/                     byte-identical copies of design-spec/content/
-                              sources (governance config, the five
+                              sources (governance config, the §16.11
+                              workflow router, the five
                               governance workflows, the seven §18.2 HTML
                               report templates, the §16.6 user-guide
                               template, the three §18.3/§18.5/§18.6

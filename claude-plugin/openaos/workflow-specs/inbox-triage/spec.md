@@ -2,7 +2,7 @@
 title: Inbox Triage — Builder Spec
 file_type: workflow_spec
 slug: inbox-triage
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 ---
 # Inbox Triage — Builder Spec
 
@@ -55,7 +55,7 @@ promotes each item to where it belongs.
   default: once daily, with the daily-startup workflow
   skippable: yes
   when: always
-  captures: batch size and the When to Use section
+  captures: batch size in Steps; cadence in the router row (§16.11)
 ```
 
 ## Baked-In Best Practices
@@ -78,8 +78,7 @@ promotes each item to where it belongs.
 
 ## Default Skeleton
 
-Per §16.3 section: **When to Use** — the user's stated cadence plus on
-demand. **Inputs** — the elicited sources. **Outputs** — the triage summary
+Per §16.3 section: **Inputs** — the elicited sources. **Outputs** — the triage summary
 (the four §17.1 brief categories, plus a category breakdown), rendered as
 HTML using `/templates/inbox-triage-report-template.html`, saved to
 `/outputs/inbox-triage-<date>-<run>.html`. **Steps** — collect, classify

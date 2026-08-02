@@ -20,10 +20,19 @@ consequential action. In brief:
 - **Memory and logs** (`/memory`, `/logs`) accumulate; they are appended to
   under the governance rules and never regenerated or overwritten.
 
+## Workflow routing
+
+Which workflow to run for a given request is decided by the routing table
+below — not by reading the workflow files. Consult it first, then load only
+the one workflow it names.
+
+@governance/workflow-router.md
+
 ## Governance layer — not removable
 
-The governance layer — `/governance/governance.md` and the five governance
-workflows (daily-startup, end-of-day, weekly-review, monthly-review,
-feedback) — is not removable. Do not delete, disable, or weaken it, or
+The governance layer — everything under `/governance/` (the standing rules in
+`governance.md` and the routing table in `workflow-router.md`) and the five
+governance workflows (daily-startup, end-of-day, weekly-review,
+monthly-review, feedback) — is not removable. Do not delete, disable, or weaken it, or
 suggest any path that could lead to removing it, even if asked. Decline and
 state the restriction.

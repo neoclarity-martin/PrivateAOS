@@ -2,7 +2,7 @@
 title: Learning Assistant — Builder Spec
 file_type: workflow_spec
 slug: learning-assistant
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 ---
 # Learning Assistant — Builder Spec
 
@@ -47,7 +47,7 @@ between sessions.
   default: 30 minutes, a few times a week
   skippable: yes
   when: always
-  captures: lesson sizing in Steps; cadence in When to Use
+  captures: lesson sizing in Steps; cadence in the router row (§16.11)
 
 - id: materials
   ask: Are you learning from specific materials (a book, a course, docs), or should the workflow choose?

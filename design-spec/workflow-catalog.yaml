@@ -7,7 +7,7 @@
 # Phase D added the five governance workflows (§17); Phase E adds the
 # use-case workflows. Validators accept an empty roster (§7A).
 
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 
 vocabulary:
   # workflow domain tokens (governance from §17; use-case from §7B)

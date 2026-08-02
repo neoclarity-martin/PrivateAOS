@@ -32,6 +32,10 @@ Checks (each maps to a §18.7 clause):
   VC10 Root scaffolds carry their §16.10 required anchors (file-skeletons
        `root_scaffold:`), with no frontmatter/skeleton check.
   VC11 No reference anywhere to the retired status-report-template.md.
+  VC12 Workflow router (§16.11): every `File to Load` resolves to a real
+       workflow source, every shipped workflow has exactly one row, and no
+       workflow file carries a `When to Use` section (trigger authority is
+       the router's alone, §16.3).
 
 Usage: python scripts/validate-content.py
 Exit code 0 = all checks pass, 1 = at least one error.
@@ -72,6 +76,7 @@ CARD_CLASSES = {"accent", "warn", "danger", "success", "muted"}
 # id -> (relative path under content/, expected file_type)
 MD_FILES = {
     "governance_config": ("governance/governance.md", "config"),
+    "workflow_router": ("governance/workflow-router.md", "router"),
     "approval_request": ("templates/approval-request-template.md", "template"),
     "decision_entry": ("templates/decision-entry-template.md", "template"),
     "memory_entry": ("templates/memory-entry-template.md", "template"),
@@ -337,6 +342,44 @@ def main() -> int:  # noqa: C901 — one linear pass per §18.7 clause
         if not re.search(r"/outputs/[\w\[\]<>-]+", outputs):
             errors.append(f"[VC7] workflows/{wid}.md: Outputs does not name an /outputs/ path")
 
+    # VC12 — router rows resolve, cover every workflow exactly once, and are
+    # the only place triggers live
+    router = SRC / "governance/workflow-router.md"
+    if router.is_file():
+        _, rbody = split_frontmatter(router.read_text(encoding="utf-8"))
+        routes = dict(md_sections(rbody)).get("Routes", "")
+        targets: list[str] = []
+        for line in routes.splitlines():
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) != 2:
+                continue
+            prompts, target = cells
+            if not target.startswith("/workflows/") or set(target) <= set("- "):
+                continue
+            targets.append(target)
+            if '"' not in prompts:
+                errors.append(f"[VC12] router row {target}: Example Prompts holds no quoted example")
+            rel = target.lstrip("/").replace("workflows/", "workflows/", 1)
+            if not (SRC / rel).is_file():
+                errors.append(f"[VC12] router row points at missing workflow: {target}")
+        for wid in sorted(workflows):
+            hits = targets.count(f"/workflows/{wid}.md")
+            if hits == 0:
+                errors.append(f"[VC12] workflow {wid} has no router row (unreachable)")
+            elif hits > 1:
+                errors.append(f"[VC12] workflow {wid} has {hits} router rows (must be exactly one)")
+
+    for wid in sorted(workflows):
+        path = SRC / f"workflows/{wid}.md"
+        if not path.is_file():
+            continue
+        _, body = split_frontmatter(path.read_text(encoding="utf-8"))
+        if "When to Use" in dict(md_sections(body)):
+            errors.append(
+                f"[VC12] workflows/{wid}.md carries a 'When to Use' section — "
+                f"triggers belong only in workflow-router.md (§16.3)"
+            )
+
     # --- HTML templates (VC8, VC9) ---
     css = norm(canonical_css(spec_text))
     if not css:
@@ -430,7 +473,7 @@ def main() -> int:  # noqa: C901 — one linear pass per §18.7 clause
         print(f"ERROR {e}")
     if not errors:
         print(
-            "OK — design-spec/content/ passes VC1–VC11 "
+            "OK — design-spec/content/ passes VC1–VC12 "
             f"({len(expected)} content sources, byte-identical to the plugin)."
         )
     return 1 if errors else 0

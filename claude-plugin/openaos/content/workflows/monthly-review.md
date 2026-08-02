@@ -1,9 +1,9 @@
 ---
 title: Monthly Review Workflow
 file_type: workflow
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # Monthly Review Workflow
@@ -14,9 +14,6 @@ memory hygiene, workflow quality, permission boundaries, structural
 clutter, and cleanup needs. Review questions: **What is stale, misplaced,
 or structurally messy?** and **Is the whole system still aimed at the right
 goals?**
-
-## When to Use
-Monthly (or on demand).
 
 ## Inputs
 All `/memory` files (deep pass), the month's weekly-review flags,
