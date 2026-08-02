@@ -9,13 +9,19 @@
 # Cut to Minimal in Phase B: agent-era skeletons (agent instruction, registry,
 # map, tool-access matrix, project brief, handoff summary, per-agent config)
 # are removed with their spec sections. The governance-config skeleton was
-# authored in Phase D; the user-guide skeleton follows in Phase G.
+# authored in Phase D; the user-guide skeleton follows in Phase G. In 3.1,
+# the status_report skeleton is retired and replaced by seven html_report
+# entries (§18.2) sharing the §18.1 canonical CSS; governance_config gains
+# the Workflows/Logs sections (renamed from Memory Boundaries -> Memory).
 #
-# Scope note: entries that "embed" another schema and define none of their own
-# (§18.3 decision-entry -> §16.5; §18.6 memory-entry -> §16.2) are not restated
-# here — the prose references the embedded skeleton directly.
+# Scope note: the three interaction templates (§18.3 decision-entry, §18.5
+# approval-request, §18.6 memory-entry) embed another schema for their
+# `## Template` block (§16.5 / §18.5 fields / §16.2 respectively) but are
+# themselves §16.4 template files, so each now carries an explicit skeleton
+# entry below for §18.7 validation; the embedded block stays defined by the
+# section it comes from.
 
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists
@@ -83,21 +89,78 @@ file_skeletons:
     # §16.8 defines an entry schema only; the file has no fixed section skeleton.
     entry_fields: [Change, Made By, Files Affected]
 
-  - id: status_report
+  # HTML report templates (§18.2) — retire status_report (2.x
+  # status-report-template.md); each entry's `sections` is its ordered
+  # `<section class="card ...">` <h2> list, which the workflow's Outputs
+  # section must match exactly. All seven embed the §18.1 canonical CSS
+  # verbatim (id: canonical_report_css, below).
+  - id: canonical_report_css
     spec: "§18.1"
+    applies_to: "embedded <style> block in every html_report_* template"
+
+  - id: html_report_daily_startup
+    spec: "§18.2"
     file_type: template
-    applies_to: /templates/status-report-template.md
-    sections: [Priorities, Active Projects, Pending Approvals, Recent Decisions, Next Actions, Processed Inbox]
+    applies_to: /templates/daily-startup-report-template.html
+    sections: [Items processed, Items still unresolved, Where items were promoted, Items requiring user approval, What matters today, Completion]
+
+  - id: html_report_end_of_day
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/end-of-day-carryover-template.html
+    sections: [Decisions logged today, Open obligations, Proposed memory entries, Follow-ups needed, Carryover for tomorrow]
+
+  - id: html_report_weekly_review
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/weekly-review-report-template.html
+    sections: [At-risk commitments, Follow-up list for next week, Stale memory flags, Workflow performance notes, Next-week priorities]
+
+  - id: html_report_monthly_review
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/monthly-review-report-template.html
+    sections: [Memory hygiene, Permission boundary review, Structural pass, Goal alignment, Feedback candidates, User guide regeneration]
+
+  - id: html_report_inbox_triage
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/inbox-triage-report-template.html
+    sections: [Category breakdown, Items processed, Items still unresolved, Where items were promoted, Items requiring user approval]
+
+  - id: html_report_organizer
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/organizer-report-template.html
+    sections: [Survey summary, Proposed move plan, Duplicates found, Executed moves, Review folder, Verification]
+
+  - id: html_report_learning_assistant
+    spec: "§18.2"
+    file_type: template
+    applies_to: /templates/learning-assistant-report-template.html
+    sections: [Session recap, What was covered, Understanding checks, Practice, Next-session plan, Progress snapshot]
 
   - id: governance_config
     spec: "§16.1"
     file_type: config
     applies_to: /governance/governance.md
+    content_source: design-spec/content/governance/governance.md
+    # §18.7: literal markers that must appear inside the named section — the
+    # permission model's three levels are bold leads, not `###` headings.
+    required_markers:
+      Permission Model:
+        - "**Level 1"
+        - "**Level 2"
+        - "**Level 3"
+      Local Rules:
+        - Output reports render as HTML
     sections:
       - Purpose
       - The Proceed Gate
       - Permission Model
-      - Memory Boundaries
+      - Memory
+      - Workflows
+      - Logs
       - Escalation to the User
       - Local Rules
       - Change Notes
@@ -115,12 +178,65 @@ file_skeletons:
       - Default Skeleton
       - Notes
 
+  # Interaction templates (§18.3, §18.5, §18.6) — §16.4 template files whose
+  # `## Template` block embeds another schema. Validated by §18.7.
   - id: approval_request
     spec: "§18.5"
     file_type: template
     applies_to: /templates/approval-request-template.md
-    # the five §3.1 elements as labeled fields
+    content_source: design-spec/content/templates/approval-request-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # the five §3.1 elements as labeled fields, inside `## Template`
     entry_fields: [Proposed Action, Affected Files, Reason, Consequence, Approval]
+
+  - id: decision_entry
+    spec: "§18.3"
+    file_type: template
+    applies_to: /templates/decision-entry-template.md
+    content_source: design-spec/content/templates/decision-entry-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # `## Template` embeds the §16.5 dated decision-log entry block
+    entry_fields: [Decision, Context, Reasoning, Approved By, Impacted Files, Follow-Up Needed]
+
+  - id: memory_entry
+    spec: "§18.6"
+    file_type: template
+    applies_to: /templates/memory-entry-template.md
+    content_source: design-spec/content/templates/memory-entry-template.md
+    sections: [Purpose, When to Use, Template, Completion Checklist, Notes]
+    # `## Template` embeds the §16.2 dated memory entry block (seven §20.3 fields)
+    entry_fields: [Type, Summary, Source, Confidence, Owner, Review Date, Notes]
+
+  - id: user_guide
+    spec: "§16.6"
+    file_type: template
+    applies_to: /templates/user-guide-template.html
+    content_source: design-spec/content/templates/user-guide-template.html
+    # ordered <h2> list of the generated guide (§16.6 content sections)
+    sections: [What openaos Is, Your Workflows, Building a Workflow, Refining a Workflow, The Proceed Gate and Safety Model, Governance Rhythms, Memory and What Gets Remembered, Sending Feedback, Change Log]
+
+# ---------------------------------------------------------------------------
+# Workspace-root scaffolds (§16.10) — not §16.4 template files: they open with
+# an HTML comment and carry pointers, so they have no frontmatter and no `##`
+# skeleton. §18.7 checks only that these required anchors are present.
+# ---------------------------------------------------------------------------
+root_scaffold:
+  - id: root_claude_md
+    spec: "§16.10"
+    content_source: design-spec/content/root/CLAUDE.md
+    ships_to: /CLAUDE.md
+    required_anchors:
+      - openaos
+      - "@AGENTS.md"
+
+  - id: root_agents_md
+    spec: "§16.10"
+    content_source: design-spec/content/root/AGENTS.md
+    ships_to: /AGENTS.md
+    required_anchors:
+      - Proceed
+      - governance
+      - refine-workflow
 
 # ---------------------------------------------------------------------------
 # Governance workflows (§17) — enumerable fields only (paths, purposes, review

@@ -2,7 +2,7 @@
 title: Learning Assistant — Builder Spec
 file_type: workflow_spec
 slug: learning-assistant
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 ---
 # Learning Assistant — Builder Spec
 
@@ -72,18 +72,26 @@ between sessions.
   weak spots) as a data file the workflow updates each session.
 - Honest difficulty: name what is hard and revisit weak spots; never mark a
   topic learned on the user's behalf.
+- Render a session recap as HTML using the shipped
+  `learning-assistant-report-template.html` (§18.2, §12.5 condition met: a
+  recurring, structured, user-facing report), saved to
+  `/outputs/learning-assistant-<date>.html`; the progress note itself stays
+  a markdown data file.
 ```
 
 ## Default Skeleton
 
 Per §16.3 section: **Inputs** — goal, starting point, materials, the
 progress note. **Steps** — recall, teach one increment (in the chosen
-style), check understanding, practice, recap, update progress. **Decision
-Points** — advance vs. revisit on a failed check; when to propose adjusting
-the plan. **Approval Gates** — none beyond §3 (progress notes append;
-nothing external). **Outputs** — the updated progress note; any produced
-exercises in /outputs. **Completion Criteria** — the user can do the thing
-the goal named, demonstrated, not assumed.
+style), check understanding, practice, recap, update progress, render the
+session recap as HTML. **Decision Points** — advance vs. revisit on a
+failed check; when to propose adjusting the plan. **Approval Gates** — none
+beyond §3 (progress notes append; nothing external). **Outputs** — the
+updated progress note (stays markdown); any produced exercises in
+/outputs; a session recap rendered as HTML using
+`/templates/learning-assistant-report-template.html`, saved to
+`/outputs/learning-assistant-<date>.html`. **Completion Criteria** — the
+user can do the thing the goal named, demonstrated, not assumed.
 
 ## Notes
 

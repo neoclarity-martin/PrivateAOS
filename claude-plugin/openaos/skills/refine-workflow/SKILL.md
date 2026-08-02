@@ -31,7 +31,8 @@ build-workflow, pointed at an existing workflow.
 ## Rules
 
 - **One workflow per session** — edit exactly one workflow file plus its
-  change-log entry; nothing else, ever.
+  change-log entry; nothing else, ever. (Exception: **Batch Refinement
+  Mode**, below.)
 - **Approval gates are load-bearing** — you may add or tune gates, but a
   change that removes or weakens one must be called out explicitly in the
   preview, never buried in a larger diff.
@@ -43,3 +44,25 @@ build-workflow, pointed at an existing workflow.
   approval gates, bypassing the feedback scrub-preview-Proceed sequence, or
   weakening the governance.md rules: no — decline with the reason and offer
   the nearest compliant alternative. The governance layer is not removable.
+
+## Batch Refinement Mode (design spec §13.4)
+
+The exception to "one workflow per session": a single cross-cutting policy
+change that touches many workflows plus governance.md at once (for example,
+standardizing report output across every report-producing workflow). Use it
+only when the user's request is genuinely one policy applied everywhere,
+not several unrelated single-workflow refinements bundled together.
+
+1. **Elicit upfront** — which workflows are in scope, how to backfill any
+   workflow not yet conforming, and any shared structure being introduced
+   (e.g., a template family). One elicitation for the whole batch.
+2. **Propose one consolidated diff** — every affected file's change shown
+   together, so the user reviews the policy once, not file-by-file.
+3. **Rewrite on a single `Proceed`** — one exact-word approval authorizes
+   the whole consolidated diff; anything short leaves every file untouched.
+4. **Log per file** — each changed file still gets its own dated Change
+   Notes / change-log entry; batching the approval never batches the audit
+   trail.
+
+Every other rule above still applies per file — approval gates stay
+load-bearing, governance workflows stay within their refinable limits.

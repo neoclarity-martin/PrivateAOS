@@ -38,7 +38,9 @@ that co-designs a tailored, best-practice workflow. One engine, two modes:
 3. **Preview** — show the complete drafted workflow file.
 4. **Write on `Proceed`** — write `/workflows/[slug].md` only when the user
    types exactly `Proceed`; anything short is a hold. Append a creation entry
-   to `/logs/change-log.md`. Never edit any other file.
+   to `/logs/change-log.md`. Never edit any other file, with one exception:
+   in design-new mode, when the report-output condition below is met, also
+   write the one new `/templates/[slug]-report-template.html` it names.
 5. **Hand off** — offer a first run; mention refine-workflow for later
    adjustments.
 
@@ -56,6 +58,35 @@ Approval Gates section must be consistent with `/governance/governance.md` —
 sending, publishing, deleting, moving (except into `/inbox/processed` under
 an approved triage workflow), spending, and irreversible changes always
 require `Proceed`.
+
+## Report-output scaffolding
+
+**Instantiate mode:** already decided per use case. inbox-triage,
+organizer, and learning-assistant reference their fixed
+`/templates/[slug]-report-template.html` in Outputs/Steps — that file was
+already shipped to `/templates` by setup-openaos, so you only wire the
+reference, you never write or copy the template file yourself.
+research-assistant and writing-assistant have no such template; their
+Outputs stay free-form/user-chosen.
+
+**Design-new mode:** apply this condition yourself while drafting Outputs:
+
+- **Recurring, structured, user-facing report** (same shape every run, read
+  as a summary) → the workflow gets a matching
+  `/templates/[slug]-report-template.html`, embedding the canonical report
+  CSS verbatim (copy the `<style>` block byte-for-byte from any existing
+  `content/templates/*-report-template.html` file in this plugin — never
+  re-derive the palette), Outputs/Steps wired to it, and an
+  `/outputs/[slug]-<date>.html` path. This is the default; offer an
+  explicit opt-out only for a genuinely one-off workflow.
+- **Free-form content or a shape the user picks per run** (drafted prose, a
+  research brief whose form varies) → no template; say so in Outputs in
+  plain language instead.
+
+State the decision to the user in plain language during Propose. When the
+condition is met, the template file is the one exception to "never edit any
+other file" (Flow step 4) — it is written alongside the workflow file, on
+the same `Proceed`.
 
 ## Pattern library (design-new mode)
 

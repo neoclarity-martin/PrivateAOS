@@ -51,13 +51,23 @@ Files:
 - `/memory/user-profile.md`, `preferences.md`, `people.md`, `decisions.md` —
   empty per the memory schema (or seeded per step 1, each seed shown)
 - `/logs/decision-log.md`, `change-log.md`, `feedback-log.md` — empty
-- `/templates/status-report-template.md`, `decision-entry-template.md`,
-  `approval-request-template.md`, `memory-entry-template.md` — from
-  `content/templates/`
+- `/templates/decision-entry-template.md`, `approval-request-template.md`,
+  `memory-entry-template.md` — from `content/templates/`
+- `/templates/daily-startup-report-template.html`,
+  `end-of-day-carryover-template.html`,
+  `weekly-review-report-template.html`,
+  `monthly-review-report-template.html`,
+  `inbox-triage-report-template.html`, `organizer-report-template.html`,
+  `learning-assistant-report-template.html` — all seven HTML report
+  templates, from `content/templates/`, shipped upfront regardless of which
+  use-case workflows are selected in step 4 (build-workflow only wires an
+  instantiated use case to its already-shipped template; it never writes
+  one)
 - `/docs/user-guide.html` — generated from
   `content/templates/user-guide-template.html`, listing what is actually
   installed
-- `/CLAUDE.md` and `/AGENTS.md` — from `templates/`; if either exists,
+- `/CLAUDE.md` and `/AGENTS.md` — from `content/root/` (the one place
+  `content/X` maps to the workspace root, not `/X`); if either exists,
   propose the openaos block as an addition instead of creating the file
 
 Then ask the user to type exactly `Proceed`.

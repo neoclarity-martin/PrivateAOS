@@ -3,8 +3,8 @@ title: OpenAOS Design Specification
 file_type: design_spec
 project: OpenAOS
 created_date: 2026-06-02
-last_updated: 2026-07-17
-openaos_version: 3.0.0
+last_updated: 2026-07-22
+openaos_version: 3.1.0
 status: design_ready_for_generation
 important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
 ---
@@ -165,7 +165,7 @@ openaos-revision-history.md
 
 Entries there are maintained in reverse chronological order (newest first); new entries are added at the top, as rows in a single table (`openaos_version | Date | Change`). The table is a log of completed cycles, not a one-row-per-unique-version index — the same `openaos_version` may appear in consecutive rows when multiple cycles complete against it without a content change, each with its own date and change description.
 
-Every completed §36.1 Design Readiness Review, §36.2 openaos Generation, or §36.3 Claude Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec and the plugin. `openaos_version` increments only when a cycle actually changes the specification (or, for §36.3, the packaged framework) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `openaos_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
+Every completed §36.1 Design Readiness Review or §36.2 Plugin Generation cycle gets a row, so the file is a single place to see the current state of the spec and the plugin. `openaos_version` increments only when a cycle actually changes the specification (or, for §36.2, the packaged plugin) — a full §36.1 consistency-review cycle is one increment and one consolidated row when it resolves at least one inconsistency, not one per re-read iteration, however many iterations the loop takes. A cycle that completes with no changes (for example, a Design Readiness Review that surfaces no inconsistencies, or a Plugin Generation that produces no diff from the prior run) still gets a row describing that outcome, logged against the current `openaos_version` rather than incrementing it. A structural change (for example, a document restructure) is its own separate increment.
 
 ---
 
@@ -297,7 +297,7 @@ The project is released openly on Github. Openness reinforces key principles tha
 The project is hosted at:
 
 ```text
-https://github.com/neoClarity-AI/Open-AOS-Factory
+https://github.com/neoClarity-AI/OpenAOS
 ```
 
 The contribution model follows directly from Section 1.6.1 (design spec as the single source of truth). The repository accepts pull requests **only against the design specification**. The Claude plugin is not accepted as a direct contribution; it is regenerated and published by neoClarity from the approved spec, so that quality and safety can be maintained and every released artifact provably traces back to a reviewed design. Although you can generate your own plugin, the way to change the "official" neoClarity plugin is to change the spec.
@@ -418,7 +418,8 @@ root because deliverables are user-facing, not system plumbing. Rules:
 - §14.8 classification: /outputs is DATA — never touched by a plugin update.
   Writing a new file there is Level 1 safe-autonomous (§3.3); modifying or
   archiving an existing output follows the normal §3 rules.
-- Naming: YYYY-MM-DD-[slug].md, or the appropriate extension (§29).
+- Naming: [slug]-<date>, with the appropriate extension for the artifact
+  type (§29) — for example /outputs/weekly-review-2026-07-22.html.
 ```
 
 # 6. Global Files
@@ -441,10 +442,16 @@ interview):
 /workflows/weekly-review.md
 /workflows/monthly-review.md
 /workflows/feedback.md
-/templates/status-report-template.md
 /templates/decision-entry-template.md
 /templates/approval-request-template.md
 /templates/memory-entry-template.md
+/templates/daily-startup-report-template.html
+/templates/end-of-day-carryover-template.html
+/templates/weekly-review-report-template.html
+/templates/monthly-review-report-template.html
+/templates/inbox-triage-report-template.html
+/templates/organizer-report-template.html
+/templates/learning-assistant-report-template.html
 /docs/user-guide.html
 ```
 
@@ -543,12 +550,17 @@ Run once after install (and re-runnable safely — 8.2):
 2. Preview the scaffold — list every folder (§4) and file (§6) that will be
    created, explicitly noting that nothing exists yet and nothing is
    overwritten.
-3. Create on Proceed — scaffold the §4 folders and §6 files: governance.md
-   rendered per §16.1; the five governance workflows rendered per §17 and
-   the §16.3 schema; memory and log data files created empty (or seeded from
-   the interview — never fabricated); the §18 templates; /CLAUDE.md and
-   /AGENTS.md per §16.10; the User Guide generated per §16.6. Log setup to
-   /logs/change-log.md.
+3. Create on Proceed — scaffold the §4 folders and §6 files, shipping the
+   plugin's `content/` verbatim: governance.md per §16.1 (including the
+   shipped "Output reports render as HTML" Local Rule); the five governance
+   workflows per §17 and the §16.3 schema; memory and log data files created
+   empty (or seeded from
+   the interview — never fabricated); the §18 templates — the three
+   interaction templates (§18.3, §18.5, §18.6) plus all seven §18.2 HTML
+   report templates (the four governance ones plus inbox-triage, organizer,
+   and learning-assistant, shipped upfront regardless of which use cases are
+   selected in step 4); /CLAUDE.md and /AGENTS.md per §16.10; the User Guide
+   generated per §16.6. Log setup to /logs/change-log.md.
 4. Use-case menu — present the five §7B use cases plus the design-new
    option, and hand off to build-workflow for each selection. Zero
    selections is valid: every use-case workflow is interview-authored, so
@@ -632,8 +644,12 @@ consideration only.
 ```
 
 Guardrails: the engine writes exactly one new workflow file plus its log
-entry per build — it never edits governance files, other workflows, memory,
-or templates as a side effect (§14.8). A build that would overwrite an
+entry per build — it never edits governance files, other workflows, or
+memory as a side effect (§14.8). The one templates exception is §12.5: when
+the report-output condition is met, the build also writes one new
+`/templates/[slug]-report-template.html` (design-new mode only —
+instantiate mode's use-case templates are already shipped at setup, §8.1,
+and are referenced, never (re)written). A build that would overwrite an
 existing workflow file is Level 2 twice over: it requires the overwrite
 approval *and* the engine recommends `refine-workflow` instead. Generated
 workflows must carry their approval gates in the §16.3 Approval Gates
@@ -680,6 +696,38 @@ This is the capability that lets users bring AI into their own
 value-creating work, not just the activities openaos shipped with. Its
 outputs are ordinary user-owned workflows: covered by the drift invariant
 and refinable via `refine-workflow`.
+
+## 12.5 Report-Output Scaffolding
+
+One condition decides whether a workflow gets a fixed HTML report template
+(§18.2):
+
+```text
+When the workflow's Outputs are a recurring, structured, user-facing
+report — the same shape every run, meant to be read as a summary — it gets
+a matching /templates/[slug]-report-template.html (embedding the §18.1
+canonical CSS verbatim), Outputs/Steps wired to it, and an
+/outputs/[slug]-<date>.html path. This is the default; an explicit opt-out
+is offered for a genuinely one-off workflow.
+
+When Outputs are free-form content (prose, drafted messages) or a shape the
+user selects per run (a research brief vs. a comparison table), no
+template — the workflow's Outputs section says so in plain language
+instead.
+```
+
+The condition is already decided for every **instantiate**-mode use case:
+inbox-triage, organizer, and learning-assistant meet it; research-assistant
+and writing-assistant do not (§18.2 table). Their three fixed templates are
+shipped once, upfront, by **setup-openaos** (§8.1) alongside the four
+governance templates — not scaffolded per build — so instantiating one of
+these use cases only wires the workflow's Outputs/Steps to the
+already-shipped template; it never writes a template file (§12.2
+guardrails). In **design-new** mode there is no pre-shipped template to
+point at, so the engine applies the condition itself during Propose: when
+met, it writes the one new `/templates/[slug]-report-template.html` as part
+of that build (the §12.2 exception) and wires Outputs/Steps to it; when not
+met, or when the user opts out, it writes none.
 
 ---
 
@@ -743,6 +791,35 @@ approval gates, bypass the §17.5 scrub-preview-Proceed sequence, or weaken
 the §3 rules it enforces. A requested change that would cross that boundary
 is declined with the reason, and the nearest compliant alternative is
 offered.
+
+## 13.4 Batch Refinement Mode
+
+The §13.2 default — one workflow per session — covers the common case: a
+single workflow's friction. It does not fit a cross-cutting policy change
+that touches many workflows plus governance.md at once (for example,
+standardizing report output across every report-producing workflow). Batch
+mode is the sanctioned exception, not a replacement for the default:
+
+```text
+1. Elicit upfront — which workflows are in scope, how to backfill any
+   workflow not yet conforming to the new policy, and (when relevant) the
+   shared structure being introduced (e.g., a template family). One
+   elicitation covers the whole batch, not one per file.
+2. Propose one consolidated diff — every affected file's change, shown
+   together, so the user reviews the policy change once rather than
+   file-by-file.
+3. Rewrite on a single Proceed — one exact-word approval authorizes the
+   whole consolidated diff. Anything short of it leaves every file
+   untouched.
+4. Log per file — each changed file still gets its own dated Change Notes
+   / change-log entry (§14.8); batching the approval never batches the
+   audit trail.
+```
+
+Every §13.2 rule still applies per file (approval gates stay load-bearing,
+governance workflows stay within the §13.3 boundary); batch mode changes
+only how the interview and the approval gate are structured, not what is
+allowed to change.
 
 ---
 
@@ -895,16 +972,22 @@ load-bearing rules of the 2.x Security and Memory agents and the 2.x global
 permissions seed (old §16.11) — the coverage of that fold is verified by the
 Phase D governance coverage table.
 
+Canonical body: `design-spec/content/governance/governance.md`; this section
+is its contract (meaning, governing rule, and the `vocabulary.yaml`
+action-list linkage). The plugin copy is byte-identical (§28.1, §18.7).
+
 Generation rules:
 
 ```text
 - governance.md restates nothing the spec does not say: its Proceed Gate
   section renders §3.1, its Permission Model section renders §3.2–§3.4 (the
   action lists come from vocabulary.yaml, the source of truth), its Memory
-  Boundaries section renders §20.2–§20.3, and its Escalation section renders
-  the §3 escalation-to-user rules. Workspace-specific tightening (never
-  loosening) is recorded in the Local Rules section, not by editing the
-  rendered sections.
+  section renders §20.2–§20.3, its Workflows section renders the §14.8/§13
+  rule that `/workflows` files change only via refine-workflow or a plugin
+  update, its Logs section renders the §19 append-only rule for `/logs`, and
+  its Escalation section renders the §3 escalation-to-user rules.
+  Workspace-specific tightening (never loosening) is recorded in the Local
+  Rules section, not by editing the rendered sections.
 - Tools and integrations follow a default-deny rule: a tool or integration
   the user has not explicitly approved is treated as approval-required
   (Level 2) the first time a workflow wants to use it; the grant is recorded
@@ -915,6 +998,13 @@ Generation rules:
 - The governance layer is not removable: setup always installs this file and
   the five §17 governance workflows, and no sanctioned path deletes or
   disables them.
+- Setup ships one Local Rule by default, "Output reports render as HTML":
+  the daily-startup, weekly-review, monthly-review, and end-of-day reports,
+  plus the inbox-triage, organizer, and learning-assistant reports when
+  those use-case workflows are built, render as HTML per §18.2, saved to
+  `/outputs` as a `.html` file; logs and memory are unaffected and stay
+  markdown. It is recorded as a dated Local Rules entry (with its own Change
+  Notes entry) like any other shipped default — not silently assumed.
 ```
 
 Frontmatter (§15.3) plus this ordered section skeleton (enumerated as
@@ -943,9 +1033,17 @@ the exact-word rule — anything short of the exact word `Proceed` is a hold]
 from vocabulary.yaml; Level 3 defined by exclusion; the tool/integration
 default-deny rule]
 
-## Memory Boundaries
+## Memory
 [§20.2–§20.3 rendered: the four memory files and their scopes; what is
 memory-worthy; sensitive entries require explicit approval]
+
+## Workflows
+[workflow files in /workflows change only via refine-workflow or a plugin
+update, never as a side effect of running one]
+
+## Logs
+[logs in /logs accumulate under these rules and are never regenerated or
+overwritten]
 
 ## Escalation to the User
 [when a workflow must stop and ask: approval-required actions, ambiguity
@@ -954,7 +1052,8 @@ sensitive information, or irreversible changes; failed actions are reported
 when relevant and logged when they affect future behavior]
 
 ## Local Rules
-[workspace-specific tightening the user has approved; empty at setup]
+[workspace-specific tightening the user has approved; ships with one default
+entry, "Output reports render as HTML" (see generation rules above)]
 
 ## Change Notes
 
@@ -997,6 +1096,11 @@ Entries under `## Memory Entries` use this dated entry block — the seven §20.
 ```
 
 ## 16.3 Workflow File Schema
+
+Canonical bodies of the five governance workflows:
+`design-spec/content/workflows/*.md`; this section and §17.1–§17.5 are their
+contract (meaning and governing rule). The plugin copies are byte-identical
+(§28.1, §18.7).
 
 Workflow files should follow:
 
@@ -1093,8 +1197,12 @@ Content sections, in order: What openaos Is; Your Workflows (the installed
 list); Building a Workflow (the §12 modes, in user terms); Refining a
 Workflow (§13); The Proceed Gate and Safety Model (§3, §16.1); Governance
 Rhythms (§17); Memory and What Gets Remembered (§20); Sending Feedback
-(§17.5); Change Log. The packaged template is
-`content/templates/user-guide-template.html` in the plugin (§28).
+(§17.5); Change Log.
+
+Canonical body: `design-spec/content/templates/user-guide-template.html`;
+this section is its contract. The packaged template is
+`content/templates/user-guide-template.html` in the plugin, a byte-identical
+copy (§28.1, §18.7).
 
 ## 16.7 Feedback Log Schema
 
@@ -1117,7 +1225,7 @@ file_type: feedback_log
 ### YYYY-MM-DD — [Title]
 
 **Type:** bug | enhancement
-**Status:** staged | approved | sent | discarded
+**Status:** captured | staged | sent | discarded
 **Scrub:** pending | done (date)
 **Summary:** [what was observed or proposed, scrubbed of names, file
 content, and memory quotes before send]
@@ -1140,7 +1248,7 @@ Entries in `/logs/change-log.md` (file_type `change_log`, a data file per §14.8
 
 Setup provisions `/CLAUDE.md` and `/AGENTS.md` (file_type
 `project_instructions`) at the workspace root from the plugin's
-`templates/` (§28), non-destructively: if either file already exists, setup
+`content/root/` (§28), non-destructively: if either file already exists, setup
 never overwrites it — it proposes the openaos block as an addition, applied
 only on `Proceed`.
 
@@ -1158,6 +1266,16 @@ only on `Proceed`.
 These files carry pointers, not rules: the standing rules live in
 governance.md (§16.1), so the root files stay small and stable.
 
+Canonical bodies: `design-spec/content/root/{CLAUDE.md,AGENTS.md}`; this
+section is their contract (the required anchors checked by §18.7). The plugin
+copies live at `content/root/` and are byte-identical (§28.1).
+
+**Content→workspace mapping exception.** Every other `content/X` in the
+plugin maps to workspace `/X`. `content/root/` maps to the workspace **root**
+(`/`), not `/root` — the setup behavior described above. This is the one
+place the `content/X → /X` model does not hold; it is recorded here and in
+`setup-openaos` so it is not mistaken for drift.
+
 
 ---
 
@@ -1169,6 +1287,11 @@ setup (Section 6) and defined here. They are the runnable half of governance:
 carry the operating rhythms and the feedback channel. They absorb the
 load-bearing content of the 2.x operating rhythms (old Section 25) and the
 2.x Review and Feedback agents.
+
+Canonical bodies: `design-spec/content/workflows/{daily-startup,end-of-day,
+weekly-review,monthly-review,feedback}.md`; §17.1–§17.5 are their contract
+(purpose, review question, inputs/outputs, and governing rule). The plugin
+copies are byte-identical (§28.1, §18.7).
 
 Common rules:
 
@@ -1194,10 +1317,14 @@ Common rules:
 
 Help the user start the day by reviewing priorities, commitments, inbox
 items, and recently processed inbox items. The run produces a startup brief
-(rendered with the §18.1 status-report template where useful) whose sections
-are the four `brief_categories` in file-skeletons.yaml, in order: items
-processed, items still unresolved, where items were promoted to, and items
-requiring user approval (Section 31).
+that opens with the four inbox `brief_categories` in file-skeletons.yaml, in
+order — items processed, items still unresolved, where items were promoted
+to, and items requiring user approval (Section 31) — and closes with two
+further sections, "What matters today" (the review question) and
+"Completion". The full ordered section list is the `html_report_daily_startup`
+skeleton in file-skeletons.yaml. Rendered as HTML using
+`/templates/daily-startup-report-template.html` (§18.2), saved to
+`/outputs/daily-startup-<date>.html`.
 
 ## 17.2 End-of-Day Workflow
 
@@ -1206,8 +1333,11 @@ must not be lost?**
 
 Capture what changed today, unresolved obligations, decisions made,
 follow-ups needed, and next-day carryover. Decisions surfaced here are
-recorded via the §18.3 decision entry template; carryover feeds the next
-daily startup.
+recorded via the §18.3 decision entry template (staying markdown in
+`/logs/decision-log.md` — logs are append-only, not reports); the carryover
+note feeds the next daily startup, rendered as HTML using
+`/templates/end-of-day-carryover-template.html` (§18.2), saved to
+`/outputs/end-of-day-<date>.html`.
 
 ## 17.3 Weekly Review Workflow
 
@@ -1218,7 +1348,10 @@ Review commitments, decisions, unresolved items, workflow performance, stale
 memory signals, and next-week priorities. The weekly review keeps the
 workspace operationally clean and prevents loose ends from becoming forgotten
 obligations. Memory receives a lightweight review here (§20.3); items that
-look stale are flagged for the monthly review, not silently changed.
+look stale are flagged for the monthly review, not silently changed. The
+follow-up list is rendered as HTML using
+`/templates/weekly-review-report-template.html` (§18.2), saved to
+`/outputs/weekly-review-<date>.html`.
 
 Workflow performance review is observational: if a workflow produced friction
 this week, the run suggests a `refine-workflow` session (§13) — a
@@ -1235,13 +1368,16 @@ structural clutter, and cleanup needs; and review whether the system is still
 aimed at the right goals and whether the installed workflows still support
 the user's priorities. The monthly review keeps the workspace structurally
 healthy and aligned with larger goals, so it doesn't stay well-maintained but
-aimed at outdated priorities.
+aimed at outdated priorities. The health report is rendered as HTML using
+`/templates/monthly-review-report-template.html` (§18.2), saved to
+`/outputs/monthly-review-<date>.html`.
 
 The monthly review also:
 
 ```text
 - Regenerates the User Guide (/docs/user-guide.html, §16.6) as a projection,
-  preserving its embedded change log.
+  preserving its embedded change log. The User Guide stays HTML at its own
+  fixed path and is unaffected by the §18.2 report templates.
 - Runs the feedback self-examination: reviews recent friction, errors, and
   preferences for enhancement candidates and presents them for
   accept / edit / discard; accepted items enter the §17.5 feedback flow.
@@ -1279,29 +1415,104 @@ privacy boundary of the whole system and is not weakened by refinement.
 
 Every generated AOS should include these global templates.
 
-## 18.1 Status Report Template
+## 18.1 Canonical Report CSS
 
-Create:
+Every §18.2 HTML report template embeds this exact CSS block verbatim inside
+its own `<style>` tag — one canonical palette and card system, so a style
+update touches one place (this section) and is carried into every template
+by copy, not by reference (§18.2's templates must open standalone, with no
+external stylesheet, per the non-destructive/self-contained rule). Reports
+are HTML; logs (`/logs/*.md`) and memory (`/memory/*.md`) are unaffected and
+stay markdown.
 
-```text
-/templates/status-report-template.md
+```css
+:root {
+  --accent: #2563eb; --success: #16a34a; --warning: #d97706; --danger: #dc2626; --muted: #6b7280;
+  --bg: #f8fafc; --card-bg: #ffffff; --border: #e2e8f0; --text: #1e293b;
+}
+body { font-family: system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: var(--text); background: var(--bg); }
+header.report-header { border-bottom: 2px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+header.report-header h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+.question { color: var(--accent); font-weight: 600; margin: 0.25rem 0 0.5rem; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+.meta span { margin-right: 1.25rem; }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.card h2 { margin-top: 0; font-size: 1.05rem; }
+.card.warn { border-left-color: var(--warning); }
+.card.danger { border-left-color: var(--danger); }
+.card.success { border-left-color: var(--success); }
+.card.muted { border-left-color: var(--muted); }
+.badge { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 0.15em 0.6em; border-radius: 999px; margin-left: 0.5em; }
+.badge-warn { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.badge-success { background: #dcfce7; color: #166534; }
+p.none, li.none { color: var(--muted); font-style: italic; }
+code { background: #f1f5f9; padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.9em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 0.35em 0.6em; border-bottom: 1px solid var(--border); font-size: 0.95em; }
+footer { color: var(--muted); font-size: 0.85rem; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem; }
 ```
 
-Purpose:
+Card color meaning (normative across every §18.2 template): `accent` /
+unclassed = neutral or informational; `warn` = needs attention or a
+proposal awaiting `Proceed`; `danger` = urgent, at-risk, or a governance
+concern; `success` = completed or processed; `muted` = empty, flagged-only,
+or declined. Empty sections render as `<p class="none">None.</p>` rather
+than being omitted, so the fixed section order stays visible.
+
+## 18.2 HTML Report Templates
+
+Retires the 2.x `status-report-template.md`: every recurring, structured,
+user-facing workflow report ships as a self-contained HTML file instead
+(card layout, color-coded per §18.1, the §18.1 CSS embedded verbatim), so it
+opens standalone in a browser with no external dependency. This is a
+Local Rule shipped by default (§16.1) — the governance layer records it,
+not this section alone.
+
+Seven fixed templates ship in `content/templates/` (governance four +
+end-of-day, plus the three use-case workflows whose output is a recurring
+structured report rather than free-form content):
+
+| Template file | Workflow | Rendered path |
+|---|---|---|
+| `daily-startup-report-template.html` | daily-startup (§17.1) | `/outputs/daily-startup-<date>.html` |
+| `end-of-day-carryover-template.html` | end-of-day (§17.2) | `/outputs/end-of-day-<date>.html` |
+| `weekly-review-report-template.html` | weekly-review (§17.3) | `/outputs/weekly-review-<date>.html` |
+| `monthly-review-report-template.html` | monthly-review (§17.4) | `/outputs/monthly-review-<date>.html` |
+| `inbox-triage-report-template.html` | inbox-triage (§7B) | `/outputs/inbox-triage-<date>-<run>.html` (inbox-triage may run more than once a day) |
+| `organizer-report-template.html` | organizer (§7B) | `/outputs/organizer-<date>.html` |
+| `learning-assistant-report-template.html` | learning-assistant (§7B) | `/outputs/learning-assistant-<date>.html` |
+
+Each template's `<section class="card ...">` order matches its workflow's
+Outputs section exactly (empty sections say "None", never omitted); a
+`<!-- -->` comment block at the top of each file documents which section
+maps to which workflow step and the card-color meaning for that template.
+Two use-case workflows are deliberately excluded: research-assistant's
+output shape is user-chosen at build time (§7B, no fixed template — see
+its builder spec Notes), and writing-assistant's deliverable is prose, not
+a structured report.
+
+Canonical bodies: `design-spec/content/templates/*-report-template.html`;
+this section is their contract (which template serves which workflow, the
+rendered path, and the card-section order). The plugin copies are
+byte-identical (§28.1, §18.7).
+
+Generation rules:
 
 ```text
-Give the user a concise summary of current priorities, active projects, pending approvals, recent decisions, next actions, and processed inbox items.
-```
-
-Body skeleton:
-
-```markdown
-## Priorities
-## Active Projects
-## Pending Approvals
-## Recent Decisions
-## Next Actions
-## Processed Inbox
+- setup-openaos ships all seven fixed templates into /templates at setup
+  (§8.1) — the governance four plus inbox-triage, organizer, and
+  learning-assistant — regardless of which use-case workflows the user
+  actually builds that session; build-workflow's instantiate mode only
+  wires the workflow's Outputs/Steps to the already-shipped file (§12.5),
+  it never writes one.
+- build-workflow's design-new mode is the one path that writes a new
+  template file: when the §12.5 condition is met for a custom workflow, it
+  scaffolds that workflow's own /templates/[slug]-report-template.html as
+  part of the build.
+- Every template is a definition file (§14.8): shipped or scaffolded fixed,
+  updated only by a plugin update or (for a design-new template)
+  refine-workflow — never hand-edited outside that.
 ```
 
 ## 18.3 Decision Entry Template
@@ -1319,6 +1530,9 @@ Provide a standard format for recording decisions in global or workflow-level de
 ```
 
 This template embeds the §16.5 decision-log entry block; it defines no new schema of its own.
+
+Canonical body: `design-spec/content/templates/decision-entry-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
 
 ## 18.5 Approval Request Template
 
@@ -1346,6 +1560,9 @@ Body skeleton (the five §3.1 elements as labeled fields):
 **Approval:** type exactly `Proceed` to authorize
 ```
 
+Canonical body: `design-spec/content/templates/approval-request-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
+
 ## 18.6 Memory Entry Template
 
 Create:
@@ -1361,6 +1578,90 @@ Standardize how important preferences, facts, decisions, people, projects, and w
 ```
 
 This template embeds the §16.2 dated memory entry block (the seven §20.3 fields); it defines no new schema of its own.
+
+Canonical body: `design-spec/content/templates/memory-entry-template.md`;
+this section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
+
+## 18.7 Content Source Validation
+
+The files under `design-spec/content/` are the canonical bodies of everything
+the plugin ships verbatim (§35), and they are meant to be **hand-edited
+directly**. Structural validation is therefore normative, not optional:
+`scripts/validate-content.py` checks the criteria below, and it must pass
+before a spec change or plugin regeneration is considered complete (§27, §34).
+
+**All markdown templates** (governance, the five workflows, the three §18.3 /
+§18.5 / §18.6 interaction templates):
+
+```text
+- Valid YAML frontmatter carrying title, file_type, openaos_version,
+  created_date, last_updated, status; file_type exists in vocabulary.yaml and
+  matches the file's expected type; openaos_version is a valid version on the
+  single track and never ahead of the current spec version (§14.2: a file
+  records the version it was rendered from, so an unchanged file may lag).
+- ## section headings present, non-empty, and in the exact order of the
+  file's file-skeletons.yaml skeleton — none missing, extra, empty, or
+  reordered.
+- Required in-section markers present where the skeleton's `required_markers`
+  enumerates them (e.g. governance Permission Model must carry its Level 1 /
+  Level 2 / Level 3 leads, which are bold leads rather than ### headings).
+```
+
+**governance.md specifically:**
+
+```text
+- Permission Model Level 1 and Level 2 action lists equal vocabulary.yaml —
+  the consistency guard against the rendered text freezing out of date.
+- The default "Output reports render as HTML" Local Rule is present (§16.1).
+```
+
+**Workflow files specifically:**
+
+```text
+- The Outputs section names a real content/templates/*-report-template.html
+  file and an /outputs/[slug]-<date>.html path (report-producing workflows).
+- Report section order matches the workflow's brief_categories in
+  file-skeletons.yaml where those are defined.
+```
+
+**HTML templates** (the seven §18.2 reports plus the §16.6 user guide):
+
+```text
+- Parses as well-formed HTML and is self-contained: no external stylesheet,
+  script, font, or image references and no CSS @import.
+- The seven §18.2 reports embed the §18.1 canonical CSS verbatim; the §16.6
+  user guide is a document, not a card report, so it carries its own embedded
+  layout CSS instead.
+- Report <section class="card …"> <h2> order equals the file's html_report_*
+  sections list (a heading may trail a badge span); card classes drawn only
+  from {accent or unclassed, warn, danger, success, muted}; the top-of-file
+  <!-- --> mapping comment is present; empty sections use <p class="none">.
+- The user guide's <h2> order equals its file-skeletons user_guide sections.
+```
+
+**Root scaffolds** (`content/root/CLAUDE.md`, `content/root/AGENTS.md`) — not
+standard templates:
+
+```text
+- No YAML-frontmatter or section-skeleton check: they open with an HTML
+  comment and carry pointers, not the §16.4 schema. Instead the §16.10
+  required anchors are confirmed — CLAUDE.md names the workspace and includes
+  @AGENTS.md; AGENTS.md contains the Proceed-gate summary, the
+  governance-layer-not-removable statement, and the rule that workflows change
+  only via refine-workflow or a plugin update. The anchor phrases are listed
+  in file-skeletons.yaml `root_scaffold:`.
+```
+
+**Tree completeness:**
+
+```text
+- design-spec/content/ contains exactly the expected set of files — none
+  missing, no orphans — and each has a byte-identical copy under the plugin's
+  content/ (§28.1, §36.2 step 4).
+- No live reference to the retired status-report-template.md. Historical
+  records of the retirement itself (the governance Change Notes entry) are
+  expected and exempt.
+```
 
 ---
 
@@ -1463,6 +1764,11 @@ Approved decisions:
 - Catalog validation (Section 7A: V1, V3, V4) must pass before a spec change
   or a plugin regeneration is considered complete; validators accept an
   empty use-case roster.
+- Content-source validation (Section 18.7) must pass before a spec change or
+  a plugin regeneration is considered complete, alongside the catalog,
+  vocabulary, and version validators. The files under design-spec/content/
+  are hand-editable, so their structure is checked mechanically rather than
+  assumed.
 ```
 
 ---
@@ -1486,12 +1792,16 @@ claude-plugin/openaos/
   skills/refine-workflow/SKILL.md the §13 engine
   workflow-specs/[slug]/spec.md   the five §7B builder specs, byte-identical
                                   to their design-spec/workflow-specs sources
-  content/governance/governance.md      rendered §16.1 config (setup source)
+  content/governance/governance.md      the §16.1 config (setup source),
+                                        byte-identical to its
+                                        design-spec/content/ source
   content/workflows/[slug].md           the five §17 governance workflows,
-                                        rendered per §16.3
+                                        byte-identical copies
   content/templates/*.md|*.html         the §18 templates + the §16.6
-                                        user-guide template
-  templates/CLAUDE.md, templates/AGENTS.md   the §16.10 root scaffolds
+                                        user-guide template, byte-identical
+                                        copies
+  content/root/{CLAUDE.md,AGENTS.md}    the §16.10 root scaffolds,
+                                        byte-identical copies
   README.md                       install + quick start
 ```
 
@@ -1503,6 +1813,9 @@ claude-plugin/openaos/
 - plugin.json version equals openaos_version — the single version fact.
 - The packaged workflow-specs are copies: byte-identical to the design-spec
   sources, verified at packaging (empty diff).
+- The whole of content/ follows the same rule: byte-identical to
+  design-spec/content/, verified at packaging (empty diff, §36.2 step 4).
+  Spec→plugin is a copy, not a re-render.
 - The plugin repo path claude-plugin/openaos/ is what
   .claude-plugin/marketplace.json publishes as its source.
 - The feedback address baked into the packaged feedback workflow is
@@ -1525,8 +1838,10 @@ Approved decisions:
 - Do not use spaces in generated folder names.
 - Preserve human-readable names in frontmatter and headings.
 - Handle duplicates by appending a short numeric suffix, such as -2 or -3.
-- Standalone deliverables in /outputs use YYYY-MM-DD-[slug].md (or the
-  appropriate extension for the artifact type).
+- Standalone deliverables in /outputs use [slug]-<date> with the appropriate
+  extension for the artifact type (for example .html for §18.2 reports, .md
+  for markdown deliverables). Grouping by workflow keeps a workflow's runs
+  adjacent when the folder is sorted by name.
 ```
 
 ---

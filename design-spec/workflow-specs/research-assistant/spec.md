@@ -2,7 +2,7 @@
 title: Research Assistant — Builder Spec
 file_type: workflow_spec
 slug: research-assistant
-openaos_version: 3.0.0
+openaos_version: 3.1.0
 ---
 # Research Assistant — Builder Spec
 
@@ -88,3 +88,9 @@ claims cited, gaps stated.
 The failure mode to design against is fluent, uncited synthesis — plausible
 text with no traceable support. The findings/synthesis separation is the
 main guard; keep it even in the "short brief" form.
+
+No fixed HTML report template (§18.2, §12.5): the output shape is chosen at
+build time via `output-form` and can change per run (brief, detailed
+report, comparison table, talking points), so it fails the "same shape
+every run" condition — it is scaffolded/format-selected instead of shipped
+fixed.
