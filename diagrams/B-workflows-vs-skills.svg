@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .card { fill: #ffffff; stroke: #cfd6e0; rx: 6; }
+  </style>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="700" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">B — Workflows vs. skills</text>
+  <text x="40" y="70" class="m s">The distinction that governs everything else: who owns the file, and what is allowed to change it.</text>
+
+  <!-- divider -->
+  <line x1="500" y1="96" x2="500" y2="596" stroke="#e3e7ee" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- LEFT: skills -->
+  <rect x="40" y="96" width="430" height="500" rx="8" fill="#eefaf9" stroke="#1a9c96" stroke-width="2"/>
+  <text x="64" y="128" class="t" font-size="17" font-weight="600">SKILLS — plugin-owned machinery</text>
+  <text x="64" y="150" class="m xs">Shipped identical to every user. Never user-refinable.</text>
+  <text x="64" y="166" class="m xs">Changed only by a plugin update.</text>
+
+  <rect x="64" y="182" width="382" height="52" class="card"/>
+  <text x="80" y="204" class="t s" font-weight="600">setup-openaos</text>
+  <text x="80" y="222" class="m xs">Scaffolds the foundation once, then hands off to the builder.</text>
+  <rect x="64" y="242" width="382" height="52" class="card"/>
+  <text x="80" y="264" class="t s" font-weight="600">build-workflow</text>
+  <text x="80" y="282" class="m xs">One engine, two modes: instantiate a use case, or design-new.</text>
+  <rect x="64" y="302" width="382" height="52" class="card"/>
+  <text x="80" y="324" class="t s" font-weight="600">refine-workflow</text>
+  <text x="80" y="342" class="m xs">The one sanctioned way a definition file changes in place.</text>
+
+  <rect x="64" y="374" width="382" height="120" rx="6" fill="#ffffff" stroke="#1a9c96" stroke-dasharray="4 3"/>
+  <text x="80" y="398" class="t s" font-weight="600">Properties</text>
+  <text x="80" y="420" class="m xs">· Live in the plugin, not the workspace</text>
+  <text x="80" y="440" class="m xs">· Identical for every user — no local variation</text>
+  <text x="80" y="460" class="m xs">· Uninstalling removes them and leaves the workspace intact</text>
+  <text x="80" y="480" class="m xs">· Not covered by the drift invariant — not the user's files</text>
+
+  <rect x="64" y="508" width="382" height="70" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="80" y="530" class="t s" font-weight="600">To change one</text>
+  <text x="80" y="550" class="m xs">Edit the design spec → §36.1 readiness review →</text>
+  <text x="80" y="568" class="m xs">§36.2 regenerate the plugin → users update. See diagram G.</text>
+
+  <!-- RIGHT: workflows -->
+  <rect x="530" y="96" width="430" height="500" rx="8" fill="#fdf1ee" stroke="#e2725b" stroke-width="2"/>
+  <text x="554" y="128" class="t" font-size="17" font-weight="600">WORKFLOWS — user-owned artifacts</text>
+  <text x="554" y="150" class="m xs">Scaffolded into the workspace and tailored by interview.</text>
+  <text x="554" y="166" class="m xs">Refinable. Covered by the drift invariant.</text>
+
+  <rect x="554" y="182" width="382" height="72" class="card"/>
+  <text x="570" y="204" class="t s" font-weight="600">Use-case workflows — five predefined</text>
+  <text x="570" y="222" class="m xs">inbox triage · research assistant · writing assistant</text>
+  <text x="570" y="240" class="m xs">learning assistant · organizer / declutter — plus design-new</text>
+  <rect x="554" y="262" width="382" height="72" class="card"/>
+  <text x="570" y="284" class="t s" font-weight="600">Governance workflows — five, always installed</text>
+  <text x="570" y="302" class="m xs">daily-startup · end-of-day · weekly-review</text>
+  <text x="570" y="320" class="m xs">monthly-review · feedback</text>
+
+  <rect x="554" y="352" width="382" height="142" rx="6" fill="#ffffff" stroke="#e2725b" stroke-dasharray="4 3"/>
+  <text x="570" y="376" class="t s" font-weight="600">Properties</text>
+  <text x="570" y="398" class="m xs">· Live in the user's /workflows folder</text>
+  <text x="570" y="418" class="m xs">· Every one is interview-authored — nothing generic scaffolded</text>
+  <text x="570" y="438" class="m xs">· Zero use-case workflows after setup is a valid state</text>
+  <text x="570" y="458" class="m xs">· A workflow run never edits a definition file as a side effect</text>
+  <text x="570" y="478" class="m xs">· Governance ones may be revised, never removed (§16.1)</text>
+
+  <rect x="554" y="508" width="382" height="70" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="570" y="530" class="t s" font-weight="600">To change one</text>
+  <text x="570" y="550" class="m xs">Run refine-workflow → interview → diff preview → Proceed.</text>
+  <text x="570" y="568" class="m xs">Or a plugin update, also gated. See diagram D.</text>
+
+  <!-- bottom relation -->
+  <line x1="255" y1="608" x2="700" y2="608" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+  <rect x="300" y="592" width="350" height="32" rx="4" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="316" y="612" class="t xs">Skills author and refine workflows — never the reverse</text>
+
+  <rect x="40" y="640" width="920" height="50" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="661" class="m xs">If you remember one thing: a <tspan font-weight="600" fill="#1f2328">skill</tspan> is code we ship, a <tspan font-weight="600" fill="#1f2328">workflow</tspan> is a document the user owns.</text>
+  <text x="56" y="679" class="m xs">Fixing a skill means regenerating the plugin; fixing a workflow means an interview.</text>
+</svg>

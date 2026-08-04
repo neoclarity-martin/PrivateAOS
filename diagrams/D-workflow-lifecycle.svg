@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 780" width="1040" height="780" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .mono { font-family: Consolas, monospace; font-size: 11px; fill: #5b6472; }
+  </style>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="780" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">D — The life of one workflow</text>
+  <text x="40" y="70" class="m s">Five stages, and the artifacts each one writes. The loop at the end is the point: a workflow is expected to change.</text>
+
+  <!-- column headers -->
+  <text x="40" y="112" class="m xs" font-weight="600" letter-spacing=".08em">STAGE</text>
+  <text x="640" y="112" class="m xs" font-weight="600" letter-spacing=".08em">WRITES</text>
+
+  <!-- stage 1 -->
+  <rect x="40" y="124" width="560" height="86" rx="6" fill="#eefaf9" stroke="#1a9c96" stroke-width="2"/>
+  <circle cx="70" cy="152" r="14" fill="#1a9c96"/>
+  <text x="70" y="157" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">1</text>
+  <text x="96" y="150" class="t s" font-weight="600">Built — build-workflow</text>
+  <text x="96" y="172" class="m xs">Interview elicits the user's real situation, proposes a workflow, previews it in full,</text>
+  <text x="96" y="190" class="m xs">and writes only on Proceed. Two modes below.</text>
+  <rect x="616" y="124" width="384" height="86" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="632" y="148" class="mono">/workflows/[slug].md</text>
+  <text x="632" y="168" class="mono">/logs/change-log.md — creation entry</text>
+  <text x="632" y="190" class="mono">/templates/[slug]-report-template.html *</text>
+
+  <line x1="320" y1="210" x2="320" y2="238" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- stage 2 -->
+  <rect x="40" y="244" width="560" height="72" rx="6" fill="#fdf1ee" stroke="#e2725b" stroke-width="2"/>
+  <circle cx="70" cy="272" r="14" fill="#e2725b"/>
+  <text x="70" y="277" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">2</text>
+  <text x="96" y="270" class="t s" font-weight="600">Scheduled or invoked</text>
+  <text x="96" y="292" class="m xs">Cadence is a suggestion the user approves; any workflow can also be run on demand.</text>
+  <rect x="616" y="244" width="384" height="72" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="632" y="272" class="mono">nothing — scheduling is not a write</text>
+  <text x="632" y="294" class="mono">to the workflow definition</text>
+
+  <line x1="320" y1="316" x2="320" y2="344" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- stage 3 -->
+  <rect x="40" y="350" width="560" height="86" rx="6" fill="#fdf1ee" stroke="#e2725b" stroke-width="2"/>
+  <circle cx="70" cy="378" r="14" fill="#e2725b"/>
+  <text x="70" y="383" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">3</text>
+  <text x="96" y="376" class="t s" font-weight="600">Run</text>
+  <text x="96" y="398" class="m xs">Reads /memory and /inbox, does the work, produces its report.</text>
+  <text x="96" y="416" class="m xs">A run writes data files only — never a definition file. That is the drift invariant (§14.8).</text>
+  <rect x="616" y="350" width="384" height="86" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="632" y="374" class="mono">/outputs/[slug]-&lt;date&gt;.html</text>
+  <text x="632" y="394" class="mono">/logs/decision-log.md</text>
+  <text x="632" y="414" class="mono">/memory/* — appended, never overwritten</text>
+
+  <line x1="320" y1="436" x2="320" y2="464" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- stage 4 -->
+  <rect x="40" y="470" width="560" height="86" rx="6" fill="#fdf1ee" stroke="#e2725b" stroke-width="2"/>
+  <circle cx="70" cy="498" r="14" fill="#e2725b"/>
+  <text x="70" y="503" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">4</text>
+  <text x="96" y="496" class="t s" font-weight="600">Friction surfaces</text>
+  <text x="96" y="518" class="m xs">The weekly review notices friction and suggests a refinement session.</text>
+  <text x="96" y="536" class="m xs">Observational only — never an unprompted edit. The monthly review goes deeper.</text>
+  <rect x="616" y="470" width="384" height="86" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="632" y="494" class="mono">/logs/feedback-log.md</text>
+  <text x="632" y="514" class="mono">/outputs/weekly-review-&lt;date&gt;.html</text>
+  <text x="632" y="536" class="mono">a declined suggestion is logged, not re-raised</text>
+
+  <line x1="320" y1="556" x2="320" y2="584" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- stage 5 -->
+  <rect x="40" y="590" width="560" height="86" rx="6" fill="#eefaf9" stroke="#1a9c96" stroke-width="2"/>
+  <circle cx="70" cy="618" r="14" fill="#1a9c96"/>
+  <text x="70" y="623" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">5</text>
+  <text x="96" y="616" class="t s" font-weight="600">Refined — refine-workflow</text>
+  <text x="96" y="638" class="m xs">Reads the workflow, asks what is not working, previews a diff, rewrites on Proceed.</text>
+  <text x="96" y="656" class="m xs">The one sanctioned way a definition file changes in place.</text>
+  <rect x="616" y="590" width="384" height="86" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="632" y="614" class="mono">/workflows/[slug].md — rewritten</text>
+  <text x="632" y="634" class="mono">last_updated frontmatter bumped</text>
+  <text x="632" y="656" class="mono">/logs/change-log.md — appended</text>
+
+  <!-- loop back -->
+  <path d="M40,633 C10,633 10,393 40,393" fill="none" stroke="#5b6472" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arw)"/>
+  <text x="14" y="516" class="m xs" font-weight="600" transform="rotate(-90 14 516)" text-anchor="middle">↻ back to run</text>
+
+  <!-- detail panel: build modes -->
+  <rect x="40" y="694" width="960" height="66" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="716" class="t s" font-weight="600">* Detail — stage 1 has two modes and one exception</text>
+  <text x="56" y="736" class="m xs"><tspan font-weight="600">Instantiate:</tspan> reads the builder spec for one of the five use cases.  <tspan font-weight="600">Design-new:</tspan> uses the AI-pattern library to co-author something novel — the only mode that also writes a template.</text>
+  <text x="56" y="754" class="m xs">If <tspan class="mono">/workflows/[slug].md</tspan> already exists, the flow stops <tspan font-weight="600">before</tspan> the gate and recommends refine-workflow instead.</text>
+</svg>
