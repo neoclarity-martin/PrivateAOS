@@ -1,11 +1,11 @@
 ---
 name: setup-openaos
-description: Set up an openaos workspace. Use when the user wants to set up, install, initialize, or re-run setup for openaos — scaffolds the governance foundation (governance config, five governance workflows, memory, logs, templates, user guide) and then offers the use-case workflow menu. Nothing is created until the user types exactly Proceed.
+description: Set up an OpenAOS workspace. Use when the user wants to set up, install, initialize, or re-run setup for OpenAOS — scaffolds the governance foundation (governance config, five governance workflows, memory, logs, templates, user guide) and then offers the use-case workflow menu. Nothing is created until the user types exactly Proceed.
 ---
 
-# Set Up openaos
+# Set Up OpenAOS
 
-You are scaffolding the user's openaos workspace: the governance foundation
+You are scaffolding the user's OpenAOS workspace: the governance foundation
 plus an optional first set of use-case workflows. Spec authority: design spec
 §8 (flow), §4/§6 (folders/files), §16 (file schemas).
 
@@ -18,17 +18,20 @@ Hard rules, before anything else:
   workflows) is always installed and is not removable. Do not offer to skip
   it.
 
-## Step 1 — Welcome & interview
+## Step 1 — Welcome
 
-Say: "Welcome to openaos. A few quick questions, then I'll show you exactly
-what will be set up — nothing is created until you approve it."
+1. Say: "Welcome to OpenAOS. Together we will be creating a personalized set of specialized workflows known as an Agentic Operating System. A few quick questions, then I'll show you exactly what will be set up — nothing is created until you approve it. Type `Proceed` to continue."
+2. Wait for the user to type `Proceed` to continue. 
+
+## Step 2 — Interview
 
 Ask, one at a time (all but the first are skippable):
-1. **Workspace root** — which folder is the openaos workspace? Confirm it
+
+1. **Workspace root** — which folder is the OpenAOS workspace? Confirm it
    explicitly.
-2. **Work focus** — what kind of work do they most want help with? (Shapes
-   the menu emphasis; with approval, seeds /memory/user-profile.md.)
-3. **Rhythms** — which check-in cadences to schedule: all / daily only /
+2. ~~**Work focus** — what kind of work do they most want help with? (Shapes~~
+   ~~the menu emphasis; with approval, seeds /memory/user-profile.md.)~~
+3. **Rhythms** — explain what rhythms are and the purpose of each one. Then ask which rhythms to schedule: all / daily only /
    weekly+monthly only / none for now. All five governance workflows are
    installed regardless; this sets only the active cadences.
 4. **Memory seeds** — any people, tools, or preferences to remember from the
@@ -37,7 +40,7 @@ Ask, one at a time (all but the first are skippable):
    triage, Research assistant, Writing assistant, Learning assistant,
    Organizer / declutter, Design my own — or none yet (perfectly valid).
 
-## Step 2 — Preview the scaffold
+## Step 3 — Preview the scaffold
 
 List every folder and file that will be created, and state that nothing
 exists yet and nothing will be overwritten:
@@ -73,24 +76,24 @@ Files:
   installed
 - `/CLAUDE.md` and `/AGENTS.md` — from `content/root/` (the one place
   `content/X` maps to the workspace root, not `/X`); if either exists,
-  propose the openaos block as an addition instead of creating the file
+  propose the OpenAOS block as an addition instead of creating the file
 
 Then ask the user to type exactly `Proceed`.
 
-## Step 3 — Create on Proceed
+## Step 4 — Create on Proceed
 
 Create everything previewed. Stamp each generated file's frontmatter with
-this plugin's version as `openaos_version`, `status: active`, and today's
+this plugin's version as `OpenAOS_version`, `status: active`, and today's
 dates. Append a setup entry to `/logs/change-log.md`. Report what was
 created, completely and truthfully — if anything failed, say so.
 
-## Step 4 — Use-case menu
+## Step 5 — Use-case menu
 
 For each workflow selected in step 1 (or if the user now wants one), hand
 off to the **build-workflow** skill — one build session per workflow. Zero
 workflows is fine; nothing generic is ever scaffolded.
 
-## Step 5 — Close
+## Step 6 — Close
 
 Show the user: where things live, how to run a workflow ("run my daily
 startup"), how to change one ("refine my inbox triage workflow" →
