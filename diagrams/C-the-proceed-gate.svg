@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" width="1000" height="760" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .card { fill: #ffffff; stroke: #cfd6e0; rx: 6; }
+    .mono { font-family: Consolas, monospace; }
+  </style>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/>
+    </marker>
+    <marker id="arwg" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#2f9e5f"/>
+    </marker>
+    <marker id="arwr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#b23c3c"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="760" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">C — The Proceed gate is one mechanism</text>
+  <text x="40" y="70" class="m s">Five places in the system write something irreversible. All five stop at the same gate, with the same shape.</text>
+
+  <!-- the mechanism -->
+  <rect x="40" y="94" width="920" height="176" rx="8" fill="#fdf6e7" stroke="#d99a2b" stroke-width="2"/>
+  <text x="64" y="124" class="t" font-size="16" font-weight="600">The shape of the gate (§3.1)</text>
+  <rect x="64" y="140" width="166" height="106" class="card"/>
+  <text x="78" y="162" class="t s" font-weight="600">1 · Explain</text>
+  <text x="78" y="182" class="m xs">exactly what action</text>
+  <text x="78" y="198" class="m xs">is proposed</text>
+  <rect x="242" y="140" width="166" height="106" class="card"/>
+  <text x="256" y="162" class="t s" font-weight="600">2 · Identify</text>
+  <text x="256" y="182" class="m xs">the affected file</text>
+  <text x="256" y="198" class="m xs">or files</text>
+  <rect x="420" y="140" width="166" height="106" class="card"/>
+  <text x="434" y="162" class="t s" font-weight="600">3 · Justify</text>
+  <text x="434" y="182" class="m xs">why it is</text>
+  <text x="434" y="198" class="m xs">recommended</text>
+  <rect x="598" y="140" width="166" height="106" class="card"/>
+  <text x="612" y="162" class="t s" font-weight="600">4 · Consequence</text>
+  <text x="612" y="182" class="m xs">what will likely</text>
+  <text x="612" y="198" class="m xs">follow</text>
+  <rect x="776" y="140" width="168" height="106" rx="6" fill="#ffffff" stroke="#d99a2b" stroke-width="2"/>
+  <text x="790" y="162" class="t s" font-weight="600">5 · Ask</text>
+  <text x="790" y="184" class="m xs">user types exactly</text>
+  <text x="790" y="206" class="t s mono" font-weight="600">Proceed</text>
+  <text x="790" y="228" class="m xs">anything else = hold</text>
+
+  <!-- five sites -->
+  <text x="40" y="306" class="t" font-size="16" font-weight="600">The five sites</text>
+  <text x="40" y="328" class="m xs">Same gate, different payload. A collaborator adding a sixth write path must add a sixth gate.</text>
+
+  <g>
+    <rect x="40" y="344" width="176" height="150" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <text x="56" y="368" class="t s" font-weight="600">setup-openaos</text>
+    <text x="56" y="390" class="m xs">Previews the whole</text>
+    <text x="56" y="406" class="m xs">scaffold — every folder</text>
+    <text x="56" y="422" class="m xs">and file to be created</text>
+    <text x="56" y="452" class="m xs" font-weight="600">Writes on Proceed:</text>
+    <text x="56" y="470" class="m xs">the foundation, once</text>
+
+    <rect x="228" y="344" width="176" height="150" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <text x="244" y="368" class="t s" font-weight="600">build-workflow</text>
+    <text x="244" y="390" class="m xs">Previews the proposed</text>
+    <text x="244" y="406" class="m xs">workflow in full before</text>
+    <text x="244" y="422" class="m xs">anything is written</text>
+    <text x="244" y="452" class="m xs" font-weight="600">Writes on Proceed:</text>
+    <text x="244" y="470" class="m xs">/workflows/[slug].md</text>
+
+    <rect x="416" y="344" width="176" height="150" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <text x="432" y="368" class="t s" font-weight="600">refine-workflow</text>
+    <text x="432" y="390" class="m xs">Previews a diff of the</text>
+    <text x="432" y="406" class="m xs">existing workflow against</text>
+    <text x="432" y="422" class="m xs">the proposed rewrite</text>
+    <text x="432" y="452" class="m xs" font-weight="600">Writes on Proceed:</text>
+    <text x="432" y="470" class="m xs">the one workflow + log</text>
+
+    <rect x="604" y="344" width="176" height="150" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <text x="620" y="368" class="t s" font-weight="600">batch refinement</text>
+    <text x="620" y="384" class="m xs">§13.4</text>
+    <text x="620" y="406" class="m xs">Same gate applied across</text>
+    <text x="620" y="422" class="m xs">several workflows at once</text>
+    <text x="620" y="452" class="m xs" font-weight="600">Writes on Proceed:</text>
+    <text x="620" y="470" class="m xs">the reviewed set</text>
+
+    <rect x="792" y="344" width="168" height="150" rx="6" fill="#f4f2fd" stroke="#6d5bd0"/>
+    <text x="808" y="368" class="t s" font-weight="600">plugin generation</text>
+    <text x="808" y="384" class="m xs">§36.2 — maintainer side</text>
+    <text x="808" y="406" class="m xs">Lists files to create and,</text>
+    <text x="808" y="422" class="m xs">separately, files that</text>
+    <text x="808" y="438" class="m xs">would be overwritten</text>
+    <text x="808" y="464" class="m xs" font-weight="600">Writes on Proceed:</text>
+    <text x="808" y="482" class="m xs">claude-plugin/openaos/</text>
+  </g>
+
+  <!-- outcomes -->
+  <line x1="300" y1="500" x2="300" y2="546" stroke="#2f9e5f" stroke-width="2" marker-end="url(#arwg)"/>
+  <line x1="700" y1="500" x2="700" y2="546" stroke="#b23c3c" stroke-width="2" marker-end="url(#arwr)"/>
+  <rect x="140" y="552" width="320" height="84" rx="6" fill="#eef9f2" stroke="#2f9e5f"/>
+  <text x="160" y="578" class="t s" font-weight="600">Exact word typed</text>
+  <text x="160" y="600" class="m xs">The write happens, and is recorded —</text>
+  <text x="160" y="618" class="m xs">change-log or decision-log entry.</text>
+  <rect x="540" y="552" width="320" height="84" rx="6" fill="#fdf0f0" stroke="#b23c3c"/>
+  <text x="560" y="578" class="t s" font-weight="600">Anything else</text>
+  <text x="560" y="600" class="m xs">Hold. Nothing is written. Discussion,</text>
+  <text x="560" y="618" class="m xs">edits, and approval of a plan are not Proceed.</text>
+
+  <rect x="40" y="660" width="920" height="72" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="684" class="t s" font-weight="600">Two rules that are easy to miss</text>
+  <text x="56" y="706" class="m xs">· Approval is action-specific (§2.5) — a Proceed authorizes that one action, not a session, not a category, not "the rest of this".</text>
+  <text x="56" y="724" class="m xs">· The feedback workflow adds a scrub step before its preview. Nothing leaves the machine without scrub + preview + Proceed (§17.5).</text>
+</svg>
