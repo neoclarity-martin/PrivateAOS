@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 720" width="1060" height="720" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .xxs { font-size: 10.5px; }
+    .mono { font-family: Consolas, monospace; font-size: 10.5px; }
+  </style>
+  <rect width="1060" height="720" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">E — The governance rhythms</text>
+  <text x="40" y="70" class="m s">Five governance workflows on four cadences. This is what the system does when nobody asks it to do anything.</text>
+
+  <!-- grid header -->
+  <g class="m xs" font-weight="600" text-anchor="middle">
+    <text x="290" y="112">MONDAY</text>
+    <text x="440" y="112">TUESDAY</text>
+    <text x="590" y="112">WEDNESDAY</text>
+    <text x="740" y="112">THURSDAY</text>
+    <text x="890" y="112">FRIDAY</text>
+  </g>
+
+  <!-- row: morning -->
+  <rect x="40" y="124" width="180" height="130" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="150" class="t s" font-weight="600">Morning</text>
+  <text x="56" y="168" class="m xxs">daily-startup.md</text>
+  <text x="56" y="188" class="m xxs" font-weight="600">Reads</text>
+  <text x="56" y="202" class="m mono">/memory, /inbox,</text>
+  <text x="56" y="215" class="m mono">yesterday's carryover</text>
+  <text x="56" y="232" class="m xxs" font-weight="600">Writes</text>
+  <text x="56" y="246" class="m mono">/outputs/daily-</text>
+  <text x="56" y="259" class="m mono">startup-&lt;date&gt;.html</text>
+
+  <g>
+    <rect x="228" y="124" width="124" height="130" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <rect x="378" y="124" width="124" height="130" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <rect x="528" y="124" width="124" height="130" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <rect x="678" y="124" width="124" height="130" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+    <rect x="828" y="124" width="124" height="130" rx="6" fill="#eefaf9" stroke="#1a9c96"/>
+  </g>
+  <g class="t xs" text-anchor="middle" font-weight="600">
+    <text x="290" y="176">Daily startup</text><text x="440" y="176">Daily startup</text><text x="590" y="176">Daily startup</text><text x="740" y="176">Daily startup</text><text x="890" y="176">Daily startup</text>
+  </g>
+  <g class="m xxs" text-anchor="middle">
+    <text x="290" y="198">What matters</text><text x="290" y="212">today?</text>
+    <text x="440" y="198">What matters</text><text x="440" y="212">today?</text>
+    <text x="590" y="198">What matters</text><text x="590" y="212">today?</text>
+    <text x="740" y="198">What matters</text><text x="740" y="212">today?</text>
+    <text x="890" y="198">What matters</text><text x="890" y="212">today?</text>
+  </g>
+
+  <!-- row: midday -->
+  <rect x="40" y="266" width="180" height="150" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="292" class="t s" font-weight="600">Midday</text>
+  <text x="56" y="312" class="m xxs">periodic reviews</text>
+  <text x="56" y="334" class="m xxs" font-weight="600">Reads</text>
+  <text x="56" y="350" class="m mono">/logs, /memory,</text>
+  <text x="56" y="364" class="m mono">/workflows</text>
+  <text x="56" y="384" class="m xxs" font-weight="600">Writes</text>
+  <text x="56" y="398" class="m mono">/outputs/{weekly,</text>
+  <text x="56" y="412" class="m mono">monthly}-review-&lt;date&gt;</text>
+
+  <rect x="378" y="266" width="124" height="150" rx="6" fill="#f4f2fd" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="440" y="294" class="t xs" text-anchor="middle" font-weight="600">Monthly review</text>
+  <text x="440" y="312" class="m xxs" text-anchor="middle">first Tuesday only</text>
+  <text x="392" y="336" class="m xxs">What is stale or</text>
+  <text x="392" y="350" class="m xxs">structurally messy?</text>
+  <text x="392" y="368" class="m xxs">Is the system still</text>
+  <text x="392" y="382" class="m xxs">aimed at the right</text>
+  <text x="392" y="396" class="m xxs">goals?</text>
+
+  <rect x="828" y="266" width="124" height="150" rx="6" fill="#f4f2fd" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="890" y="294" class="t xs" text-anchor="middle" font-weight="600">Weekly review</text>
+  <text x="890" y="312" class="m xxs" text-anchor="middle">every week</text>
+  <text x="842" y="336" class="m xxs">What needs</text>
+  <text x="842" y="350" class="m xxs">follow-up soon?</text>
+  <text x="842" y="374" class="m xxs">Flags friction and</text>
+  <text x="842" y="388" class="m xxs">suggests refining</text>
+
+  <!-- row: end of day -->
+  <rect x="40" y="428" width="180" height="130" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="454" class="t s" font-weight="600">End of day</text>
+  <text x="56" y="474" class="m xxs">end-of-day.md</text>
+  <text x="56" y="496" class="m xxs" font-weight="600">Reads</text>
+  <text x="56" y="512" class="m mono">the day's work, /logs</text>
+  <text x="56" y="530" class="m xxs" font-weight="600">Writes</text>
+  <text x="56" y="542" class="m mono">decision-log,</text>
+  <text x="56" y="554" class="m mono">carryover, outputs</text>
+
+  <g>
+    <rect x="228" y="428" width="124" height="130" rx="6" fill="#fdf1ee" stroke="#e2725b"/>
+    <rect x="378" y="428" width="124" height="130" rx="6" fill="#fdf1ee" stroke="#e2725b"/>
+    <rect x="528" y="428" width="124" height="130" rx="6" fill="#fdf1ee" stroke="#e2725b"/>
+    <rect x="678" y="428" width="124" height="130" rx="6" fill="#fdf1ee" stroke="#e2725b"/>
+    <rect x="828" y="428" width="124" height="130" rx="6" fill="#fdf1ee" stroke="#e2725b"/>
+  </g>
+  <g class="t xs" text-anchor="middle" font-weight="600">
+    <text x="290" y="480">End of day</text><text x="440" y="480">End of day</text><text x="590" y="480">End of day</text><text x="740" y="480">End of day</text><text x="890" y="480">End of day</text>
+  </g>
+  <g class="m xxs" text-anchor="middle">
+    <text x="290" y="502">What changed, and</text><text x="290" y="516">what must not</text><text x="290" y="530">be lost?</text>
+    <text x="440" y="502">What changed, and</text><text x="440" y="516">what must not</text><text x="440" y="530">be lost?</text>
+    <text x="590" y="502">What changed, and</text><text x="590" y="516">what must not</text><text x="590" y="530">be lost?</text>
+    <text x="740" y="502">What changed, and</text><text x="740" y="516">what must not</text><text x="740" y="530">be lost?</text>
+    <text x="890" y="502">What changed, and</text><text x="890" y="516">what must not</text><text x="890" y="530">be lost?</text>
+  </g>
+
+  <!-- carryover arrow -->
+  <path d="M290,558 L290,582 L365,582 L365,190 L372,190" fill="none" stroke="#e2725b" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="396" y="598" class="m xxs">carryover feeds tomorrow's startup</text>
+
+  <!-- fifth workflow -->
+  <rect x="40" y="616" width="440" height="84" rx="6" fill="#fdf6e7" stroke="#d99a2b"/>
+  <text x="56" y="640" class="t s" font-weight="600">The fifth: feedback.md — no cadence</text>
+  <text x="56" y="660" class="m xs">On demand, or fed by the monthly review's self-examination.</text>
+  <text x="56" y="678" class="m xs">Capture → scrub → preview → send on Proceed. The privacy boundary.</text>
+
+  <rect x="500" y="616" width="520" height="84" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="516" y="640" class="t s" font-weight="600">Reading this diagram</text>
+  <text x="516" y="660" class="m xs">Times of day are the user's choice — the spec fixes only the</text>
+  <text x="516" y="678" class="m xs"><tspan font-weight="600">cadence</tspan>, approved at setup. Any run can also be invoked on demand.</text>
+</svg>

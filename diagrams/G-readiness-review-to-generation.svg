@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 860" width="1160" height="860" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .xxs { font-size: 10.5px; }
+    .mono { font-family: Consolas, monospace; font-size: 11px; }
+  </style>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/>
+    </marker>
+    <marker id="arwr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#b23c3c"/>
+    </marker>
+    <marker id="arwg" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#2f9e5f"/>
+    </marker>
+  </defs>
+  <rect width="1160" height="860" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">G — Readiness review → plugin generation</text>
+  <text x="40" y="70" class="m s">Runbook §36.1 and §36.2 as one flow, because §36.2 cannot start without a completed §36.1 at the current version.</text>
+
+  <!-- §36.1 container -->
+  <rect x="40" y="92" width="500" height="500" rx="8" fill="#f4f2fd" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="64" y="122" class="t" font-size="16" font-weight="600">§36.1 Design Readiness Review</text>
+
+  <rect x="64" y="138" width="452" height="62" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="80" y="160" class="t s" font-weight="600">1 · Choose mode</text>
+  <text x="80" y="180" class="m xs"><tspan font-weight="600">full</tspan> — all §34 checklist items.  <tspan font-weight="600">incremental</tspan> — only items whose</text>
+  <text x="80" y="194" class="m xs">sections changed since the last review's baseline version, per git diff.</text>
+
+  <line x1="290" y1="200" x2="290" y2="222" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="64" y="228" width="452" height="104" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="80" y="250" class="t s" font-weight="600">2 · Mechanical checks — always run in full</text>
+  <text x="80" y="272" class="m mono">scripts/validate-workflow-catalog.py</text>
+  <text x="80" y="290" class="m mono">scripts/validate-vocabulary.py</text>
+  <text x="80" y="308" class="m mono">scripts/check-spec-version.py</text>
+  <text x="80" y="326" class="m mono">scripts/validate-content.py</text>
+  <text x="330" y="272" class="m xxs">All four must pass.</text>
+  <text x="330" y="290" class="m xxs">Mode does not exempt</text>
+  <text x="330" y="308" class="m xxs">them.</text>
+
+  <line x1="290" y1="332" x2="290" y2="354" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="64" y="360" width="452" height="76" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="80" y="382" class="t s" font-weight="600">3 · Verify the §34 checklist over the whole document set</text>
+  <text x="80" y="402" class="m xxs">spec · runbook · revision history · workflow-catalog.yaml · vocabulary.yaml</text>
+  <text x="80" y="420" class="m xxs">file-skeletons.yaml · setup-interview.md · workflow-specs/* · design-spec/content/*</text>
+
+  <line x1="290" y1="436" x2="290" y2="458" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="64" y="464" width="452" height="56" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="80" y="486" class="t s" font-weight="600">4 · One issue list</text>
+  <text x="80" y="506" class="m xs">Completeness, safety, and consistency findings. The list gates finalization.</text>
+
+  <!-- loop 5 -->
+  <path d="M64,492 C28,492 28,272 64,272" fill="none" stroke="#b23c3c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arwr)"/>
+  <text x="20" y="384" class="m xxs" fill="#b23c3c" transform="rotate(-90 20 384)" text-anchor="middle" font-weight="600">5 · resolve, repeat 2–4</text>
+  <text x="222" y="544" class="m xxs">Each spec change made to clear a finding</text>
+  <text x="222" y="560" class="m xxs">is itself Proceed-gated. Loop until clean.</text>
+  <rect x="64" y="528" width="146" height="46" rx="6" fill="#fdf0f0" stroke="#b23c3c"/>
+  <text x="80" y="548" class="t xs" font-weight="600">Findings open</text>
+  <text x="80" y="566" class="m xxs">→ not ready</text>
+
+  <!-- 6 finalize -->
+  <rect x="40" y="608" width="500" height="92" rx="8" fill="#eef9f2" stroke="#2f9e5f" stroke-width="2"/>
+  <text x="64" y="632" class="t s" font-weight="600">6 · Finalize — clean pass</text>
+  <text x="64" y="654" class="m xs">Add a revision-history row. Confirm <tspan class="mono">status: design_ready_for_generation</tspan></text>
+  <text x="64" y="672" class="m xs">across the stamped set.</text>
+  <text x="64" y="692" class="m xs">Increment <tspan class="mono">openaos_version</tspan> <tspan font-weight="600">only</tspan> if the specification itself changed.</text>
+  <line x1="290" y1="592" x2="290" y2="602" stroke="#2f9e5f" stroke-width="2" marker-end="url(#arwg)"/>
+
+  <!-- gate arrow to 36.2 -->
+  <line x1="540" y1="654" x2="576" y2="654" stroke="#5b6472" stroke-width="2"/>
+  <path d="M576,654 L576,150 L596,150" fill="none" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- §36.2 container -->
+  <rect x="600" y="92" width="520" height="608" rx="8" fill="#eefaf9" stroke="#1a9c96" stroke-width="2"/>
+  <text x="624" y="122" class="t" font-size="16" font-weight="600">§36.2 Plugin Generation</text>
+
+  <rect x="624" y="138" width="472" height="52" rx="6" fill="#fdf6e7" stroke="#d99a2b" stroke-width="2"/>
+  <text x="640" y="160" class="t s" font-weight="600">1 · Precondition</text>
+  <text x="640" y="180" class="m xs">A completed §36.1 review at the current <tspan class="mono">openaos_version</tspan>.</text>
+
+  <line x1="860" y1="190" x2="860" y2="212" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="624" y="218" width="472" height="56" rx="6" fill="#fff" stroke="#cfd6e0"/>
+  <text x="640" y="240" class="t s" font-weight="600">2 · Render</text>
+  <text x="640" y="260" class="m xs">Read §28, render every §35 source into <tspan class="mono">claude-plugin/openaos/</tspan></text>
+
+  <line x1="860" y1="274" x2="860" y2="296" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="624" y="302" width="472" height="72" rx="6" fill="#fdf6e7" stroke="#d99a2b" stroke-width="2"/>
+  <text x="640" y="324" class="t s" font-weight="600">3 · Preview, then Proceed</text>
+  <text x="640" y="344" class="m xs">Two separate lists: files to be created, and existing files that</text>
+  <text x="640" y="362" class="m xs">would be overwritten. Generate only on the exact word.</text>
+
+  <line x1="860" y1="374" x2="860" y2="396" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <rect x="624" y="402" width="472" height="196" rx="6" fill="#fff" stroke="#1a9c96" stroke-width="2"/>
+  <text x="640" y="424" class="t s" font-weight="600">4 · Validate the result</text>
+  <text x="640" y="444" class="m xxs">· plugin.json well-formed; name and version == openaos_version</text>
+  <text x="640" y="462" class="m xxs">· three SKILL.md files present, with name + description frontmatter</text>
+  <text x="640" y="480" class="m xxs">· in-skill file references resolve</text>
+  <text x="640" y="498" class="m xxs">· workflow-specs/ byte-identical to design-spec sources — empty diff</text>
+  <text x="640" y="516" class="m xxs">· all of content/ byte-identical to design-spec/content/ — empty diff</text>
+  <text x="640" y="534" class="m xxs">· marketplace.json source points at ./claude-plugin/openaos</text>
+  <text x="640" y="552" class="m xxs">· no live reference to the retired status-report-template.md</text>
+  <text x="640" y="570" class="m xxs">· every report-producing workflow points at a real HTML template</text>
+  <text x="640" y="588" class="m xxs">· every such template opens standalone — CSS inline, no external assets</text>
+
+  <rect x="624" y="614" width="472" height="72" rx="6" fill="#eef9f2" stroke="#2f9e5f"/>
+  <text x="640" y="636" class="t s" font-weight="600">5 · Record</text>
+  <text x="640" y="656" class="m xs">Add a revision-history row for the completed generation.</text>
+  <text x="640" y="674" class="m xs">No version increment unless the packaged framework changed.</text>
+
+  <!-- footnote -->
+  <rect x="40" y="720" width="1080" height="106" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="744" class="t s" font-weight="600">Two things this flow is telling you</text>
+  <text x="56" y="768" class="m xs">· <tspan font-weight="600">Spec → plugin is a copy, not a re-render.</tspan> The byte-identical checks on <tspan class="mono">content/</tspan> and <tspan class="mono">workflow-specs/</tspan> exist so that the plugin can never quietly diverge</text>
+  <text x="56" y="786" class="m xs">  from the spec. If you edit a file in <tspan class="mono">claude-plugin/</tspan> by hand, the next generation will fail its own validation — and it should.</text>
+  <text x="56" y="810" class="m xs">· <tspan font-weight="600">The version increments in §36.1, not §36.2.</tspan> Generation packages a version; it does not create one.</text>
+</svg>
