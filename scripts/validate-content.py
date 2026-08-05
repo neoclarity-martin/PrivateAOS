@@ -36,6 +36,10 @@ Checks (each maps to a §18.7 clause):
        workflow source, every shipped workflow has exactly one row, and no
        workflow file carries a `When to Use` section (trigger authority is
        the router's alone, §16.3).
+  VC13 Root scaffold imports (§16.10): no `@path` import uses the absolute
+       form (a leading slash resolves against the filesystem root, not the
+       workspace root, and silently loads nothing), and every relative
+       import resolves to a real sibling scaffold or content source.
 
 Usage: python scripts/validate-content.py
 Exit code 0 = all checks pass, 1 = at least one error.
@@ -452,6 +456,33 @@ def main() -> int:  # noqa: C901 — one linear pass per §18.7 clause
             if anchor.lower() not in text.lower():
                 errors.append(f"[VC10] {entry['id']}: required anchor {anchor!r} not found")
 
+    # VC13 — root scaffold import form (§16.10)
+    # An `@path` import resolves relative to the file containing it. A leading
+    # slash makes it absolute against the filesystem root, so the import loads
+    # nothing and does so silently — hence a mechanical check. Code spans and
+    # fenced blocks are not imports, so they are stripped before scanning.
+    for entry in scaffolds:
+        src = ROOT / entry["content_source"]
+        if not src.is_file():
+            continue  # already reported by VC10
+        text = src.read_text(encoding="utf-8")
+        text = re.sub(r"```.*?```", "", text, flags=re.S)
+        text = re.sub(r"`[^`]*`", "", text)
+        for imp in re.findall(r"(?m)(?:^|\s)@(\S+\.md)\b", text):
+            if imp.startswith("/"):
+                errors.append(
+                    f"[VC13] {entry['id']}: import '@{imp}' uses the absolute form — "
+                    f"drop the leading slash so it resolves against the workspace root"
+                )
+                continue
+            # scaffolds ship to the workspace root, so a relative import is
+            # resolved against content/ (its workspace equivalent); a bare
+            # filename is a sibling scaffold under content/root/.
+            if not ((SRC / imp).is_file() or (SRC / "root" / imp).is_file()):
+                errors.append(
+                    f"[VC13] {entry['id']}: import '@{imp}' does not resolve to a content source"
+                )
+
     # VC11 — the retired template is gone everywhere
     # Historical records of the retirement itself are expected (governance
     # Change Notes); what must not exist is a reference treating it as live.
@@ -473,7 +504,7 @@ def main() -> int:  # noqa: C901 — one linear pass per §18.7 clause
         print(f"ERROR {e}")
     if not errors:
         print(
-            "OK — design-spec/content/ passes VC1–VC12 "
+            "OK — design-spec/content/ passes VC1–VC13 "
             f"({len(expected)} content sources, byte-identical to the plugin)."
         )
     return 1 if errors else 0

@@ -1305,6 +1305,16 @@ The routing import is what makes the router load at session start: CLAUDE.md
 imports AGENTS.md, AGENTS.md imports the router. Agents therefore arrive with
 the routing table but *not* with any workflow body — the point of the pattern.
 
+**Imports use the relative form, never a leading slash.** Write
+`@governance/workflow-router.md`, not `@/governance/workflow-router.md`. An
+`@path` import resolves relative to the file containing it; a leading slash
+makes the path absolute and resolves it against the *filesystem* root, not the
+workspace root, so the import silently loads nothing. The failure is invisible
+— no error is raised, and an agent that reads the file on demand later still
+appears to work — which makes it worth stating here and checking mechanically
+(§18.7, VC13). The same rule applies to every `@path` in a root scaffold, not
+just the router.
+
 These files carry pointers, not rules: the standing rules live in
 governance.md (§16.1), so the root files stay small and stable.
 
@@ -1713,6 +1723,16 @@ workflows, the three §18.3 / §18.5 / §18.6 interaction templates):
   unroutable, no row pointing at a workflow that does not exist.
 - No workflow file carries a `When to Use` section (§16.3): trigger authority
   is the router's alone, so a second copy is drift by definition.
+```
+
+**Root scaffolds specifically:**
+
+```text
+- No `@path` import uses the absolute form (`@/...`): a leading slash
+  resolves against the filesystem root rather than the workspace root, so the
+  import silently loads nothing (§16.10, VC13).
+- Every `@path` import resolves to a real file — either the sibling scaffold
+  (`@AGENTS.md`) or a content source under design-spec/content/.
 ```
 
 **Workflow files specifically:**
