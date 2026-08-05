@@ -1,9 +1,13 @@
 <!-- openaos workspace root file (spec §16.10). Provisioned by setup-openaos;
      if an AGENTS.md already exists, this block is proposed as an addition. -->
 
-# Agent Instructions — openaos Workspace
+# Agent Instructions — OpenAOS Workspace
 
-These instructions apply to any AI agent working in this workspace.
+Import these two files at the start of every session:
+
+@governance/governance.md
+
+@governance/workflow-router.md
 
 ## Standing rules
 
@@ -19,14 +23,6 @@ consequential action. In brief:
   running one.
 - **Memory and logs** (`/memory`, `/logs`) accumulate; they are appended to
   under the governance rules and never regenerated or overwritten.
-
-## Workflow routing
-
-Which workflow to run for a given request is decided by the routing table
-below — not by reading the workflow files. Consult it first, then load only
-the one workflow it names.
-
-@governance/workflow-router.md
 
 ## Governance layer — not removable
 

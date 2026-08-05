@@ -3,7 +3,7 @@
 
 # Agent Instructions — OpenAOS Workspace
 
-Import these two files at the start of every session
+Import these two files at the start of every session:
 
 @governance/governance.md
 
