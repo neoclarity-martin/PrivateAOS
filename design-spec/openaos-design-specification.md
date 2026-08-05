@@ -113,7 +113,7 @@ versioning (a single `openaos_version` remains), the DDD relationship
 vocabulary and typed collaboration edges, the factory-vs-instance guard and
 layout, and all sections that exist only to serve those. The exact deletions
 are enumerated in the removal manifest
-(`internal-only/feature-specs/3.0-removal-manifest.md`).
+(`internal-only/feature-specs/implemented/3.0-removal-manifest.md`).
 
 ---
 
