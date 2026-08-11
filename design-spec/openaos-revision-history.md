@@ -10,7 +10,7 @@ status: design_ready_for_generation
 
 # OpenAOS Revision History
 
-Part of the OpenAOS Design Specification document set. The canonical design is in `openaos-design-specification.md`; this file holds its dated revision and consistency-resolution history. The specification remains the single source of truth (Section 1.6.1).
+Part of the OpenAOS Design Specification document set. The canonical design is in `openaos-design-spec.md`; this file holds its dated revision and consistency-resolution history. The specification remains the single source of truth (Section 1.6.1).
 
 Entries below are in reverse chronological order (newest first). Rows are
 historical records and keep the names in use at the time they were written

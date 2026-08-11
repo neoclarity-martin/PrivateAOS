@@ -12,8 +12,8 @@
 
 ## Commonly used files and folders
 
-"design spec" = "/design-spec/openaos-design-specification.md"
-"runbook" = "/design-spec/openaos-packaging-runbook.md"
+"design spec" = "/design-spec/openaos-design-spec.md"
+"runbook" = "/design-spec/openaos-runbook.md"
 "feature-specs" = "/internal-only/feature-specs"
 
 Any file in or under the `/design-spec/` folder is considered a component of the design spec (source of truth), not a generated/rendered copy — this includes `workflow-catalog.yaml`, `workflow-specs/*`, and `setup-interview.md`, not just the main specification document.

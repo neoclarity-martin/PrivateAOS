@@ -46,7 +46,7 @@ from syncpairs import (  # noqa: E402
 
 
 def spec_version() -> str:
-    text = (DS / "openaos-design-specification.md").read_text(encoding="utf-8")
+    text = (DS / "openaos-design-spec.md").read_text(encoding="utf-8")
     for line in text.splitlines()[:25]:
         if line.startswith("openaos_version:"):
             return line.split(":", 1)[1].strip()

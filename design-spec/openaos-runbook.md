@@ -12,7 +12,7 @@ important_constraint: Do not generate actual openaos files unless the user expli
 # OpenAOS Packaging Runbook
 
 Part of the OpenAOS Design Specification document set. The canonical design
-is in `openaos-design-specification.md` (Sections 1–32); this file holds the
+is in `openaos-design-spec.md` (Sections 1–32); this file holds the
 review and packaging procedure (Sections 33–37). Section numbering is
 preserved from the specification so cross-references continue to resolve.
 The `Proceed` safety gate applies in full: no plugin files are generated

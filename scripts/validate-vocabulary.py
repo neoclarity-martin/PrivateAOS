@@ -39,7 +39,7 @@ DS = REPO / "design-spec"
 VOCAB = DS / "vocabulary.yaml"
 SCHEMA = DS / "vocabulary.schema.json"
 CATALOG = DS / "workflow-catalog.yaml"
-SPEC = DS / "openaos-design-specification.md"
+SPEC = DS / "openaos-design-spec.md"
 
 import yaml  # type: ignore
 

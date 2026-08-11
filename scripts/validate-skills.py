@@ -68,7 +68,7 @@ def known_sections() -> set[str]:
     even in a document that only headings §12.1.
     """
     ids: set[str] = set()
-    for doc in (DS / "openaos-design-specification.md", DS / "openaos-packaging-runbook.md"):
+    for doc in (DS / "openaos-design-spec.md", DS / "openaos-runbook.md"):
         for line in doc.read_text(encoding="utf-8").splitlines():
             m = SECTION_HEADING.match(line)
             if not m:

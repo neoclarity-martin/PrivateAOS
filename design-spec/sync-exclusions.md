@@ -11,7 +11,7 @@ status: design_ready_for_generation
 # OpenAOS Spec Sync — Tenet-Check Exclusions
 
 Part of the OpenAOS Design Specification document set. The canonical design is in
-`openaos-design-specification.md`; the sync procedure is runbook §36.3.
+`openaos-design-spec.md`; the sync procedure is runbook §36.3.
 
 Every plugin → spec sync (§36.3) checks each changed file against the five
 fundamental design tenets in runbook §33.1 before reflecting it. A change that

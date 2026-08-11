@@ -27,7 +27,7 @@ REPO = Path(__file__).resolve().parent.parent
 DS = REPO / "design-spec"
 PLUGIN = REPO / "claude-plugin" / "openaos"
 
-SPEC_DOC = DS / "openaos-design-specification.md"
+SPEC_DOC = DS / "openaos-design-spec.md"
 
 #: Name of the local, untracked, recomputable sync state file (manifest:
 #: "Scripts and Local State"). Gitignored; losing it costs scoping precision for

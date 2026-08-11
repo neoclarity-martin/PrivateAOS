@@ -53,7 +53,7 @@ Then build workflows as you need them ("build a workflow"), refine them when the
 
 ## Design Principles
 
-- **The design spec is the single source of truth.** Everything — the skills, the governance content, the docs — is generated from `design-spec/openaos-design-specification.md`. If they ever disagree, the spec wins, and the artifact is corrected.
+- **The design spec is the single source of truth.** Everything — the skills, the governance content, the docs — is generated from `design-spec/openaos-design-spec.md`. If they ever disagree, the spec wins, and the artifact is corrected.
 - **Governance before productivity.** The guardrails are scaffolded before any productive workflow exists, and cannot be removed.
 - **Non-destructive and approval-gated by default.** When in doubt, the system copies, appends, or asks.
 - **Value first.** Workflows are authored for maximum usefulness; efficiency concerns never compromise quality.
@@ -63,8 +63,8 @@ Then build workflows as you need them ("build a workflow"), refine them when the
 
 ```text
 design-spec/                      ← the canonical spec + companion data files
-├── openaos-design-specification.md
-├── openaos-packaging-runbook.md
+├── openaos-design-spec.md
+├── openaos-runbook.md
 ├── openaos-revision-history.md
 ├── workflow-catalog.yaml, vocabulary.yaml, file-skeletons.yaml (+ schemas)
 ├── setup-interview.md
