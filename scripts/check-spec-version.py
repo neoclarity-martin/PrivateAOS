@@ -43,8 +43,8 @@ def get_key(path: Path, key: str) -> str | None:
 
 def main() -> int:
     files = [
-        DS / "openaos-design-specification.md",
-        DS / "openaos-packaging-runbook.md",
+        DS / "openaos-design-spec.md",
+        DS / "openaos-runbook.md",
         DS / "openaos-revision-history.md",
         DS / "workflow-catalog.yaml",
         DS / "vocabulary.yaml",

@@ -144,8 +144,8 @@ The assistant continuing from this document must:
 This specification is maintained as a small set of companion files in this folder:
 
 ```text
-openaos-design-specification.md       - the canonical design (this file)
-openaos-packaging-runbook.md          - packaging and handoff procedure (rewritten in Phase G)
+openaos-design-spec.md                - the canonical design (this file)
+openaos-runbook.md                    - packaging and handoff procedure (rewritten in Phase G)
 openaos-revision-history.md           - dated revision and consistency-resolution history
 workflow-catalog.yaml                 - the Workflow Catalog: structured workflow identity/ownership data (Section 7A)
 vocabulary.yaml                       - controlled vocabularies (file_type/status, permissions/actions), source of truth for Sections 3.2-3.4, 15.4-15.5
@@ -905,7 +905,7 @@ last_updated: 2026-06-02
 
 The controlled `file_type` tokens are `file_type` in `design-spec/vocabulary.yaml` (source of truth). The meaning of each type and its per-file assignments are normative here in the prose below.
 
-`design_spec` applies to this design specification itself (`openaos-design-specification.md`), the source document openaos is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
+`design_spec` applies to this design specification itself (`openaos-design-spec.md`), the source document openaos is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
 
 `project_instructions` applies to the root project instruction files (`/CLAUDE.md` and `/AGENTS.md`) scaffolded at the workspace root (Section 16.10).
 
@@ -1896,7 +1896,7 @@ Approved decisions:
 The packaging procedure lives in a companion file (rewritten as the plugin packaging runbook in Phase G):
 
 ```text
-openaos-packaging-runbook.md
+openaos-runbook.md
 ```
 
 The `Proceed` safety gate is unchanged: actual plugin file generation remains blocked until the user types exactly `Proceed`, per the Purpose section above and the runbook.

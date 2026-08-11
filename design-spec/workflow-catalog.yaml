@@ -1,6 +1,6 @@
 # workflow-catalog.yaml — the Workflow Catalog. SOURCE OF TRUTH. Lives in
 # design-spec/ and is versioned with the spec. Defined in
-# design-spec/openaos-design-specification.md §7A.
+# design-spec/openaos-design-spec.md §7A.
 #
 # Cut to Minimal in Phase B: the 2.x fifteen-entry roster, the DDD relationship
 # vocabulary, typed collaboration edges, and catalog_version are removed.
