@@ -52,7 +52,7 @@ except ImportError:  # pragma: no cover
     sys.exit(1)
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = ROOT / "design-spec" / "openaos-design-specification.md"
+SPEC = ROOT / "design-spec" / "openaos-design-spec.md"
 SKELETONS = ROOT / "design-spec" / "file-skeletons.yaml"
 VOCAB = ROOT / "design-spec" / "vocabulary.yaml"
 SRC = ROOT / "design-spec" / "content"
