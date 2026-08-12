@@ -23,7 +23,7 @@ __pycache__/
 *.py[cod]
 
 # Internal documents
-internal-only/
+internal/
 
 # Local sync baseline (runbook §36.2/§36.3) — machine bookkeeping, recomputable
 # from current file contents by `scripts/sync-state.py record`, and different for
