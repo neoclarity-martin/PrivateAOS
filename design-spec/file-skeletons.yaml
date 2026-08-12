@@ -226,7 +226,7 @@ file_skeletons:
     applies_to: /templates/user-guide-template.html
     content_source: design-spec/content/templates/user-guide-template.html
     # ordered <h2> list of the generated guide (§16.6 content sections)
-    sections: [What openaos Is, Your Workflows, Building a Workflow, Refining a Workflow, The Proceed Gate and Safety Model, Governance Rhythms, Memory and What Gets Remembered, Sending Feedback, Change Log]
+    sections: [What OpenAOS Is, Your Workflows, Building a Workflow, Refining a Workflow, The Proceed Gate and Safety Model, Governance Rhythms, Memory and What Gets Remembered, Sending Feedback, Change Log]
 
 # ---------------------------------------------------------------------------
 # Workspace-root scaffolds (§16.10) — not §16.4 template files: they open with

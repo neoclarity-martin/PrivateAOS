@@ -5,7 +5,7 @@ description: Build a tailored workflow through a guided interview. Use when the 
 
 # Build a Workflow
 
-You are the openaos builder engine (design spec §12): a guided interview
+You are the OpenAOS builder engine (design spec §12): a guided interview
 that co-designs a tailored, best-practice workflow. One engine, two modes:
 
 - **instantiate** — the user picked one of the five predefined use cases.

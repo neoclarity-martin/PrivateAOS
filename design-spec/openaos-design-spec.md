@@ -6,14 +6,14 @@ created_date: 2026-06-02
 last_updated: 2026-08-02
 openaos_version: 3.2.0
 status: design_ready_for_generation
-important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
+important_constraint: Do not generate actual OpenAOS files unless the user explicitly types exactly Proceed.
 ---
 
 # OpenAOS Design Specification
 
 ---
 
-# 3.0 Rewrite Frame — Minimal, Workflow-First openaos
+# 3.0 Rewrite Frame — Minimal, Workflow-First OpenAOS
 
 > **Status of this block (rewrite complete, 2026-07-17):** This section is
 > the authoritative frame of the 3.0 Minimal design; the body below now
@@ -26,7 +26,7 @@ important_constraint: Do not generate actual openaos files unless the user expli
 Claude Cowork makes Claude accessible to non-technical users, but leaves them
 on their own to turn that access into workflows that are actually good —
 well-designed, tailored to their situation, and safe to run against their real
-files. **openaos exists to close that gap.** Its purpose is to
+files. **OpenAOS exists to close that gap.** Its purpose is to
 **collaboratively build the most useful, most user-friendly workflow for each
 of a non-technical user's core use cases**, through a guided interview that
 embeds AI best practices the user doesn't have to know; to let the user
@@ -39,7 +39,7 @@ scaffolding in service of that goal.
 ## Guiding Principle
 
 **A generative core, guarded — nothing more.** The reason a non-technical
-user adopts openaos is the promise of a genuinely good, tailored workflow for
+user adopts OpenAOS is the promise of a genuinely good, tailored workflow for
 the handful of things they actually do. So the whole system is exactly three
 things:
 
@@ -51,8 +51,8 @@ things:
    and a feedback-to-team channel that make those workflows trustworthy.
 
 The builders include a **custom builder** that co-designs brand-new workflows
-for the user's own domain — so openaos is not limited to the use cases we
-anticipated. This is what turns openaos from "a handful of useful workflows"
+for the user's own domain — so OpenAOS is not limited to the use cases we
+anticipated. This is what turns OpenAOS from "a handful of useful workflows"
 into "a way to bring AI into whatever the user actually does to create
 value," and is arguably its highest-leverage capability.
 
@@ -63,7 +63,7 @@ this spec and the artifacts it generates.
 
 ## Core Model
 
-The Minimal openaos design, in full:
+The Minimal OpenAOS design, in full:
 
 - **Workflows.** The unit of value. Two families:
   - *Use-case workflows* — five predefined ones, each authored by a builder
@@ -102,7 +102,7 @@ The Minimal openaos design, in full:
   drift invariant (kept, simplified): data files accumulate and are never
   overwritten; workflow/config definition files change only via the
   refinement interview or a plugin update, each `Proceed`-gated.
-- **Distribution.** One artifact: the **openaos** Claude plugin, generated
+- **Distribution.** One artifact: the **OpenAOS** Claude plugin, generated
   directly from this spec. No factory, no instance concept. A single
   `openaos_version` is the only version fact.
 
@@ -119,11 +119,11 @@ are enumerated in the removal manifest
 
 ## Purpose of This Document
 
-This document is the consolidated design specification for **openaos**.
+This document is the consolidated design specification for **OpenAOS**.
 
-This document is a design artifact only. It does **not** authorize creation of actual openaos files.
+This document is a design artifact only. It does **not** authorize creation of actual OpenAOS files.
 
-The assistant must not generate actual openaos files unless the user explicitly types exactly:
+The assistant must not generate actual OpenAOS files unless the user explicitly types exactly:
 
 ```text
 Proceed
@@ -136,7 +136,7 @@ The assistant continuing from this document must:
 ```text
 - Review the next steps with the user.
 - The user may ask additional questions about the design or next steps.
-- Wait for the user to enter the exact instruction “Proceed” to generate the openaos files.
+- Wait for the user to enter the exact instruction “Proceed” to generate the OpenAOS files.
 ```
 
 ## Document Set
@@ -151,7 +151,26 @@ workflow-catalog.yaml                 - the Workflow Catalog: structured workflo
 vocabulary.yaml                       - controlled vocabularies (file_type/status, permissions/actions), source of truth for Sections 3.2-3.4, 15.4-15.5
 file-skeletons.yaml                   - ordered section/field skeletons for generated files (Section 16)
 setup-interview.md                    - the setup interview script (rewritten in Phase G)
+sync-exclusions.md                    - tenet-check exclusions and their dispositions (read by §34 item 13)
+vocabulary.schema.json                - JSON Schema for vocabulary.yaml
+workflow-catalog.schema.json          - JSON Schema for workflow-catalog.yaml
+content/                              - 20 content sources: the canonical bodies for governance.md,
+                                        the workflow router, the five governance workflows, and all
+                                        eleven templates (§18.7, §35). Byte-identical to their
+                                        counterparts under claude-plugin/openaos/.
+workflow-specs/                       - the five use-case builder specs (§7B.1), byte-identical to
+                                        their plugin counterparts
 ```
+
+**Stamped set vs. document set.** `check-spec-version.py` stamps 12 of these
+files — the three main documents, `workflow-catalog.yaml`, `vocabulary.yaml`,
+`file-skeletons.yaml`, `setup-interview.md`, and the five
+`workflow-specs/*/spec.md`. The remainder are deliberately unstamped: the
+`content/` sources and `sync-exclusions.md` carry no `openaos_version`
+frontmatter, and the two JSON Schema files carry no frontmatter at all. The
+document set is therefore larger than the stamped set by design; both are
+governed by §36.1 step 3 and by the `Proceed` gate, and `CLAUDE.md` treats
+every file under `design-spec/` as a component of the specification.
 
 The canonical specification remains the single source of truth (Section 1.6.1); the companion files hold structured data extracted from it for machine enforcement and are governed by the same `Proceed` safety gate. They are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `openaos_version`). For the vocabularies these files own, the prose Sections above carry the normative meaning and rules; the data files carry the enumerated tokens, which the prose references rather than restates.
 
@@ -186,14 +205,30 @@ Agentic Operating System
 AOS
 ```
 
-The framework and the plugin are both referred to as:
+The framework and the plugin share one name, written two ways. The **display
+name**, used in all prose, headings, titles, and user-facing text, is:
+
+```text
+OpenAOS
+```
+
+The **identifier** — the plugin slug, used in `plugin.json` `name`, the
+marketplace entry, the repository path `claude-plugin/openaos/`, the plugin
+keyword, and the `openaos@neoclarity.ai` address — is lowercase:
 
 ```text
 openaos
 ```
 
+These are the same name at different layers, not two conventions. The
+identifier form is **not** subject to display-name capitalization: a branding
+pass over prose must leave slugs, filenames, paths, frontmatter keys (notably
+`openaos_version`), skill names (`setup-openaos`), and code spans untouched.
+Widening a capitalization sweep to those is a defect, not a consistency fix —
+see the 2026-08-12 revision-history entry for the `OpenAOS_version` case.
+
 There is no factory/instance term split: the plugin scaffolds the user's
-workspace directly, and the workspace is simply the user's folder that openaos
+workspace directly, and the workspace is simply the user's folder that OpenAOS
 operates in.
 
 ## 1.2 Target Platform
@@ -208,7 +243,7 @@ Portability to other platforms may be considered later, but is outside the curre
 
 ## 1.3 Overall Purpose
 
-openaos should help a non-technical user collaboratively create the most useful, most user-friendly workflow for each of their core use cases — markdown-based workflows plus the memory, governance config, templates, and logs that make them trustworthy.
+OpenAOS should help a non-technical user collaboratively create the most useful, most user-friendly workflow for each of their core use cases — markdown-based workflows plus the memory, governance config, templates, and logs that make them trustworthy.
 
 The builder is intended to be:
 
@@ -218,9 +253,9 @@ A reusable template others could adopt.
 
 It should not be only a one-off personal productivity setup, although it should work well for personal productivity.
 
-## 1.4 What openaos Ultimately Produces
+## 1.4 What OpenAOS Ultimately Produces
 
-The specification generates exactly one artifact: the **openaos** Claude
+The specification generates exactly one artifact: the **OpenAOS** Claude
 plugin. Installed, the plugin scaffolds the user's workspace (memory, logs,
 governance config, governance workflows, user guide) and provides the builder
 and refinement skills that author the user's workflows. There is no separate
@@ -249,11 +284,11 @@ The builder should:
 
 ## 1.6 Design Principles and Goals
 
-This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* openaos behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
+This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* OpenAOS behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
 
 ### 1.6.1 Design Spec as the Single Source of Truth
 
-openaos is generated from this design specification, not the other way around. The spec is canonical; the framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
+OpenAOS is generated from this design specification, not the other way around. The spec is canonical; the framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
 
 ```text
 - Every builder, workflow schema, workflow, and config traces back to a decision
@@ -276,7 +311,7 @@ Each workflow owns exactly one activity, with explicit boundaries; the system av
 
 ### 1.6.4 Non-Destructive and Approval-Gated by Default
 
-The system prefers actions that cannot lose work. Workflows create, append, or ask rather than overwrite, delete, move, or bulk-modify (Section 2.4). Anything consequential is gated behind a single, unambiguous approval signal — the user typing exactly `Proceed` (Section 3.1) — and approval is specific to the action described, never a standing grant (Section 2.5). The goal is that a user can trust openaos with real work without fear that it will quietly damage their files.
+The system prefers actions that cannot lose work. Workflows create, append, or ask rather than overwrite, delete, move, or bulk-modify (Section 2.4). Anything consequential is gated behind a single, unambiguous approval signal — the user typing exactly `Proceed` (Section 3.1) — and approval is specific to the action described, never a standing grant (Section 2.5). The goal is that a user can trust OpenAOS with real work without fear that it will quietly damage their files.
 
 ### 1.6.5 Standardization and Extensibility
 
@@ -474,7 +509,7 @@ collaboration edges, and their validator checks (V2, V5, V14) are removed.
 
 # 7B. Use-Case Workflow Specs
 
-The five predefined use-case workflows are the value spine of openaos. None
+The five predefined use-case workflows are the value spine of OpenAOS. None
 is ever scaffolded generically: each is authored into the user's workspace by
 the `build-workflow` engine's **instantiate** mode (Section 12), driven by
 that use case's builder spec.
@@ -531,7 +566,7 @@ generated workflow — a question whose answer changes nothing is removed.
 
 # 8. Plugin Skills and Setup Flow
 
-openaos ships exactly three skills. Skills are plugin-owned machinery
+OpenAOS ships exactly three skills. Skills are plugin-owned machinery
 (Core Model): identical for every user, changed only by plugin updates,
 never user-refinable. Everything user-owned is a workflow.
 
@@ -730,7 +765,7 @@ The design-new interview:
 ```
 
 This is the capability that lets users bring AI into their own
-value-creating work, not just the activities openaos shipped with. Its
+value-creating work, not just the activities OpenAOS shipped with. Its
 outputs are ordinary user-owned workflows: covered by the drift invariant
 and refinable via `refine-workflow`.
 
@@ -952,7 +987,7 @@ last_updated: 2026-06-02
 
 The controlled `file_type` tokens are `file_type` in `design-spec/vocabulary.yaml` (source of truth). The meaning of each type and its per-file assignments are normative here in the prose below.
 
-`design_spec` applies to this design specification itself (`openaos-design-spec.md`), the source document openaos is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
+`design_spec` applies to this design specification itself (`openaos-design-spec.md`), the source document OpenAOS is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
 
 `project_instructions` applies to the root project instruction files (`/CLAUDE.md` and `/AGENTS.md`) scaffolded at the workspace root (Section 16.10).
 
@@ -1250,7 +1285,7 @@ Generation rules (normative):
   workflows by name, not the hypothetical roster.
 ```
 
-Content sections, in order: What openaos Is; Your Workflows (the installed
+Content sections, in order: What OpenAOS Is; Your Workflows (the installed
 list); Building a Workflow (the §12 modes, in user terms); Refining a
 Workflow (§13); The Proceed Gate and Safety Model (§3, §16.1); Governance
 Rhythms (§17); Memory and What Gets Remembered (§20); Sending Feedback
@@ -1306,11 +1341,11 @@ Entries in `/logs/change-log.md` (file_type `change_log`, a data file per §14.8
 Setup provisions `/CLAUDE.md` and `/AGENTS.md` (file_type
 `project_instructions`) at the workspace root from the plugin's
 `content/root/` (§28), non-destructively: if either file already exists, setup
-never overwrites it — it proposes the openaos block as an addition, applied
+never overwrites it — it proposes the OpenAOS block as an addition, applied
 only on `Proceed`.
 
 ```text
-/CLAUDE.md  — session entry point: names the workspace as an openaos
+/CLAUDE.md  — session entry point: names the workspace as an OpenAOS
               workspace and includes /AGENTS.md.
 /AGENTS.md  — standing instructions for any AI agent in the workspace:
               read /governance/governance.md before consequential actions;
@@ -1871,7 +1906,7 @@ entry.
 
 ```text
 /memory/user-profile.md
-Stores durable, user-approved facts about the user that help openaos personalize assistance. Avoid sensitive personal attributes unless explicitly approved.
+Stores durable, user-approved facts about the user that help OpenAOS personalize assistance. Avoid sensitive personal attributes unless explicitly approved.
 
 /memory/preferences.md
 Stores durable user preferences about communication style, workflows, defaults, formatting, decision-making, tools, and collaboration.
@@ -1925,7 +1960,7 @@ Approved decisions:
 
 # 28. Distribution
 
-Distribution is plugin-only: one artifact, the **openaos** Claude plugin,
+Distribution is plugin-only: one artifact, the **OpenAOS** Claude plugin,
 generated directly from this specification per the packaging runbook
 (Section 33). There is no factory package and no instance concept — the
 plugin, once installed, scaffolds the user's workspace (§8) and runs the

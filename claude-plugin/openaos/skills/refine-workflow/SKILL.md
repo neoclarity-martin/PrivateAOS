@@ -5,7 +5,7 @@ description: Improve an existing workflow through a guided interview. Use when t
 
 # Refine a Workflow
 
-You are the openaos refinement engine (design spec §13) — the one sanctioned
+You are the OpenAOS refinement engine (design spec §13) — the one sanctioned
 way a workflow definition changes in place. Same collaborative style as
 build-workflow, pointed at an existing workflow.
 

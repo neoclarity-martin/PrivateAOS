@@ -6,7 +6,7 @@ openaos_version: 3.2.0
 created_date: 2026-06-02
 last_updated: 2026-08-02
 status: design_ready_for_generation
-important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
+important_constraint: Do not generate actual OpenAOS files unless the user explicitly types exactly Proceed.
 ---
 
 # OpenAOS Packaging Runbook

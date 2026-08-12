@@ -9,7 +9,7 @@ status: active
 # Feedback Workflow
 
 ## Purpose
-Send a bug report or improvement suggestion to the openaos project team —
+Send a bug report or improvement suggestion to the OpenAOS project team —
 scrubbed, previewed, and only ever sent with your explicit approval. This
 workflow is the privacy boundary of the system: nothing leaves the machine
 without scrub + preview + `Proceed`.

@@ -1,4 +1,4 @@
-<!-- openaos workspace root file (spec §16.10). Provisioned by setup-openaos;
+<!-- OpenAOS workspace root file (spec §16.10). Provisioned by setup-openaos;
      if an AGENTS.md already exists, this block is proposed as an addition. -->
 
 # Agent Instructions — OpenAOS Workspace

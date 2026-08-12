@@ -10,7 +10,7 @@ status: active
 
 ## Purpose
 
-This file holds the standing rules of your openaos workspace: what may
+This file holds the standing rules of your OpenAOS workspace: what may
 happen automatically, what always waits for your approval, and what is never
 done. Runnable procedures live in `/workflows`; the rules live here. This
 file changes only through an approved refinement or a plugin update — every

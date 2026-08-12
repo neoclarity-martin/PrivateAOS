@@ -33,7 +33,7 @@ Claude Cowork makes Claude accessible to non-technical users — but it leaves t
 
 ## How It Works
 
-OpenAOS ships as a single Claude plugin generated directly from its design specification. Install it, say **"set up openaos"**, answer a few questions about your situation, and approve the preview. Setup scaffolds your workspace:
+OpenAOS ships as a single Claude plugin generated directly from its design specification. Install it, say **"set up OpenAOS"**, answer a few questions about your situation, and approve the preview. Setup scaffolds your workspace:
 
 ```text
 /[your workspace]

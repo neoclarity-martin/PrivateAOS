@@ -24,7 +24,7 @@ which still governs the scaffold itself). Then conduct this interview:
 
 ```yaml
 - id: workspace-root
-  ask: Which folder should be your openaos workspace? Everything openaos creates will live inside it.
+  ask: Which folder should be your OpenAOS workspace? Everything OpenAOS creates will live inside it.
   type: text
   default: the current folder, named explicitly for confirmation
   skippable: no
@@ -43,7 +43,7 @@ which still governs the scaffold itself). Then conduct this interview:
     steps in the user's own tool vocabulary
 
 - id: rhythm-optin
-  ask: openaos includes optional check-in rhythms — a short daily startup and wrap-up, a weekly review, and a monthly health check. Which would you like to start with?
+  ask: OpenAOS includes optional check-in rhythms — a short daily startup and wrap-up, a weekly review, and a monthly health check. Which would you like to start with?
   type: choice
   options: [all of them, daily only, weekly and monthly only, none for now]
   default: all of them

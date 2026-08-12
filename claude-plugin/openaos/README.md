@@ -1,6 +1,6 @@
-# openaos
+# OpenAOS
 
-**AI for the rest of us.** openaos helps you build the most useful,
+**AI for the rest of us.** OpenAOS helps you build the most useful,
 most user-friendly AI workflow for each of the things you actually do —
 through a guided conversation, with no technical experience required, and
 safe by default: nothing destructive ever happens without you typing the
@@ -10,7 +10,7 @@ one word `Proceed`.
 
 Add the neoClarity marketplace and install the `openaos` plugin, then say:
 
-> set up openaos
+> set up OpenAOS
 
 Setup asks a few questions, shows you exactly what will be created, and
 builds your workspace only after you approve it.
@@ -44,5 +44,5 @@ openaos@neoclarity.ai only on `Proceed`.
 
 ---
 
-Generated from the openaos design specification (openaos_version 3.1.0).
+Generated from the OpenAOS design specification (openaos_version 3.2.0).
 Source: https://github.com/neoClarity-AI/OpenAOS
