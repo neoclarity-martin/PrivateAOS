@@ -71,7 +71,7 @@ The Minimal openaos design, in full:
     **research assistant** (scoped, source-disciplined research), **writing
     assistant** (drafting/editing keyed to the user's voice), **learning
     assistant / tutor** (guided learning with understanding checks), and
-    **organizer / declutter** (file cleanup — inbox-triage for files).
+    **file organizer** (file cleanup — inbox-triage for files).
   - *Governance workflows*: daily-startup, end-of-day, weekly-review,
     monthly-review, and feedback submission.
 - **Workflows vs. skills (definition).** *Workflows* are user-owned
@@ -485,7 +485,7 @@ that use case's builder spec.
 | Research assistant (`research-assistant`) | Scoped, source-disciplined research |
 | Writing assistant (`writing-assistant`) | Drafting/editing keyed to the user's voice |
 | Learning assistant (`learning-assistant`) | Guided learning with understanding checks |
-| Organizer / declutter (`organizer`) | File cleanup — inbox triage for files |
+| File organizer (`organizer`) | File cleanup — inbox triage for files |
 
 ## 7B.1 Builder Spec Files
 
@@ -546,8 +546,12 @@ refine-workflow  — the refinement engine (Section 13)
 Run once after install (and re-runnable safely — 8.2):
 
 ```text
-1. Welcome & interview — run the setup interview
-   (design-spec/setup-interview.md is the source definition).
+1. Welcome & interview — display the welcome message, wait for the user to
+   type exactly Proceed to acknowledge it, then run the setup interview
+   (design-spec/setup-interview.md is the source definition). This
+   acknowledgment gate is separate from, and does not replace, the §3.1
+   write gate at step 3: it gates only the start of the interview, and no
+   file is created by passing it.
 2. Preview the scaffold — list every folder (§4) and file (§6) that will be
    created, explicitly noting that nothing exists yet and nothing is
    overwritten.
@@ -567,8 +571,19 @@ Run once after install (and re-runnable safely — 8.2):
    option, and hand off to build-workflow for each selection. Zero
    selections is valid: every use-case workflow is interview-authored, so
    nothing generic is ever scaffolded.
-5. Close — show where things live, how to run a workflow, how to refine
-   one, and how to send feedback (§17.5).
+5. Schedule the rhythms — create scheduled runs for the cadences the
+   rhythm-optin answer selected, using the default times: daily-startup each
+   weekday 04:00, end-of-day each weekday 16:30, weekly-review Fridays 12:00,
+   monthly-review the first Tuesday of each month 12:00. Defaults only —
+   the user may change any time, and declining scheduling never uninstalls a
+   governance workflow (§16.1). Scheduling creates no definition file and so
+   does not engage the §14.8 drift invariant.
+6. Generate and show the User Guide — write /docs/user-guide.html from the
+   §16.6 template, listing what was actually installed (never the full
+   catalog), and open it for the user.
+7. Close — confirm setup is complete and direct the user to the User Guide
+   for sample commands; show where things live, how to run a workflow, how
+   to refine one, and how to send feedback (§17.5).
 ```
 
 ## 8.2 Re-Run Behavior
@@ -614,7 +629,12 @@ Every builder interview, in either mode, is defined by three elements:
 user's real context — their material, their volume, what "good" looks like,
 where mistakes are costly — so the workflow is tailored, not generic. The
 engine never asks the user about AI techniques; it asks about their
-situation and applies the techniques itself.
+situation and applies the techniques itself. Elicitation also reads
+`/memory/user-profile.md` where it exists, including any work-platform
+preference (§20.1). The platform informs the **wording** of generated steps —
+naming the user's own tools rather than generic ones — and nothing else: it
+selects no branch, changes no step sequence, and never causes a workflow to
+assume a live connection to that platform exists.
 
 **(b) Baked-in best practices.** The techniques the generated workflow
 encodes by default: in instantiate mode, the use case's Baked-In Best
@@ -1838,6 +1858,14 @@ Every workspace should include:
 /memory/people.md
 /memory/decisions.md
 ```
+
+`/memory/user-profile.md` may carry a **work-platform preference** seeded by
+the setup interview (§8.1 step 1) — the platform the user does most of their
+work in. It is one instance of the general memory capture `memory-seeds`
+already performs, pre-optioned because the answer is high-value and easy to
+state. Its one consumer is `build-workflow` (§12.1(a)), which reads it during
+situation elicitation. The user may change or clear it like any other memory
+entry.
 
 ## 20.2 Memory File Boundaries
 

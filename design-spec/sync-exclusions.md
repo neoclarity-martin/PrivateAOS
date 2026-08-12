@@ -51,4 +51,4 @@ Append a row per excluded file, newest last. Fields:
 
 | Date | File | Tenet | What was attempted | Disposition |
 | ---- | ---- | ----- | ------------------ | ----------- |
-| —    | —    | —     | No exclusions recorded yet. | — |
+| 2026-08-12 | `skills/setup-openaos/SKILL.md` | 1 — Scope discipline | A setup-interview question asking which connectors to use (Google Workspace / Microsoft 365 / Dropbox / connect later), introducing a connector concept the 3.0 Minimal design does not have, and capturing nothing under §7B.2. | `redesigned` — on review the change did not require a tenet amendment. Capturing which tools a user works in is already in scope via `memory-seeds`; the shipped question was a pre-optioned instance of it that failed **§7B.2** (captured nothing) rather than tenet 1. Pursued as a proper spec change instead: §20.1 defines the seed, §12.1(a) defines its one consumer, and the question is recast as `work-platform`. Tenet 1 is unchanged. See the 2026-08-12 revision-history row. |

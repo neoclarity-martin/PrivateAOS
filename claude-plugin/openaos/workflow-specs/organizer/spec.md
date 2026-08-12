@@ -1,10 +1,10 @@
 ---
-title: Organizer / Declutter — Builder Spec
+title: File organizer — Builder Spec
 file_type: workflow_spec
 slug: organizer
 openaos_version: 3.2.0
 ---
-# Organizer / Declutter — Builder Spec
+# File organizer — Builder Spec
 
 ## Purpose
 

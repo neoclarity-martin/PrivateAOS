@@ -19,7 +19,7 @@ builds your workspace only after you approve it.
 
 - **A guided workflow builder** (`build-workflow`) — five ready-to-tailor
   use cases (inbox triage, research assistant, writing assistant, learning
-  assistant, organizer/declutter) plus "design my own" for anything else
+  assistant, file organizer) plus "design my own" for anything else
   you do. Every workflow is built with you, for your situation.
 - **Easy refinement** (`refine-workflow`) — say what's not working, see a
   before/after preview, approve the change.

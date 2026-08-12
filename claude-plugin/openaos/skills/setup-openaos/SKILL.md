@@ -79,7 +79,7 @@ Then ask the user to type exactly `Proceed`.
 
 ## Step 4 — Create the Scaffold on Proceed
 
-1. Create everything previewed. Stamp each generated file's frontmatter with this plugin's version as `OpenAOS_version`, `status: active`, and today's dates.
+1. Create everything previewed. Stamp each generated file's frontmatter with this plugin's version as `openaos_version`, `status: active`, and today's dates.
 2. Append a setup entry to `/logs/change-log.md`.
 3. Report what was created, completely and truthfully. If anything failed, say so.
 

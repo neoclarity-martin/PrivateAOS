@@ -1,6 +1,6 @@
 ---
 name: build-workflow
-description: Build a tailored workflow through a guided interview. Use when the user wants to add, create, or build a workflow — one of the five predefined use cases (inbox triage, research assistant, writing assistant, learning assistant, organizer/declutter) or a brand-new workflow for their own activity ("design my own"). Writes the workflow file only when the user types exactly Proceed.
+description: Build a tailored workflow through a guided interview. Use when the user wants to add, create, or build a workflow — one of the five predefined use cases (inbox triage, research assistant, writing assistant, learning assistant, file organizer) or a brand-new workflow for their own activity ("design my own"). Writes the workflow file only when the user types exactly Proceed.
 ---
 
 # Build a Workflow

@@ -91,7 +91,7 @@ workflows:
     artifacts_owned: [/workflows/learning-assistant.md]
 
   - slug: organizer
-    display_name: Organizer / Declutter
+    display_name: File organizer
     kind: use-case
     one_line: Propose-then-move file cleanup; never bulk-deletes. (§7B)
     domains_owned: [file-organization]

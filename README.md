@@ -23,7 +23,7 @@ Claude Cowork makes Claude accessible to non-technical users — but it leaves t
    | Research assistant | Scoped, source-disciplined research |
    | Writing assistant | Drafting/editing keyed to your voice |
    | Learning assistant | Guided learning with understanding checks |
-   | Organizer / declutter | File cleanup — inbox triage for files |
+   | File organizer | File cleanup — inbox triage for files |
 
    Plus a **custom builder** ("design my own") that co-designs brand-new workflows for whatever *you* do to create value — OpenAOS is not limited to the use cases we anticipated.
 
