@@ -68,6 +68,8 @@ design-spec/                      ← the canonical spec + companion data files
 ├── openaos-revision-history.md
 ├── workflow-catalog.yaml, vocabulary.yaml, file-skeletons.yaml (+ schemas)
 ├── setup-interview.md
+├── sync-exclusions.md            ← tenet-check exclusions and their dispositions
+├── content/                      ← 20 canonical content sources mirrored into the plugin
 └── workflow-specs/[slug]/spec.md ← the five use-case builder specs
 scripts/                          ← repo CI validators
 claude-plugin/openaos/            ← the generated plugin (skills, content, templates)
