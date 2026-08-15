@@ -3,17 +3,17 @@ title: OpenAOS Design Specification
 file_type: design_spec
 project: OpenAOS
 created_date: 2026-06-02
-last_updated: 2026-07-22
-openaos_version: 3.1.0
+last_updated: 2026-08-15
+openaos_version: 3.2.1
 status: design_ready_for_generation
-important_constraint: Do not generate actual openaos files unless the user explicitly types exactly Proceed.
+important_constraint: Do not generate actual OpenAOS files unless the user explicitly types exactly Proceed.
 ---
 
 # OpenAOS Design Specification
 
 ---
 
-# 3.0 Rewrite Frame — Minimal, Workflow-First openaos
+# 3.0 Rewrite Frame — Minimal, Workflow-First OpenAOS
 
 > **Status of this block (rewrite complete, 2026-07-17):** This section is
 > the authoritative frame of the 3.0 Minimal design; the body below now
@@ -26,7 +26,7 @@ important_constraint: Do not generate actual openaos files unless the user expli
 Claude Cowork makes Claude accessible to non-technical users, but leaves them
 on their own to turn that access into workflows that are actually good —
 well-designed, tailored to their situation, and safe to run against their real
-files. **openaos exists to close that gap.** Its purpose is to
+files. **OpenAOS exists to close that gap.** Its purpose is to
 **collaboratively build the most useful, most user-friendly workflow for each
 of a non-technical user's core use cases**, through a guided interview that
 embeds AI best practices the user doesn't have to know; to let the user
@@ -39,7 +39,7 @@ scaffolding in service of that goal.
 ## Guiding Principle
 
 **A generative core, guarded — nothing more.** The reason a non-technical
-user adopts openaos is the promise of a genuinely good, tailored workflow for
+user adopts OpenAOS is the promise of a genuinely good, tailored workflow for
 the handful of things they actually do. So the whole system is exactly three
 things:
 
@@ -51,8 +51,8 @@ things:
    and a feedback-to-team channel that make those workflows trustworthy.
 
 The builders include a **custom builder** that co-designs brand-new workflows
-for the user's own domain — so openaos is not limited to the use cases we
-anticipated. This is what turns openaos from "a handful of useful workflows"
+for the user's own domain — so OpenAOS is not limited to the use cases we
+anticipated. This is what turns OpenAOS from "a handful of useful workflows"
 into "a way to bring AI into whatever the user actually does to create
 value," and is arguably its highest-leverage capability.
 
@@ -63,7 +63,7 @@ this spec and the artifacts it generates.
 
 ## Core Model
 
-The Minimal openaos design, in full:
+The Minimal OpenAOS design, in full:
 
 - **Workflows.** The unit of value. Two families:
   - *Use-case workflows* — five predefined ones, each authored by a builder
@@ -71,7 +71,7 @@ The Minimal openaos design, in full:
     **research assistant** (scoped, source-disciplined research), **writing
     assistant** (drafting/editing keyed to the user's voice), **learning
     assistant / tutor** (guided learning with understanding checks), and
-    **organizer / declutter** (file cleanup — inbox-triage for files).
+    **file organizer** (file cleanup — inbox-triage for files).
   - *Governance workflows*: daily-startup, end-of-day, weekly-review,
     monthly-review, and feedback submission.
 - **Workflows vs. skills (definition).** *Workflows* are user-owned
@@ -102,7 +102,7 @@ The Minimal openaos design, in full:
   drift invariant (kept, simplified): data files accumulate and are never
   overwritten; workflow/config definition files change only via the
   refinement interview or a plugin update, each `Proceed`-gated.
-- **Distribution.** One artifact: the **openaos** Claude plugin, generated
+- **Distribution.** One artifact: the **OpenAOS** Claude plugin, generated
   directly from this spec. No factory, no instance concept. A single
   `openaos_version` is the only version fact.
 
@@ -113,17 +113,17 @@ versioning (a single `openaos_version` remains), the DDD relationship
 vocabulary and typed collaboration edges, the factory-vs-instance guard and
 layout, and all sections that exist only to serve those. The exact deletions
 are enumerated in the removal manifest
-(`internal-only/feature-specs/3.0-removal-manifest.md`).
+(`internal-only/feature-specs/implemented/3.0-removal-manifest.md`).
 
 ---
 
 ## Purpose of This Document
 
-This document is the consolidated design specification for **openaos**.
+This document is the consolidated design specification for **OpenAOS**.
 
-This document is a design artifact only. It does **not** authorize creation of actual openaos files.
+This document is a design artifact only. It does **not** authorize creation of actual OpenAOS files.
 
-The assistant must not generate actual openaos files unless the user explicitly types exactly:
+The assistant must not generate actual OpenAOS files unless the user explicitly types exactly:
 
 ```text
 Proceed
@@ -136,7 +136,7 @@ The assistant continuing from this document must:
 ```text
 - Review the next steps with the user.
 - The user may ask additional questions about the design or next steps.
-- Wait for the user to enter the exact instruction “Proceed” to generate the openaos files.
+- Wait for the user to enter the exact instruction “Proceed” to generate the OpenAOS files.
 ```
 
 ## Document Set
@@ -151,7 +151,26 @@ workflow-catalog.yaml                 - the Workflow Catalog: structured workflo
 vocabulary.yaml                       - controlled vocabularies (file_type/status, permissions/actions), source of truth for Sections 3.2-3.4, 15.4-15.5
 file-skeletons.yaml                   - ordered section/field skeletons for generated files (Section 16)
 setup-interview.md                    - the setup interview script (rewritten in Phase G)
+sync-exclusions.md                    - tenet-check exclusions and their dispositions (read by §34 item 13)
+vocabulary.schema.json                - JSON Schema for vocabulary.yaml
+workflow-catalog.schema.json          - JSON Schema for workflow-catalog.yaml
+content/                              - 20 content sources: the canonical bodies for governance.md,
+                                        the workflow router, the five governance workflows, and all
+                                        eleven templates (§18.7, §35). Byte-identical to their
+                                        counterparts under claude-plugin/openaos/.
+workflow-specs/                       - the five use-case builder specs (§7B.1), byte-identical to
+                                        their plugin counterparts
 ```
+
+**Stamped set vs. document set.** `check-spec-version.py` stamps 12 of these
+files — the three main documents, `workflow-catalog.yaml`, `vocabulary.yaml`,
+`file-skeletons.yaml`, `setup-interview.md`, and the five
+`workflow-specs/*/spec.md`. The remainder are deliberately unstamped: the
+`content/` sources and `sync-exclusions.md` carry no `openaos_version`
+frontmatter, and the two JSON Schema files carry no frontmatter at all. The
+document set is therefore larger than the stamped set by design; both are
+governed by §36.1 step 3 and by the `Proceed` gate, and `CLAUDE.md` treats
+every file under `design-spec/` as a component of the specification.
 
 The canonical specification remains the single source of truth (Section 1.6.1); the companion files hold structured data extracted from it for machine enforcement and are governed by the same `Proceed` safety gate. They are design-time **source** artifacts that live with the spec here in `design-spec/` (versioned by `openaos_version`). For the vocabularies these files own, the prose Sections above carry the normative meaning and rules; the data files carry the enumerated tokens, which the prose references rather than restates.
 
@@ -186,14 +205,30 @@ Agentic Operating System
 AOS
 ```
 
-The framework and the plugin are both referred to as:
+The framework and the plugin share one name, written two ways. The **display
+name**, used in all prose, headings, titles, and user-facing text, is:
+
+```text
+OpenAOS
+```
+
+The **identifier** — the plugin slug, used in `plugin.json` `name`, the
+marketplace entry, the repository path `claude-plugin/openaos/`, the plugin
+keyword, and the `openaos@neoclarity.ai` address — is lowercase:
 
 ```text
 openaos
 ```
 
+These are the same name at different layers, not two conventions. The
+identifier form is **not** subject to display-name capitalization: a branding
+pass over prose must leave slugs, filenames, paths, frontmatter keys (notably
+`openaos_version`), skill names (`setup-openaos`), and code spans untouched.
+Widening a capitalization sweep to those is a defect, not a consistency fix —
+see the 2026-08-12 revision-history entry for the `OpenAOS_version` case.
+
 There is no factory/instance term split: the plugin scaffolds the user's
-workspace directly, and the workspace is simply the user's folder that openaos
+workspace directly, and the workspace is simply the user's folder that OpenAOS
 operates in.
 
 ## 1.2 Target Platform
@@ -208,7 +243,7 @@ Portability to other platforms may be considered later, but is outside the curre
 
 ## 1.3 Overall Purpose
 
-openaos should help a non-technical user collaboratively create the most useful, most user-friendly workflow for each of their core use cases — markdown-based workflows plus the memory, governance config, templates, and logs that make them trustworthy.
+OpenAOS should help a non-technical user collaboratively create the most useful, most user-friendly workflow for each of their core use cases — markdown-based workflows plus the memory, governance config, templates, and logs that make them trustworthy.
 
 The builder is intended to be:
 
@@ -218,9 +253,9 @@ A reusable template others could adopt.
 
 It should not be only a one-off personal productivity setup, although it should work well for personal productivity.
 
-## 1.4 What openaos Ultimately Produces
+## 1.4 What OpenAOS Ultimately Produces
 
-The specification generates exactly one artifact: the **openaos** Claude
+The specification generates exactly one artifact: the **OpenAOS** Claude
 plugin. Installed, the plugin scaffolds the user's workspace (memory, logs,
 governance config, governance workflows, user guide) and provides the builder
 and refinement skills that author the user's workflows. There is no separate
@@ -249,11 +284,11 @@ The builder should:
 
 ## 1.6 Design Principles and Goals
 
-This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* openaos behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
+This section states the principles and goals that motivate the rest of this specification. Section 2 and beyond define *how* OpenAOS behaves; this section defines *why*. When a future design decision is ambiguous, it should be resolved in favor of these principles. They are normative, not aspirational.
 
 ### 1.6.1 Design Spec as the Single Source of Truth
 
-openaos is generated from this design specification, not the other way around. The spec is canonical; the framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
+OpenAOS is generated from this design specification, not the other way around. The spec is canonical; the framework, the builder files, the plugin package, and any outward-facing description of the project are all **renderings** of it.
 
 ```text
 - Every builder, workflow schema, workflow, and config traces back to a decision
@@ -276,7 +311,7 @@ Each workflow owns exactly one activity, with explicit boundaries; the system av
 
 ### 1.6.4 Non-Destructive and Approval-Gated by Default
 
-The system prefers actions that cannot lose work. Workflows create, append, or ask rather than overwrite, delete, move, or bulk-modify (Section 2.4). Anything consequential is gated behind a single, unambiguous approval signal — the user typing exactly `Proceed` (Section 3.1) — and approval is specific to the action described, never a standing grant (Section 2.5). The goal is that a user can trust openaos with real work without fear that it will quietly damage their files.
+The system prefers actions that cannot lose work. Workflows create, append, or ask rather than overwrite, delete, move, or bulk-modify (Section 2.4). Anything consequential is gated behind a single, unambiguous approval signal — the user typing exactly `Proceed` (Section 3.1) — and approval is specific to the action described, never a standing grant (Section 2.5). The goal is that a user can trust OpenAOS with real work without fear that it will quietly damage their files.
 
 ### 1.6.5 Standardization and Extensibility
 
@@ -430,6 +465,7 @@ interview):
 
 ```text
 /governance/governance.md
+/governance/workflow-router.md
 /memory/user-profile.md
 /memory/preferences.md
 /memory/people.md
@@ -473,7 +509,7 @@ collaboration edges, and their validator checks (V2, V5, V14) are removed.
 
 # 7B. Use-Case Workflow Specs
 
-The five predefined use-case workflows are the value spine of openaos. None
+The five predefined use-case workflows are the value spine of OpenAOS. None
 is ever scaffolded generically: each is authored into the user's workspace by
 the `build-workflow` engine's **instantiate** mode (Section 12), driven by
 that use case's builder spec.
@@ -484,7 +520,7 @@ that use case's builder spec.
 | Research assistant (`research-assistant`) | Scoped, source-disciplined research |
 | Writing assistant (`writing-assistant`) | Drafting/editing keyed to the user's voice |
 | Learning assistant (`learning-assistant`) | Guided learning with understanding checks |
-| Organizer / declutter (`organizer`) | File cleanup — inbox triage for files |
+| File organizer (`organizer`) | File cleanup — inbox triage for files |
 
 ## 7B.1 Builder Spec Files
 
@@ -530,7 +566,7 @@ generated workflow — a question whose answer changes nothing is removed.
 
 # 8. Plugin Skills and Setup Flow
 
-openaos ships exactly three skills. Skills are plugin-owned machinery
+OpenAOS ships exactly three skills. Skills are plugin-owned machinery
 (Core Model): identical for every user, changed only by plugin updates,
 never user-refinable. Everything user-owned is a workflow.
 
@@ -545,14 +581,19 @@ refine-workflow  — the refinement engine (Section 13)
 Run once after install (and re-runnable safely — 8.2):
 
 ```text
-1. Welcome & interview — run the setup interview
-   (design-spec/setup-interview.md is the source definition).
+1. Welcome & interview — display the welcome message, wait for the user to
+   type exactly Proceed to acknowledge it, then run the setup interview
+   (design-spec/setup-interview.md is the source definition). This
+   acknowledgment gate is separate from, and does not replace, the §3.1
+   write gate at step 3: it gates only the start of the interview, and no
+   file is created by passing it.
 2. Preview the scaffold — list every folder (§4) and file (§6) that will be
    created, explicitly noting that nothing exists yet and nothing is
    overwritten.
 3. Create on Proceed — scaffold the §4 folders and §6 files, shipping the
    plugin's `content/` verbatim: governance.md per §16.1 (including the
-   shipped "Output reports render as HTML" Local Rule); the five governance
+   shipped "Output reports render as HTML" Local Rule); workflow-router.md
+   per §16.11, carrying the five governance rows; the five governance
    workflows per §17 and the §16.3 schema; memory and log data files created
    empty (or seeded from
    the interview — never fabricated); the §18 templates — the three
@@ -565,8 +606,19 @@ Run once after install (and re-runnable safely — 8.2):
    option, and hand off to build-workflow for each selection. Zero
    selections is valid: every use-case workflow is interview-authored, so
    nothing generic is ever scaffolded.
-5. Close — show where things live, how to run a workflow, how to refine
-   one, and how to send feedback (§17.5).
+5. Schedule the rhythms — create scheduled runs for the cadences the
+   rhythm-optin answer selected, using the default times: daily-startup each
+   weekday 04:00, end-of-day each weekday 16:30, weekly-review Fridays 12:00,
+   monthly-review the first Tuesday of each month 12:00. Defaults only —
+   the user may change any time, and declining scheduling never uninstalls a
+   governance workflow (§16.1). Scheduling creates no definition file and so
+   does not engage the §14.8 drift invariant.
+6. Generate and show the User Guide — write /docs/user-guide.html from the
+   §16.6 template, listing what was actually installed (never the full
+   catalog), and open it for the user.
+7. Close — confirm setup is complete and direct the user to the User Guide
+   for sample commands; show where things live, how to run a workflow, how
+   to refine one, and how to send feedback (§17.5).
 ```
 
 ## 8.2 Re-Run Behavior
@@ -612,7 +664,12 @@ Every builder interview, in either mode, is defined by three elements:
 user's real context — their material, their volume, what "good" looks like,
 where mistakes are costly — so the workflow is tailored, not generic. The
 engine never asks the user about AI techniques; it asks about their
-situation and applies the techniques itself.
+situation and applies the techniques itself. Elicitation also reads
+`/memory/user-profile.md` where it exists, including any work-platform
+preference (§20.1). The platform informs the **wording** of generated steps —
+naming the user's own tools rather than generic ones — and nothing else: it
+selects no branch, changes no step sequence, and never causes a workflow to
+assume a live connection to that platform exists.
 
 **(b) Baked-in best practices.** The techniques the generated workflow
 encodes by default: in instantiate mode, the use case's Baked-In Best
@@ -637,15 +694,30 @@ consideration only.
                Iterate with the user until it fits.
 3. Preview   — show the complete drafted workflow file.
 4. Write on Proceed — write /workflows/[slug].md only when the user types
-               exactly Proceed (§3.1); anything short is a hold. Log the
-               creation to /logs/change-log.md.
+               exactly Proceed (§3.1); anything short is a hold. Append the
+               workflow's row to /governance/workflow-router.md (§16.11) on
+               the same Proceed. Log the creation to /logs/change-log.md.
 5. Hand off  — offer a first run, and name refine-workflow as the way to
                adjust it later.
 ```
 
-Guardrails: the engine writes exactly one new workflow file plus its log
-entry per build — it never edits governance files, other workflows, or
-memory as a side effect (§14.8). The one templates exception is §12.5: when
+Guardrails: the engine writes exactly one new workflow file, its router row,
+and its log entry per build — it never edits other workflows or memory as a
+side effect (§14.8).
+
+**The router exception (3.2).** Appending the workflow's row to
+`/governance/workflow-router.md` is the one governance-file write
+build-workflow is authorized to make. It is narrow by construction: append a
+single new row, never edit or remove an existing one, never touch any other
+part of the file or any other file under `/governance/`. The write is Level 1
+(§3.3 — appending to a file, creating nothing destructive) and rides the same
+`Proceed` that writes the workflow. The exception exists because trigger
+authority now lives only in the router (§16.3): a workflow written without its
+row is unreachable, so the row is part of creating the workflow, not a side
+effect of it. A build that produced a workflow file but no row would be
+incomplete (§27).
+
+The other exception is §12.5: when
 the report-output condition is met, the build also writes one new
 `/templates/[slug]-report-template.html` (design-new mode only —
 instantiate mode's use-case templates are already shipped at setup, §8.1,
@@ -693,7 +765,7 @@ The design-new interview:
 ```
 
 This is the capability that lets users bring AI into their own
-value-creating work, not just the activities openaos shipped with. Its
+value-creating work, not just the activities OpenAOS shipped with. Its
 outputs are ordinary user-owned workflows: covered by the drift invariant
 and refinable via `refine-workflow`.
 
@@ -767,7 +839,15 @@ the workflow was built: the workflow file itself is the whole input.
 
 ```text
 - One workflow per session: a refinement session edits exactly one workflow
-  definition file, plus its change-log entry — nothing else (§14.8).
+  definition file, its row in /governance/workflow-router.md when that row's
+  triggers change, plus its change-log entry — nothing else (§14.8).
+- Triggers live in the router: when a refinement changes when the workflow
+  should run — a new cadence, a widened or narrowed scope, a rename — the
+  matching router row (§16.11) is updated in the same session and shown in
+  the same previewed diff, so the user approves the workflow and its triggers
+  together. A refinement that changes only how the workflow works leaves the
+  row untouched. Editing that one row is the only governance-file write this
+  skill makes; rows for other workflows are never touched.
 - Smallest change that works: prefer revising the flagged sections over
   wholesale rewrites; a rewrite is proposed only when the user's situation
   has genuinely outgrown the structure, and is named as such in the preview.
@@ -843,7 +923,7 @@ Example:
 ---
 title: Weekly Review Workflow
 openaos_version: 1.0.5
-last_updated: 2026-06-11
+last_updated: 2026-08-15
 ---
 ```
 
@@ -871,7 +951,7 @@ machinery; recovering an older state is a user-level file operation.
 
 A user's workspace is a living system: its files change after setup. To keep that change controllable, every file in the workspace is one of two kinds.
 
-**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation, §12), the refinement interview (`refine-workflow`, §13 — the one sanctioned way a definition file changes in place), or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
+**Definition file.** A file that defines behavior: workflow definitions in `/workflows`, the governance config, the workflow router (§16.11), and templates in `/templates`. Use-case workflows are interview-authored and tailored, so definition files are not all spec-renderings — but they change only through sanctioned paths: the builder interview (creation, §12), the refinement interview (`refine-workflow`, §13 — the one sanctioned way a definition file changes in place), or a plugin update, each `Proceed`-gated. No workflow run edits a definition file as a side effect.
 
 **Data file.** A file whose content accumulates from operation and the user's input. *Test: regenerating this file would destroy information the user relies on.* Data files are created once at setup (empty or seeded) and never overwritten by a plugin update; workflows append to and maintain them under the normal non-destructive and approval rules (Sections 2.4, 3). Examples: everything in `/memory`, `/logs`, `/outputs`, `/inbox`, and `/archive`.
 
@@ -879,7 +959,9 @@ A user's workspace is a living system: its files change after setup. To keep tha
 
 **The drift invariant.** Workflow runs write data files; definition files change only via the sanctioned, `Proceed`-gated paths above. This bounds drift to data (which is supposed to grow) and keeps definitions deliberate, so an update or refinement is a clean, reviewed change rather than a three-way merge.
 
-**Governance application.** `/governance/governance.md` and the five §17 governance workflows are definition files, with two extra rules: every governance change also appends a dated entry to governance.md's Change Notes and to `/logs/change-log.md` (§16.1), and the sanctioned paths may revise but never remove them — the governance layer itself is not removable (§16.1).
+**Governance application.** Everything under `/governance/` — `governance.md` and `workflow-router.md` — and the five §17 governance workflows are definition files, with two extra rules: every governance change also appends a dated entry to governance.md's Change Notes and to `/logs/change-log.md` (§16.1), and the sanctioned paths may revise but never remove them — the governance layer itself is not removable (§16.1).
+
+The router is the one governance file with sanctioned writers beyond `refine-workflow` and a plugin update: `build-workflow` appends a row per §12.2. This is a deliberate, bounded widening of the invariant, not an exception to it — a row is appended only as part of a `Proceed`-gated workflow creation, never by a workflow *run*, so definitions still change only deliberately.
 
 ---
 
@@ -897,7 +979,7 @@ title: Weekly Review Workflow
 file_type: workflow
 openaos_version: 1.0.5
 created_date: 2026-06-02
-last_updated: 2026-06-02
+last_updated: 2026-08-15
 ---
 ```
 
@@ -905,7 +987,7 @@ last_updated: 2026-06-02
 
 The controlled `file_type` tokens are `file_type` in `design-spec/vocabulary.yaml` (source of truth). The meaning of each type and its per-file assignments are normative here in the prose below.
 
-`design_spec` applies to this design specification itself (`openaos-design-spec.md`), the source document openaos is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
+`design_spec` applies to this design specification itself (`openaos-design-spec.md`), the source document OpenAOS is generated from. It is the one source/design artifact in the vocabulary; the other types all describe generated files.
 
 `project_instructions` applies to the root project instruction files (`/CLAUDE.md` and `/AGENTS.md`) scaffolded at the workspace root (Section 16.10).
 
@@ -915,6 +997,9 @@ File-type assignments by file:
 
 ```text
 config        /governance/governance.md
+
+router        /governance/workflow-router.md; the routing table that maps
+              user prompts to workflow files (Section 16.11)
 
 memory        /memory/user-profile.md, /memory/preferences.md,
               /memory/people.md, /memory/decisions.md
@@ -995,9 +1080,11 @@ Generation rules:
 - governance.md is a definition file (§14.8): it changes only via a
   `Proceed`-gated refinement or a plugin update, and every change appends a
   dated entry to its Change Notes section and to /logs/change-log.md.
-- The governance layer is not removable: setup always installs this file and
-  the five §17 governance workflows, and no sanctioned path deletes or
-  disables them.
+- The governance layer is not removable: setup always installs everything
+  under `/governance/` — this file and the §16.11 workflow router — plus the
+  five §17 governance workflows, and no sanctioned path deletes or disables
+  them. Removing the router would leave every workflow unreachable, so it
+  sits inside the boundary rather than beside it.
 - Setup ships one Local Rule by default, "Output reports render as HTML":
   the daily-startup, weekly-review, monthly-review, and end-of-day reports,
   plus the inbox-triage, organizer, and learning-assistant reports when
@@ -1102,14 +1189,19 @@ Canonical bodies of the five governance workflows:
 contract (meaning and governing rule). The plugin copies are byte-identical
 (§28.1, §18.7).
 
+**No `When to Use` section (3.2).** A workflow file states what it does, not
+when to reach for it. Trigger authority belongs solely to the Workflow Router
+(§16.11): a workflow's example prompts live in exactly one file, so there is
+no second place to keep in sync and no incentive to load a workflow just to
+find out whether it applies. Removing the section is what makes the router
+authoritative rather than advisory.
+
 Workflow files should follow:
 
 ```markdown
 # [Workflow Name]
 
 ## Purpose
-
-## When to Use
 
 ## Inputs
 
@@ -1193,7 +1285,7 @@ Generation rules (normative):
   workflows by name, not the hypothetical roster.
 ```
 
-Content sections, in order: What openaos Is; Your Workflows (the installed
+Content sections, in order: What OpenAOS Is; Your Workflows (the installed
 list); Building a Workflow (the §12 modes, in user terms); Refining a
 Workflow (§13); The Proceed Gate and Safety Model (§3, §16.1); Governance
 Rhythms (§17); Memory and What Gets Remembered (§20); Sending Feedback
@@ -1249,19 +1341,34 @@ Entries in `/logs/change-log.md` (file_type `change_log`, a data file per §14.8
 Setup provisions `/CLAUDE.md` and `/AGENTS.md` (file_type
 `project_instructions`) at the workspace root from the plugin's
 `content/root/` (§28), non-destructively: if either file already exists, setup
-never overwrites it — it proposes the openaos block as an addition, applied
+never overwrites it — it proposes the OpenAOS block as an addition, applied
 only on `Proceed`.
 
 ```text
-/CLAUDE.md  — session entry point: names the workspace as an openaos
+/CLAUDE.md  — session entry point: names the workspace as an OpenAOS
               workspace and includes /AGENTS.md.
 /AGENTS.md  — standing instructions for any AI agent in the workspace:
               read /governance/governance.md before consequential actions;
               the Proceed gate summary (exact word, anything short is a
               hold); the governance layer is not removable; workflows live
               in /workflows and change only via refine-workflow or a plugin
-              update.
+              update; and a Workflow routing section importing
+              @governance/workflow-router.md (§16.11).
 ```
+
+The routing import is what makes the router load at session start: CLAUDE.md
+imports AGENTS.md, AGENTS.md imports the router. Agents therefore arrive with
+the routing table but *not* with any workflow body — the point of the pattern.
+
+**Imports use the relative form, never a leading slash.** Write
+`@governance/workflow-router.md`, not `@/governance/workflow-router.md`. An
+`@path` import resolves relative to the file containing it; a leading slash
+makes the path absolute and resolves it against the *filesystem* root, not the
+workspace root, so the import silently loads nothing. The failure is invisible
+— no error is raised, and an agent that reads the file on demand later still
+appears to work — which makes it worth stating here and checking mechanically
+(§18.7, VC13). The same rule applies to every `@path` in a root scaffold, not
+just the router.
 
 These files carry pointers, not rules: the standing rules live in
 governance.md (§16.1), so the root files stay small and stable.
@@ -1276,6 +1383,49 @@ plugin maps to workspace `/X`. `content/root/` maps to the workspace **root**
 place the `content/X → /X` model does not hold; it is recorded here and in
 `setup-openaos` so it is not mistaken for drift.
 
+## 16.11 Workflow Router Schema
+
+`/governance/workflow-router.md` (file_type `router`) is the routing table an
+agent consults to decide which workflow to load. It exists so that answering
+"which workflow is this?" costs one small file rather than every workflow file
+in `/workflows`. It is loaded at session start through the §16.10 import chain
+(`/CLAUDE.md` → `/AGENTS.md` → the router), so routing is available before the
+first prompt is read.
+
+```markdown
+# Workflow Router
+
+## Purpose
+
+## Routes
+```
+
+**Format.** `Routes` is a two-column markdown table — `Example Prompts` and
+`File to Load`, one row per workflow. Markdown table over YAML or JSON: the
+data is flat and uniform, and a table carries the least structural overhead
+per row of the three, which matters for a file loaded into every session.
+
+```text
+| Example Prompts | File to Load |
+|---|---|
+| "run my daily startup", "start my day" | /workflows/daily-startup.md |
+```
+
+**Matching rule (stated in the file's own Purpose section, for the agent that
+reads it).** The prompts are illustrative, not exact commands: match on
+meaning, load the single most likely workflow, and ask the user for
+clarification when nothing matches — never guess, and never load several
+workflows to compare them.
+
+**Ownership.** Scaffolded by `setup-openaos` with the five §17 governance
+rows. `build-workflow` appends a row when it creates a workflow (§12.2);
+`refine-workflow` updates a row when triggers change (§13.2). Those two skills
+are the only sanctioned writers, matching the §14.8 rule for workflow
+definitions themselves. The router is a `/governance/*` file and is therefore
+part of the non-removable governance layer (§17).
+
+Canonical body: `design-spec/content/governance/workflow-router.md`; this
+section is its contract. The plugin copy is byte-identical (§28.1, §18.7).
 
 ---
 
@@ -1309,6 +1459,10 @@ Common rules:
   effect.
 - Cadences are suggestions the user approves at setup (daily, daily,
   weekly, monthly); any run can also be invoked on demand.
+- Each has a row in the §16.11 workflow router, shipped with the router at
+  setup rather than authored per workspace. The rows are the only record of
+  what invokes these workflows; the workflow files themselves carry no
+  `When to Use` section (§16.3).
 ```
 
 ## 17.1 Daily Startup Workflow
@@ -1590,8 +1744,8 @@ directly**. Structural validation is therefore normative, not optional:
 `scripts/validate-content.py` checks the criteria below, and it must pass
 before a spec change or plugin regeneration is considered complete (§27, §34).
 
-**All markdown templates** (governance, the five workflows, the three §18.3 /
-§18.5 / §18.6 interaction templates):
+**All markdown templates** (governance, the §16.11 workflow router, the five
+workflows, the three §18.3 / §18.5 / §18.6 interaction templates):
 
 ```text
 - Valid YAML frontmatter carrying title, file_type, openaos_version,
@@ -1613,6 +1767,27 @@ before a spec change or plugin regeneration is considered complete (§27, §34).
 - Permission Model Level 1 and Level 2 action lists equal vocabulary.yaml —
   the consistency guard against the rendered text freezing out of date.
 - The default "Output reports render as HTML" Local Rule is present (§16.1).
+```
+
+**workflow-router.md specifically:**
+
+```text
+- The Routes section carries the two-column table header, and every row's
+  `File to Load` resolves to a real content/workflows/*.md file.
+- Every shipped governance workflow has exactly one row — no workflow left
+  unroutable, no row pointing at a workflow that does not exist.
+- No workflow file carries a `When to Use` section (§16.3): trigger authority
+  is the router's alone, so a second copy is drift by definition.
+```
+
+**Root scaffolds specifically:**
+
+```text
+- No `@path` import uses the absolute form (`@/...`): a leading slash
+  resolves against the filesystem root rather than the workspace root, so the
+  import silently loads nothing (§16.10, VC13).
+- Every `@path` import resolves to a real file — either the sibling scaffold
+  (`@AGENTS.md`) or a content source under design-spec/content/.
 ```
 
 **Workflow files specifically:**
@@ -1719,11 +1894,19 @@ Every workspace should include:
 /memory/decisions.md
 ```
 
+`/memory/user-profile.md` may carry a **work-platform preference** seeded by
+the setup interview (§8.1 step 1) — the platform the user does most of their
+work in. It is one instance of the general memory capture `memory-seeds`
+already performs, pre-optioned because the answer is high-value and easy to
+state. Its one consumer is `build-workflow` (§12.1(a)), which reads it during
+situation elicitation. The user may change or clear it like any other memory
+entry.
+
 ## 20.2 Memory File Boundaries
 
 ```text
 /memory/user-profile.md
-Stores durable, user-approved facts about the user that help openaos personalize assistance. Avoid sensitive personal attributes unless explicitly approved.
+Stores durable, user-approved facts about the user that help OpenAOS personalize assistance. Avoid sensitive personal attributes unless explicitly approved.
 
 /memory/preferences.md
 Stores durable user preferences about communication style, workflows, defaults, formatting, decision-making, tools, and collaboration.
@@ -1754,11 +1937,13 @@ Approved decisions:
 
 ```text
 - A complete setup must include the required folders, the governance config,
-  the five governance workflows, the required global files (Section 6), and
-  the User Guide. Zero use-case workflows at setup is valid.
+  the workflow router (Section 16.11), the five governance workflows, the
+  required global files (Section 6), and the User Guide. Zero use-case
+  workflows at setup is valid.
 - A complete workflow build must include the workflow definition file
-  (Section 16.3) and a change-log entry; the builder previews the workflow
-  and writes it only on Proceed.
+  (Section 16.3), its router row (Section 16.11), and a change-log entry;
+  the builder previews the workflow and its row and writes both only on
+  Proceed. A workflow without a row is unreachable and therefore incomplete.
 - The weekly and monthly review workflows audit generated files for
   completeness, consistency, permissions, and memory hygiene.
 - Catalog validation (Section 7A: V1, V3, V4) must pass before a spec change
@@ -1775,7 +1960,7 @@ Approved decisions:
 
 # 28. Distribution
 
-Distribution is plugin-only: one artifact, the **openaos** Claude plugin,
+Distribution is plugin-only: one artifact, the **OpenAOS** Claude plugin,
 generated directly from this specification per the packaging runbook
 (Section 33). There is no factory package and no instance concept — the
 plugin, once installed, scaffolds the user's workspace (§8) and runs the
@@ -1795,6 +1980,8 @@ claude-plugin/openaos/
   content/governance/governance.md      the §16.1 config (setup source),
                                         byte-identical to its
                                         design-spec/content/ source
+  content/governance/workflow-router.md the §16.11 routing table (setup
+                                        source), byte-identical copy
   content/workflows/[slug].md           the five §17 governance workflows,
                                         byte-identical copies
   content/templates/*.md|*.html         the §18 templates + the §16.6

@@ -1,21 +1,21 @@
 ---
 title: Governance
 file_type: config
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # Governance
 
 ## Purpose
 
-This file holds the standing rules of your openaos workspace: what may
+This file holds the standing rules of your OpenAOS workspace: what may
 happen automatically, what always waits for your approval, and what is never
 done. Runnable procedures live in `/workflows`; the rules live here. This
 file changes only through an approved refinement or a plugin update — every
-change is recorded under Change Notes. The governance layer (this file and
-the five governance workflows) is not removable.
+change is recorded under Change Notes. The governance layer (everything under
+`/governance/` and the five governance workflows) is not removable.
 
 ## The Proceed Gate
 
@@ -88,6 +88,13 @@ lightweight look in the weekly review and a deeper hygiene pass monthly.
 Workflow files in `/workflows` change only via the `refine-workflow` skill
 or a plugin update — never as a side effect of running one.
 
+Which workflow runs for a given request is decided by
+`/governance/workflow-router.md`, not by the workflow files themselves. Its
+rows change only via `build-workflow` (appending a row for a new workflow) or
+`refine-workflow` (updating a row whose triggers changed) — the same two
+skills that own the workflow definitions, so a workflow and its triggers move
+together.
+
 ## Logs
 
 Logs in `/logs` accumulate: they are appended to under these rules and never
@@ -115,6 +122,14 @@ Logs (`/logs/*.md`) and memory (`/memory/*.md`) are unaffected and stay
 markdown — this rule covers reports only, not append-only logs.
 
 ## Change Notes
+
+### 2026-08-02 — Workflow router adopted
+**Change:** Routing moved into `/governance/workflow-router.md`, loaded at
+session start via `/CLAUDE.md` → `/AGENTS.md`. Workflow files no longer carry
+a "When to Use" section — trigger authority lives in the router alone, so an
+agent no longer reads every workflow to find the right one. The Workflows
+section records who may write router rows; the governance layer is restated as
+everything under `/governance/`, so the router is equally non-removable.
 
 ### 2026-07-17 — Installed
 **Change:** Governance config installed by setup-openaos.

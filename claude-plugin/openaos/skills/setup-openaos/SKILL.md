@@ -1,5 +1,5 @@
 ---
-name: setup-OpenAOS
+name: setup-openaos
 description: Set up an OpenAOS workspace. Use when the user wants to set up, install, initialize, or re-run setup for OpenAOS — scaffolds the governance foundation (governance config, five governance workflows, memory, logs, templates, user guide) and then offers the use-case workflow menu. Nothing is created until the user types exactly Proceed.
 ---
 
@@ -14,23 +14,31 @@ Hard rules, before anything else:
   short of that exact word is a hold.
 - Setup is non-destructive: never overwrite an existing file. On a re-run,
   detect what exists and offer only to create what is missing.
-- The governance layer (governance.md + the five governance workflows) is
-  always installed and is not removable. Do not offer to skip it.
+- The governance layer (everything under `/governance/` + the five governance
+  workflows) is always installed and is not removable. Do not offer to skip
+  it.
 
 ## Step 1 — Welcome
 
 1. Say: "Welcome to OpenAOS. Together we will be creating a personalized set of specialized workflows known as an Agentic Operating System. A few quick questions, then I'll show you exactly what will be set up — nothing is created until you approve it. Type `Proceed` to continue."
 2. Wait for the user to type `Proceed` to continue. 
 
-## Step 2  — Setup interview
+## Step 2 — Interview
 
 Ask, one at a time (all but the first are skippable):
+
 1. **Workspace root** — which folder is the OpenAOS workspace? Confirm it
    explicitly.
-2. **Connectors** — which connectors do you want to use: Google Workspace, Microsoft 365, Dropbox, I'll connect later.
-5. **Initial workflows** — which use-case workflows to build first (must select at least one): Inbox
+2. **Connectors** — which connectors do you want to use: Google Workspace,
+   Microsoft 365, Dropbox, I'll connect later.
+3. **Rhythms** — explain what rhythms are and the purpose of each one. Then ask which rhythms to schedule: all / daily only /
+   weekly+monthly only / none for now. All five governance workflows are
+   installed regardless; this sets only the active cadences.
+4. **Memory seeds** — any people, tools, or preferences to remember from the
+   start? Default: seed empty. Never fabricate a memory entry.
+5. **First workflows** — which use-case workflows to build first: Inbox
    triage, Research assistant, Writing assistant, Learning assistant,
-   File organizer, Design my own. 
+   File organizer, Design my own — or none yet (perfectly valid).
 
 ## Step 3 — Preview the scaffold
 
@@ -42,6 +50,10 @@ Folders: `/governance /workflows /memory /logs /templates /docs /outputs
 
 Files:
 - `/governance/governance.md` — from `content/governance/governance.md`
+- `/governance/workflow-router.md` — from
+  `content/governance/workflow-router.md`; the routing table that decides
+  which workflow a prompt loads, shipped with the five governance rows.
+  build-workflow appends a row for each use-case workflow built in step 4
 - `/workflows/daily-startup.md`, `end-of-day.md`, `weekly-review.md`,
   `monthly-review.md`, `feedback.md` — from `content/workflows/`
 - `/memory/user-profile.md`, `preferences.md`, `people.md`, `decisions.md` —
@@ -67,8 +79,8 @@ Then ask the user to type exactly `Proceed`.
 
 ## Step 4 — Create the Scaffold on Proceed
 
-1. Create everything previewed. Stamp each generated file's frontmatter with this plugin's version as `OpenAOS_version`, `status: active`, and today's dates. 
-2. Append a setup entry to `/logs/change-log.md`. 
+1. Create everything previewed. Stamp each generated file's frontmatter with this plugin's version as `openaos_version`, `status: active`, and today's dates.
+2. Append a setup entry to `/logs/change-log.md`.
 3. Report what was created, completely and truthfully. If anything failed, say so.
 
 ## Step 5 — Use-case menu

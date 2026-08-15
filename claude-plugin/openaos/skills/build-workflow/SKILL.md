@@ -1,11 +1,11 @@
 ---
 name: build-workflow
-description: Build a tailored workflow through a guided interview. Use when the user wants to add, create, or build a workflow — one of the five predefined use cases (inbox triage, research assistant, writing assistant, learning assistant, organizer/declutter) or a brand-new workflow for their own activity ("design my own"). Writes the workflow file only when the user types exactly Proceed.
+description: Build a tailored workflow through a guided interview. Use when the user wants to add, create, or build a workflow — one of the five predefined use cases (inbox triage, research assistant, writing assistant, learning assistant, file organizer) or a brand-new workflow for their own activity ("design my own"). Writes the workflow file only when the user types exactly Proceed.
 ---
 
 # Build a Workflow
 
-You are the openaos builder engine (design spec §12): a guided interview
+You are the OpenAOS builder engine (design spec §12): a guided interview
 that co-designs a tailored, best-practice workflow. One engine, two modes:
 
 - **instantiate** — the user picked one of the five predefined use cases.
@@ -37,10 +37,12 @@ that co-designs a tailored, best-practice workflow. One engine, two modes:
    steps, where it pauses for approval. Iterate until it fits.
 3. **Preview** — show the complete drafted workflow file.
 4. **Write on `Proceed`** — write `/workflows/[slug].md` only when the user
-   types exactly `Proceed`; anything short is a hold. Append a creation entry
-   to `/logs/change-log.md`. Never edit any other file, with one exception:
-   in design-new mode, when the report-output condition below is met, also
-   write the one new `/templates/[slug]-report-template.html` it names.
+   types exactly `Proceed`; anything short is a hold. On the same `Proceed`,
+   append the workflow's row to `/governance/workflow-router.md` (see
+   Routing, below) and a creation entry to `/logs/change-log.md`. Never edit
+   any other file, with one exception: in design-new mode, when the
+   report-output condition below is met, also write the one new
+   `/templates/[slug]-report-template.html` it names.
 5. **Hand off** — offer a first run; mention refine-workflow for later
    adjustments.
 
@@ -52,12 +54,36 @@ top of `Proceed`).
 
 Frontmatter: `title`, `file_type: workflow`, `openaos_version` (this
 plugin's version), `created_date`, `last_updated`, `status: active`.
-Sections, in order: Purpose, When to Use, Inputs, Outputs, Steps, Decision
-Points, Approval Gates, Escalation Triggers, Completion Criteria. The
+Sections, in order: Purpose, Inputs, Outputs, Steps, Decision Points,
+Approval Gates, Escalation Triggers, Completion Criteria. There is no
+"When to Use" section — when the workflow runs is recorded in the router,
+once, and nowhere else. The
 Approval Gates section must be consistent with `/governance/governance.md` —
 sending, publishing, deleting, moving (except into `/inbox/processed` under
 an approved triage workflow), spending, and irreversible changes always
 require `Proceed`.
+
+## Routing
+
+A workflow nobody can find does not exist. `/governance/workflow-router.md`
+is the table that maps a user's prompt to a workflow file, and it is the only
+place a workflow's triggers are recorded.
+
+During **Propose**, ask what the user would naturally say when they want this
+workflow — in their own words, not command syntax. Collect two to four
+phrasings. Show the row you intend to add as part of the **Preview**, so they
+approve the triggers alongside the workflow itself.
+
+On `Proceed`, append one row to the `## Routes` table:
+
+```text
+| "their phrasing", "another phrasing" | /workflows/[slug].md |
+```
+
+Rules: append only — never edit, reorder, or remove an existing row, and
+never touch anything else in the file or elsewhere under `/governance/`. If a
+proposed phrasing clearly collides with an existing row, say so and settle it
+with the user before writing rather than adding an ambiguous row.
 
 ## Report-output scaffolding
 

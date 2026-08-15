@@ -33,9 +33,11 @@ Use the built-in feedback workflow: say "I want to report a bug" or "I want to m
 1. Fork the repository on GitHub, then clone your fork into a local repo.
 2. Create a new development branch off `main`.
 3. Make changes to the design spec and related design documents. The best way to do this is to collaborate with Claude — otherwise it's very difficult to avoid drift and keep the moving parts in sync. For heavy design work it's best to use Opus 4.8 with high effort or Fable 5 with low effort.
+
+   *Optional:* if starting in a large specification document is the hard part, you can prototype directly in `claude-plugin/openaos/skills/` instead. Editing a `SKILL.md` is concrete and small; §12 of the spec is not. Then say **"Using the runbook, sync the design spec with the plugin."** (runbook §36.3) to draft the matching spec change. **Review and edit that draft — it is a starting point, and you are the author of the spec language you submit.** A prototype edit that conflicts with a fundamental design tenet is not reflected; the sync stops and tells you which tenet, so you can decide.
 4. Follow the runbook (`design-spec/openaos-runbook.md`):
-   - **"Using the runbook, conduct a Design Readiness Review."** Loops until the spec passes all review gates, including the three repo validators.
-   - **"Using the runbook, generate the plugin."** Regenerates `claude-plugin/openaos/` from the reviewed spec.
+   - **"Using the runbook, conduct a Design Readiness Review."** Loops until the spec passes all review gates, including the repo validators.
+   - **"Using the runbook, generate the plugin."** Regenerates `claude-plugin/openaos/` from the reviewed spec. This is always the last runbook step, so the plugin in your PR is generated from the spec you're proposing.
 5. Test your changes and iterate as needed.
 6. Commit, push your branch to your fork, and open a pull request against `main`. **Only pull requests for the design spec will be considered.**
 
@@ -47,7 +49,7 @@ Opening a pull request doesn't change `main` — it only proposes your change. A
 
 ## What not to do
 
-Do not directly modify the generated plugin in `claude-plugin/openaos/`. Those changes will not be accepted — all modifications must originate with the design spec, and the plugin is regenerated from it.
+Do not *submit* direct modifications to the generated plugin in `claude-plugin/openaos/`. Prototyping there is fine and even encouraged if it's the easier place to start (see step 3 above) — but what you propose is a spec change, and the plugin in your pull request must be byte-identical to what the spec generates. Automated checks assert this on every pull request, so a branch that skips the round trip fails before a maintainer looks at it.
 
 The governance layer of the design (the `Proceed` gate, the governance config, and the five governance workflows) is not removable; proposals that remove or weaken it will not be considered.
 

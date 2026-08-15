@@ -1,9 +1,9 @@
 ---
 title: Weekly Review Workflow
 file_type: workflow
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # Weekly Review Workflow
@@ -13,9 +13,6 @@ Review commitments, decisions, unresolved items, workflow performance,
 stale memory signals, and next-week priorities — keeping the workspace
 operationally clean so loose ends don't become forgotten obligations.
 Review question: **What needs follow-up soon?**
-
-## When to Use
-Weekly (or on demand).
 
 ## Inputs
 The week's carryover notes, `/logs/decision-log.md`, `/logs/change-log.md`,

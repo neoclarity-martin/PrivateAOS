@@ -7,7 +7,7 @@
 # Phase D added the five governance workflows (§17); Phase E adds the
 # use-case workflows. Validators accept an empty roster (§7A).
 
-openaos_version: 3.1.0
+openaos_version: 3.2.1
 
 vocabulary:
   # workflow domain tokens (governance from §17; use-case from §7B)
@@ -91,7 +91,7 @@ workflows:
     artifacts_owned: [/workflows/learning-assistant.md]
 
   - slug: organizer
-    display_name: Organizer / Declutter
+    display_name: File organizer
     kind: use-case
     one_line: Propose-then-move file cleanup; never bulk-deletes. (§7B)
     domains_owned: [file-organization]

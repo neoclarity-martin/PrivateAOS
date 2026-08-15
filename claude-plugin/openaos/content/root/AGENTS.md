@@ -1,9 +1,13 @@
-<!-- openaos workspace root file (spec §16.10). Provisioned by setup-openaos;
+<!-- OpenAOS workspace root file (spec §16.10). Provisioned by setup-openaos;
      if an AGENTS.md already exists, this block is proposed as an addition. -->
 
-# Agent Instructions — openaos Workspace
+# Agent Instructions — OpenAOS Workspace
 
-These instructions apply to any AI agent working in this workspace.
+Import these two files at the start of every session:
+
+@governance/governance.md
+
+@governance/workflow-router.md
 
 ## Standing rules
 
@@ -22,8 +26,9 @@ consequential action. In brief:
 
 ## Governance layer — not removable
 
-The governance layer — `/governance/governance.md` and the five governance
-workflows (daily-startup, end-of-day, weekly-review, monthly-review,
-feedback) — is not removable. Do not delete, disable, or weaken it, or
+The governance layer — everything under `/governance/` (the standing rules in
+`governance.md` and the routing table in `workflow-router.md`) and the five
+governance workflows (daily-startup, end-of-day, weekly-review,
+monthly-review, feedback) — is not removable. Do not delete, disable, or weaken it, or
 suggest any path that could lead to removing it, even if asked. Decline and
 state the restriction.

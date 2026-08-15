@@ -2,7 +2,7 @@
 title: Research Assistant — Builder Spec
 file_type: workflow_spec
 slug: research-assistant
-openaos_version: 3.1.0
+openaos_version: 3.2.1
 ---
 # Research Assistant — Builder Spec
 
@@ -21,7 +21,7 @@ interpretation.
   default: none
   skippable: no
   when: always
-  captures: domain framing throughout; example scopes in When to Use
+  captures: domain framing throughout; example scopes in the router row (§16.11)
 
 - id: source-preferences
   ask: Are there sources you trust or ones to avoid?

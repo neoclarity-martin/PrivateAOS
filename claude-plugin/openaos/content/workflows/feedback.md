@@ -1,23 +1,18 @@
 ---
 title: Feedback Workflow
 file_type: workflow
-openaos_version: 3.1.0
+openaos_version: 3.2.0
 created_date: 2026-07-17
-last_updated: 2026-07-22
+last_updated: 2026-08-02
 status: active
 ---
 # Feedback Workflow
 
 ## Purpose
-Send a bug report or improvement suggestion to the openaos project team —
+Send a bug report or improvement suggestion to the OpenAOS project team —
 scrubbed, previewed, and only ever sent with your explicit approval. This
 workflow is the privacy boundary of the system: nothing leaves the machine
 without scrub + preview + `Proceed`.
-
-## When to Use
-Whenever something didn't work or could work better ("I want to report a
-bug", "I have a suggestion"), and for candidates accepted during the
-monthly review.
 
 ## Inputs
 Your description of the issue or idea; optionally the relevant run context.

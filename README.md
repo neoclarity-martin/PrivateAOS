@@ -7,7 +7,9 @@
 
 ## Why This Exists
 
-Claude Cowork makes Claude accessible to non-technical users — but it leaves them on their own to turn that access into workflows that are actually good: well-designed, tailored to their situation, and safe to run against their real files. **OpenAOS** closes that gap. Its purpose is to collaboratively build the best possible workflow for each of the things you actually do, through a guided interview that embeds AI best practices you don't have to know; to let you refine any workflow just as easily; and to keep all of it safe by default — nothing destructive happens without the one word `Proceed` — and improving over time, with an easy channel to send feedback back to the project team.
+Claude Cowork makes Claude accessible to non-technical users — but it leaves them on their own to turn that access into workflows that are actually good: well-designed, tailored to their situation, and safe to run against their real files. 
+
+**OpenAOS** closes that gap. Its purpose is to collaboratively build the best possible workflow for each of the things you actually do, through a guided interview that embeds AI best practices you don't have to know; to let you refine any workflow just as easily; and to keep all of it safe by default — nothing destructive happens without the one word `Proceed` — and improving over time, with an easy channel to send feedback back to the project team.
 
 ## What It Is
 
@@ -21,7 +23,7 @@ Claude Cowork makes Claude accessible to non-technical users — but it leaves t
    | Research assistant | Scoped, source-disciplined research |
    | Writing assistant | Drafting/editing keyed to your voice |
    | Learning assistant | Guided learning with understanding checks |
-   | Organizer / declutter | File cleanup — inbox triage for files |
+   | File organizer | File cleanup — inbox triage for files |
 
    Plus a **custom builder** ("design my own") that co-designs brand-new workflows for whatever *you* do to create value — OpenAOS is not limited to the use cases we anticipated.
 
@@ -29,11 +31,9 @@ Claude Cowork makes Claude accessible to non-technical users — but it leaves t
 
 3. **Guardrails** — a governance config (the `Proceed` gate, permission model, memory boundaries) and five governance workflows (daily startup, end of day, weekly review, monthly review, feedback) that make the workflows trustworthy. The governance layer is installed with every workspace and is not removable.
 
-There is no multi-agent roster, no tiers, no factory/instance machinery — everything that doesn't directly serve user value was removed in the 3.0 rewrite.
-
 ## How It Works
 
-OpenAOS ships as a single Claude plugin generated directly from its design specification. Install it, say **"set up openaos"**, answer a few questions about your situation, and approve the preview. Setup scaffolds your workspace:
+OpenAOS ships as a single Claude plugin generated directly from its design specification. Install it, say **"set up OpenAOS"**, answer a few questions about your situation, and approve the preview. Setup scaffolds your workspace:
 
 ```text
 /[your workspace]
@@ -68,6 +68,8 @@ design-spec/                      ← the canonical spec + companion data files
 ├── openaos-revision-history.md
 ├── workflow-catalog.yaml, vocabulary.yaml, file-skeletons.yaml (+ schemas)
 ├── setup-interview.md
+├── sync-exclusions.md            ← tenet-check exclusions and their dispositions
+├── content/                      ← 20 canonical content sources mirrored into the plugin
 └── workflow-specs/[slug]/spec.md ← the five use-case builder specs
 scripts/                          ← repo CI validators
 claude-plugin/openaos/            ← the generated plugin (skills, content, templates)

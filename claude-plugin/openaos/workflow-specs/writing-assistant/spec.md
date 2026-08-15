@@ -2,7 +2,7 @@
 title: Writing Assistant — Builder Spec
 file_type: workflow_spec
 slug: writing-assistant
-openaos_version: 3.1.0
+openaos_version: 3.2.1
 ---
 # Writing Assistant — Builder Spec
 
@@ -21,7 +21,7 @@ they control.
   default: none
   skippable: no
   when: always
-  captures: the document kinds in When to Use and per-kind guidance in Steps
+  captures: the document kinds in the router row (§16.11) and per-kind guidance in Steps
 
 - id: voice-samples
   ask: Can you point to two or three pieces of your writing you're happy with?

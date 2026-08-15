@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - "design-spec/**"
+      - "claude-plugin/**"
       - "scripts/**"
   push:
     branches: [main]
     paths:
       - "design-spec/**"
+      - "claude-plugin/**"
       - "scripts/**"
 
 jobs:
@@ -23,6 +25,8 @@ jobs:
         run: pip install pyyaml jsonschema
       - name: Validate workflow catalog (schema + V1, V3, V4)
         run: python scripts/validate-workflow-catalog.py
+      - name: Validate vocabulary (VV1, VV2, VV4, VV6)
+        run: python scripts/validate-vocabulary.py
 
   check-spec-version:
     runs-on: ubuntu-latest
@@ -33,3 +37,26 @@ jobs:
           python-version: "3.12"
       - name: Check openaos_version agreement across the design-spec set
         run: python scripts/check-spec-version.py
+
+  # The plugin-is-generated-from-the-spec invariant (runbook §33, §35). This is
+  # what makes an unreflected direct plugin edit unable to reach main: a branch
+  # that skips the §36.3 → §36.2 round trip fails here. The §36.3 tenet check is
+  # deliberately not run in CI — it is a judgment call, not a script.
+  plugin-matches-spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Validate content sources and plugin byte-identity (VC1-VC13)
+        run: python scripts/validate-content.py
+      - name: Validate workflow-specs plugin byte-identity (WS1-WS2)
+        run: python scripts/validate-workflow-specs.py
+      # The authored bucket has no byte-identity to assert, so its spec anchors
+      # are checked instead: identity, citations, references, Proceed gate.
+      # Prose fidelity to §8.1/§12/§13 stays a review responsibility.
+      - name: Validate plugin skills against their spec anchors (SK1-SK5)
+        run: python scripts/validate-skills.py

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 1000" width="1160" height="1000" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #1f2328; }
+    .m { fill: #5b6472; }
+    .s { font-size: 13px; }
+    .xs { font-size: 11.5px; }
+    .xxs { font-size: 10.5px; }
+    .mono { font-family: Consolas, monospace; font-size: 10.5px; }
+    .step { fill: #ffffff; stroke: #cfd6e0; stroke-width: 1; rx: 6; }
+  </style>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#5b6472"/>
+    </marker>
+    <marker id="arwP" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arwr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#b23c3c"/>
+    </marker>
+    <marker id="arwg" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#2f9e5f"/>
+    </marker>
+  </defs>
+
+  <rect width="1160" height="1000" fill="#ffffff"/>
+  <text x="40" y="46" class="t" font-size="20" font-weight="600">I — The round trip (§36.3 → §36.2)</text>
+  <text x="40" y="70" class="m s">The one sanctioned path from a plugin edit back to the spec. It drafts; it never merges — what reaches main is always a spec change with a plugin regenerated from it.</text>
+
+  <!-- entry band -->
+  <rect x="40" y="92" width="1080" height="66" rx="6" fill="#faf9fe" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="56" y="118" class="t s" font-weight="600">Start — a direct edit to <tspan class="mono" font-size="13">claude-plugin/openaos/skills/*/SKILL.md</tspan>, the drafting surface</text>
+  <text x="56" y="140" class="m xs">Editing a SKILL.md is concrete and small; editing §12 of a large specification is not. Prototyping here is sanctioned, for maintainers and contributors alike.</text>
+
+  <line x1="360" y1="158" x2="360" y2="178" stroke="#5b6472" stroke-width="2" marker-end="url(#arw)"/>
+
+  <!-- §36.3 container -->
+  <rect x="40" y="182" width="640" height="594" rx="8" fill="#f4f2fd" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="64" y="210" class="t" font-size="16" font-weight="600">§36.3 Spec Sync (Plugin → Spec)</text>
+  <text x="64" y="230" class="m xxs">Triggered by "Using the runbook, sync the design spec with the plugin." No precondition.</text>
+
+  <rect x="64" y="244" width="592" height="76" class="step"/>
+  <text x="80" y="264" class="t xs" font-weight="600">1 · Detect scope — two buckets</text>
+  <text x="80" y="282" class="m xxs"><tspan font-weight="600">Mechanical</tspan> — content/* and workflow-specs/*, by byte comparison.</text>
+  <text x="80" y="298" class="m xxs"><tspan font-weight="600">Authored</tspan> — skills/*/SKILL.md against spec §8.1, §12, §13.</text>
+  <text x="80" y="314" class="m xxs">Scope narrowed by sync-state.py status; where absent, the full comparison runs. No drift → stop.</text>
+
+  <rect x="64" y="328" width="592" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="80" y="348" class="t xs" font-weight="600">2 · Tenet check — the gate</text>
+  <text x="80" y="366" class="m xxs">Every changed file in both buckets is checked against the five tenets in §33.1.</text>
+  <line x1="660" y1="353" x2="696" y2="353" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arwP)"/>
+
+  <rect x="64" y="386" width="592" height="46" class="step"/>
+  <text x="80" y="406" class="t xs" font-weight="600">3 · Mechanical sync</text>
+  <text x="80" y="424" class="m xxs">Tenet-passing copies go plugin → design-spec verbatim (sync-plugin-to-spec.py --apply).</text>
+
+  <rect x="64" y="440" width="592" height="60" class="step"/>
+  <text x="80" y="460" class="t xs" font-weight="600">4 · Authored reflection</text>
+  <text x="80" y="478" class="m xxs">Draft the §8.1/§12/§13 update, preserving spec-only rationale and cross-references.</text>
+  <text x="80" y="494" class="m xxs"><tspan font-weight="600">The draft is a starting point.</tspan> You review it, edit it, and own the spec language that results.</text>
+
+  <rect x="64" y="508" width="592" height="40" class="step"/>
+  <text x="80" y="527" class="t xs" font-weight="600">5 · Combined preview</text>
+  <text x="264" y="527" class="m xxs">every spec file this would touch, both buckets, plus the exclusions</text>
+
+  <rect x="64" y="556" width="592" height="40" rx="6" fill="#fdf6e7" stroke="#d99a2b" stroke-width="2"/>
+  <text x="80" y="575" class="t xs" font-weight="600">6 · Proceed gate</text>
+  <text x="264" y="575" class="m xxs">one gate for the whole batch — write only on the exact word</text>
+
+  <rect x="64" y="604" width="592" height="46" class="step"/>
+  <text x="80" y="624" class="t xs" font-weight="600">7 · Validate and re-baseline</text>
+  <text x="80" y="642" class="m xxs">Re-run the six validators, then <tspan class="mono">python scripts/sync-state.py record</tspan>.</text>
+
+  <rect x="64" y="658" width="592" height="46" class="step"/>
+  <text x="80" y="678" class="t xs" font-weight="600">8 · Revision history</text>
+  <text x="80" y="696" class="m xxs">"Spec sync from plugin: [files]." <tspan font-weight="600">No automatic version bump</tspan> — §36.3 restores equality.</text>
+
+  <rect x="64" y="712" width="592" height="46" rx="6" fill="#eefaf9" stroke="#1a9c96" stroke-width="2"/>
+  <text x="80" y="732" class="t xs" font-weight="600">9 · Close the round trip</text>
+  <text x="80" y="750" class="m xxs">Direct the user to §36.2 to regenerate the plugin from the now-updated spec.</text>
+
+  <!-- tenets panel -->
+  <rect x="700" y="182" width="420" height="302" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="716" y="208" class="t s" font-weight="600">The five fundamental design tenets (§33.1)</text>
+  <text x="716" y="226" class="m xxs">Drawn from what is already normative — not newly invented.</text>
+  <text x="716" y="254" class="t xxs" font-weight="600">1 · Scope discipline</text>
+  <text x="716" y="270" class="m xxs">exactly three things; nothing the Frame removed may come back</text>
+  <text x="716" y="296" class="t xxs" font-weight="600">2 · Governance layer is not removable</text>
+  <text x="716" y="312" class="m xxs">the Proceed gate, governance.md, the router, the five workflows</text>
+  <text x="716" y="338" class="t xxs" font-weight="600">3 · Skills vs. workflows boundary</text>
+  <text x="716" y="354" class="m xxs">skills are plugin-owned; workflows are user-owned and refinable</text>
+  <text x="716" y="380" class="t xxs" font-weight="600">4 · Drift invariant</text>
+  <text x="716" y="396" class="m xxs">definition files change only through sanctioned, gated paths</text>
+  <text x="716" y="422" class="t xxs" font-weight="600">5 · Single-artifact distribution</text>
+  <text x="716" y="438" class="m xxs">one plugin, one openaos_version, one spec — no new artifact types</text>
+  <text x="716" y="462" class="m xxs">Tenet 3 resists mechanical checking: any change touching the</text>
+  <text x="716" y="476" class="m xxs">refinability boundary surfaces for human review regardless.</text>
+
+  <!-- fail branch -->
+  <line x1="910" y1="484" x2="910" y2="498" stroke="#b23c3c" stroke-width="2" marker-end="url(#arwr)"/>
+  <rect x="700" y="502" width="420" height="160" rx="6" fill="#fdf0f0" stroke="#b23c3c" stroke-width="2"/>
+  <text x="716" y="528" class="t s" font-weight="600">Fails a tenet → not reflected</text>
+  <text x="716" y="550" class="m xxs">The file is excluded from this sync and reported by name and by the</text>
+  <text x="716" y="566" class="m xxs">tenet it violated. Nothing is ever silently dropped.</text>
+  <text x="716" y="590" class="m xxs">Appended to design-spec/sync-exclusions.md with disposition <tspan font-weight="600">open</tspan>.</text>
+  <text x="716" y="614" class="m xxs">An open entry is a finding on the next §36.1 issue list (§34), which</text>
+  <text x="716" y="630" class="m xxs">gates finalization. It clears by recording any disposition —</text>
+  <text x="716" y="646" class="m xxs">including an explicit decision not to act.</text>
+
+  <!-- pass branch -->
+  <rect x="700" y="682" width="420" height="94" rx="6" fill="#eef9f2" stroke="#2f9e5f" stroke-width="2"/>
+  <text x="716" y="708" class="t s" font-weight="600">Passes → steps 3 and 4</text>
+  <text x="716" y="730" class="m xxs">Mechanical files are copied verbatim; skill changes become a spec draft</text>
+  <text x="716" y="746" class="m xxs">for the author to review and own.</text>
+  <text x="716" y="766" class="m xxs">The spec is the source of truth again at the next commit boundary.</text>
+
+  <!-- ordering rule -->
+  <rect x="40" y="796" width="1080" height="44" rx="6" fill="#fdf6e7" stroke="#d99a2b" stroke-width="2"/>
+  <text x="56" y="823" class="t xs"><tspan font-weight="600">Ordering rule (§33)</tspan> — §36.3 always runs before §36.2 in any cycle. The two directions are never concurrently live, so there is no conflict resolution to write.</text>
+
+  <!-- CI band -->
+  <rect x="40" y="852" width="1080" height="98" rx="6" fill="#f7f8fa" stroke="#cfd6e0"/>
+  <text x="56" y="876" class="t s" font-weight="600">What actually reaches main — and what CI checks</text>
+  <text x="56" y="898" class="m xs">· CI asserts byte-identity on every pull request: validate-content.py (VC1–VC13), validate-workflow-specs.py (WS1–WS2), and the skill anchors (SK1–SK5).</text>
+  <text x="56" y="918" class="m xs">· The tenet check is deliberately <tspan font-weight="600">not</tspan> in CI — it is a judgment call, not a script. CI enforces the byte-identity invariant instead.</text>
+  <text x="56" y="938" class="m xs">· §36.3 is a drafting aid, not a second route to main. What you submit is a spec change, with the plugin regenerated from it.</text>
+
+  <text x="40" y="976" class="m xs">Sync state (.openaos-sync-state.json) is local, gitignored, and recomputable — it records both hashes per file pair, so divergence on either side breaks the match.</text>
+</svg>

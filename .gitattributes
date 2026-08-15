@@ -1,0 +1,15 @@
+# Line endings: this repository is LF-canonical.
+#
+# Byte-identity between design-spec/ and claude-plugin/openaos/ is a hard
+# invariant (runbook §35, §36.2 step 4; enforced by validate-content.py VC2 and
+# validate-workflow-specs.py WS1-WS2). That invariant is defined on file *bytes*,
+# so line endings must not vary by platform or by contributor. Without this file,
+# a Windows checkout can silently rewrite every tracked text file to CRLF, which
+# buries real diffs in whole-file churn.
+#
+# Editors on Windows will show LF. That is intended.
+* text=auto eol=lf
+
+# Binary assets - never normalized, never diffed as text.
+*.pdf   binary
+*.pptx  binary

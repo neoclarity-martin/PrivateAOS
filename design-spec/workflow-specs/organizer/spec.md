@@ -1,10 +1,10 @@
 ---
-title: Organizer / Declutter — Builder Spec
+title: File organizer — Builder Spec
 file_type: workflow_spec
 slug: organizer
-openaos_version: 3.1.0
+openaos_version: 3.2.1
 ---
-# Organizer / Declutter — Builder Spec
+# File organizer — Builder Spec
 
 ## Purpose
 
@@ -56,7 +56,7 @@ anything on its own.
   default: one-time, then recurring monthly if it helped
   skippable: yes
   when: always
-  captures: When to Use
+  captures: the router row (§16.11)
 ```
 
 ## Baked-In Best Practices
