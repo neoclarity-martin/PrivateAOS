@@ -2,7 +2,7 @@
 title: Research Assistant — Builder Spec
 file_type: workflow_spec
 slug: research-assistant
-openaos_version: 3.2.0
+openaos_version: 3.2.1
 ---
 # Research Assistant — Builder Spec
 

@@ -2,7 +2,7 @@
 title: Inbox Triage — Builder Spec
 file_type: workflow_spec
 slug: inbox-triage
-openaos_version: 3.2.0
+openaos_version: 3.2.1
 ---
 # Inbox Triage — Builder Spec
 

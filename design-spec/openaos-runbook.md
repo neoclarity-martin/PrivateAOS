@@ -2,9 +2,9 @@
 title: OpenAOS Packaging Runbook
 file_type: design_spec
 project: OpenAOS
-openaos_version: 3.2.0
+openaos_version: 3.2.1
 created_date: 2026-06-02
-last_updated: 2026-08-02
+last_updated: 2026-08-15
 status: design_ready_for_generation
 important_constraint: Do not generate actual OpenAOS files unless the user explicitly types exactly Proceed.
 ---
@@ -97,7 +97,9 @@ Verified by every §36.1 review; each item maps to spec sections:
 [ ] The five use-case builder specs exist and follow §7B.1 (workflow-specs/).
 [ ] The build-workflow contract (§12) and refine-workflow engine (§13) are
     consistent with the drift invariant (§14.8).
-[ ] Setup flow (§8) and setup-interview.md agree.
+[ ] §8.1 and setup-openaos/SKILL.md agree step-for-step, in both directions
+    (a spec-side step absent from the skill is a finding, and so is a
+    skill-side step absent from the spec).
 [ ] File schemas (§16), skeletons (file-skeletons.yaml), and templates (§18)
     agree.
 [ ] Catalog, vocabulary, and version validators pass (§27).

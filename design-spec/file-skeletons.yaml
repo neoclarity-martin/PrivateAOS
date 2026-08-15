@@ -22,7 +22,7 @@
 # themselves §16.4 template files, so each now carries an explicit skeleton
 # entry below for §18.7 validation; the embedded block stays defined by the
 # section it comes from.
-openaos_version: 3.2.0
+openaos_version: 3.2.1
 
 # ---------------------------------------------------------------------------
 # File skeletons — ordered section lists and entry-field lists
@@ -239,7 +239,7 @@ root_scaffold:
     content_source: design-spec/content/root/CLAUDE.md
     ships_to: /CLAUDE.md
     required_anchors:
-      - openaos
+      - "OpenAOS Workspace"
       - "@AGENTS.md"
 
   - id: root_agents_md

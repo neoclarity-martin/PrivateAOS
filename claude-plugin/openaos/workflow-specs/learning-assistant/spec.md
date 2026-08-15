@@ -2,7 +2,7 @@
 title: Learning Assistant — Builder Spec
 file_type: workflow_spec
 slug: learning-assistant
-openaos_version: 3.2.0
+openaos_version: 3.2.1
 ---
 # Learning Assistant — Builder Spec
 

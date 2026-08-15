@@ -25,6 +25,8 @@ jobs:
         run: pip install pyyaml jsonschema
       - name: Validate workflow catalog (schema + V1, V3, V4)
         run: python scripts/validate-workflow-catalog.py
+      - name: Validate vocabulary (VV1, VV2, VV4, VV6)
+        run: python scripts/validate-vocabulary.py
 
   check-spec-version:
     runs-on: ubuntu-latest

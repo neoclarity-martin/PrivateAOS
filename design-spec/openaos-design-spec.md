@@ -3,8 +3,8 @@ title: OpenAOS Design Specification
 file_type: design_spec
 project: OpenAOS
 created_date: 2026-06-02
-last_updated: 2026-08-02
-openaos_version: 3.2.0
+last_updated: 2026-08-15
+openaos_version: 3.2.1
 status: design_ready_for_generation
 important_constraint: Do not generate actual OpenAOS files unless the user explicitly types exactly Proceed.
 ---
@@ -923,7 +923,7 @@ Example:
 ---
 title: Weekly Review Workflow
 openaos_version: 1.0.5
-last_updated: 2026-06-11
+last_updated: 2026-08-15
 ---
 ```
 
@@ -979,7 +979,7 @@ title: Weekly Review Workflow
 file_type: workflow
 openaos_version: 1.0.5
 created_date: 2026-06-02
-last_updated: 2026-06-02
+last_updated: 2026-08-15
 ---
 ```
 
